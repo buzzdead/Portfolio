@@ -1,8 +1,4 @@
-# .gitignore
-
-# Next.js build and output folders
-.next/
-out/
+# Node.js dependencies
 node_modules/
 
 # IDE/Editor specific files and folders
@@ -33,3 +29,14 @@ yarn.lock
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Compiled output for Next.js
+# Exclude the build folder during development
+# Uncomment the next line when deploying
+# .next/
+
+# Compiled output (if applicable)
+/out/
+
+# Next.js public folder (if applicable)
+/public/
