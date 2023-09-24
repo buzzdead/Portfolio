@@ -1,17 +1,18 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import Layout from './components/layout/main'
+import { useRouter } from 'next/router'
 
 interface Props {
     Component: any
     pageProps: any
-    router: any
 }
 
-const Website = ({ Component, pageProps, router }: Props) => {
+const Website = ({ Component, pageProps }: Props) => {
+    const router = useRouter()
     return (
         <ChakraProvider>
             <Layout router={router}>
-                <Component {...pageProps} key={router.router} />
+                <Component {...pageProps} key={router.asPath} />
             </Layout>
         </ChakraProvider>
     )
