@@ -23,7 +23,6 @@ Thumbs.db
 npm-debug.log*
 
 # Dependency lock files
-package-lock.json
 yarn.lock
 
 # Environment variables
