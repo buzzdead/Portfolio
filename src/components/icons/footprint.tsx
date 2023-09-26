@@ -1,5 +1,3 @@
-import { JSX, SVGProps } from "react"
-
 interface Props {
   fill: string
 }
@@ -8,10 +6,10 @@ const FootprintIcon = ({fill}: Props) => {
     return (
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
         width={25} height={25} viewBox="0 0 512.000000 512.000000"
-        preserveAspectRatio="xMidYMid meet">
+        preserveAspectRatio="xMidYMid meet" style={{ transition: 'fill 0.5s ease' }}>
        
        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-       fill={fill} stroke="none">
+       fill={fill} stroke="none" style={{ transitionDuration: '800ms' }}>
        <path d="M1120 4061 c-121 -38 -205 -138 -217 -257 l-6 -54 -218 0 c-120 0
        -229 -4 -242 -9 -40 -16 -99 -73 -118 -116 -28 -60 -26 -193 2 -229 11 -14 29
        -26 40 -26 17 0 19 -8 19 -85 0 -82 -1 -85 -25 -91 -39 -10 -55 -41 -55 -105

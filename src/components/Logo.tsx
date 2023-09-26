@@ -11,7 +11,7 @@ const LogoBox = styled.span`
   height: 30px;
   line-height: 20px;
   padding: 10px;
-  transform: scale(0.9);;
+  transform: scale(0.9) translateY(3px);
 
   > svg {
     transition: 300ms ease;
@@ -34,6 +34,7 @@ const Logo = () => {
           fontFamily='Fira Sans Condensed'
           letterSpacing={0}
           fontWeight="bold"
+          transitionDuration={'800ms'}
           ml={3}
         >
           Sigmund Volden

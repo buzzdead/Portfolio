@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { IconButton, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 const ThemeToggleButton = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -9,7 +9,7 @@ const ThemeToggleButton = () => {
   const onToggle = () => {
     toggleColorMode()
     setToggled(true)
-    setTimeout(() => setToggled(false), 500)
+    setTimeout(() => setToggled(false), 400)
   }
   return (
     <AnimatePresence mode="wait" initial={false}>

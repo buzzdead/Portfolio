@@ -16,11 +16,10 @@ const bio = [
 ]
 
 const Page = () => {
-  console.log(profileImage)
   return (
     <Layout title="Main">
     <Container>
-      <Box borderRadius={"lg"} bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')} p={3} mb={6} alignSelf="center">
+      <Box mt={6} borderRadius={"lg"} bg={useColorModeValue('whiteAlpha.400', 'whiteAlpha.200')} p={3} mb={6} alignSelf="center">
         <Scrambler text={"Hei, jeg er en full-stack utvikler bosatt i Norge."} />
       </Box>
 

@@ -13,6 +13,7 @@ import {
   MenuButton,
   IconButton,
   useColorModeValue,
+  Text,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import ThemeToggleButton from "./themeButton";
@@ -47,8 +48,8 @@ const NavBar = (props: { path: any }) => {
       pos={"fixed"}
       as="nav"
       w="100%"
-      bg={useColorModeValue("#ffffff40", "#20202380")}
-      style={{ backdropFilter: "blur(10px)" }}
+      bg={useColorModeValue('whiteAlpha.900', "#20202380")}
+      style={{ backdropFilter: "blur(10px)", borderBottomColor: useColorModeValue("black", "white"), borderBottomWidth: 1, transition: 'background-color 800ms'}}
       zIndex={2}
       {...props}
     >
@@ -74,10 +75,10 @@ const NavBar = (props: { path: any }) => {
           mt={{ base: 4, md: 0 }}
         >
             <LinkItem href={"/projects"} path={path}>
-            Prosjekter
+            <Text fontWeight={'medium'} fontFamily={'body'}>Prosjekter</Text>
           </LinkItem>
           <LinkItem href={"/Lesestoff"} path={path}>
-            Lesestoff
+            <Text fontWeight={'medium'} fontFamily={'body'}>Lesestoff</Text>
           </LinkItem>
         </Stack>
         <Box flex={1} display={{base: 'flex'}} justifyContent="right">

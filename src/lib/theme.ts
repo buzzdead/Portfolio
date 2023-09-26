@@ -1,10 +1,17 @@
 import { extendTheme } from '@chakra-ui/react'
 import { StyleFunctionProps, mode } from '@chakra-ui/theme-tools'
 
+const bgColors = {
+    bg1: '#f0e7db',
+    bg2: '#202023',
+    bgTest1: "#F4F4F4",
+    bgTest2: ""
+}
+
 const styles = {
     global: (props: StyleFunctionProps) => ({
         body: {
-            bg: mode('#f0e7db', '#202023')(props),
+            bg: mode(bgColors.bgTest1, bgColors.bg2)(props),
             transitionProperty: "all",
             transitionDuration: "800ms"
         }
@@ -34,7 +41,7 @@ const components = {
 }
 
 const fonts = {
-    heading: "'M PLUS Rounded 1c'"
+    heading: "'Fira Sans Condensed'"
 }
 
 const colors = {
