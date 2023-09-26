@@ -11,7 +11,7 @@ out/
 *.ntvs*
 *.njsproj
 *.sln
-*.swp
+*.swp 
 Thumbs.db
 
 # Cache files
@@ -38,6 +38,3 @@ yarn.lock
 
 # Compiled output (if applicable)
 /out/
-
-# Next.js public folder (if applicable)
-/public/
