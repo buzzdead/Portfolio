@@ -1,5 +1,7 @@
 # Node.js dependencies
+.next/
 node_modules/
+out/
 
 # IDE/Editor specific files and folders
 .vscode/
