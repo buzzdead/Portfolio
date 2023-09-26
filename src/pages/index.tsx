@@ -6,6 +6,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import Layout from "../components/layout/article";
 import {BioComponent} from '../components/bio'
 import { Scrambler } from "../components/scrambler";
+const profileImage = require('../../public/images/sigmund.jpg');
 
 const bio = [
   {year: "1986", section: "Født i Lillehammer, Norge."},
@@ -15,6 +16,7 @@ const bio = [
 ]
 
 const Page = () => {
+  console.log(profileImage)
   return (
     <Layout title="Main">
     <Container>
@@ -43,7 +45,7 @@ const Page = () => {
           maxWidth="100px"
           display="inline-block"
           borderRadius={"full"}
-          src="/images/sigmund.jpg"
+          src={profileImage.default.src}
           alt="Profile Image"
         />
       </Box>

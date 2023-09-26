@@ -16,7 +16,7 @@ const ThemeToggleButton = () => {
       <motion.div
         style={{ display: "inline-block"}}
         key={useColorModeValue("light", "dark")}
-        initial={{scale: colorMode === 'light' ? 0.6 : 0.2, rotate: colorMode === 'light' ? -360 : -45 }}
+        initial={{scale: colorMode === 'light' ? 0.6 : 0.2, rotate: colorMode === 'light' ? -180 : -45 }}
         animate={{scale: 1, rotate: 0 }}
         transition={{ duration: 0.5 }}
       >
