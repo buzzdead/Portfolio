@@ -9,16 +9,16 @@ const ThemeToggleButton = () => {
   const onToggle = () => {
     toggleColorMode()
     setToggled(true)
-    setTimeout(() => setToggled(false), 400)
+    setTimeout(() => setToggled(false), 300)
   }
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         style={{ display: "inline-block"}}
         key={useColorModeValue("light", "dark")}
-        initial={{scale: colorMode === 'light' ? 0.6 : 0.2, rotate: colorMode === 'light' ? -180 : -45 }}
+        initial={{scale: colorMode === 'light' ? 0.8 : 0.4, rotate: colorMode === 'light' ? 180 : -125 }}
         animate={{scale: 1, rotate: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.4 }}
       >
         <IconButton
           aria-label="Toggle theme"

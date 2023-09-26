@@ -60,13 +60,7 @@ const Page = () => {
             <Link as='div'>Hypertrophy</Link>
           </NextLink>
         </Paragraph>
-        <Box justifyContent="center" display='flex' my={4}>
-          <NextLink href="/projects">
-            <Button rightIcon={<ChevronRightIcon />} colorScheme={useColorModeValue('teal', 'blue')}>
-              Min portefølje
-            </Button>
-          </NextLink>
-        </Box>
+       
       </Section>
       <Section gap={2} delay={0.2}>
         <Heading fontFamily='Fira Sans Condensed' letterSpacing={0.5} as="h3" variant="section-title">
@@ -74,6 +68,13 @@ const Page = () => {
           </Heading>
           {bio.map((b, id) => <BioComponent key={id} year={b.year} section={b.section}/>)}
       </Section>
+      <Box  display='flex' justifyContent={'center'} my={6} mt={10}>
+          <NextLink href="/projects">
+            <Button rightIcon={<ChevronRightIcon />} colorScheme={useColorModeValue('blue', 'teal')}>
+              Min portefølje
+            </Button>
+          </NextLink>
+        </Box>
       <Section delay={0.3}>
         <Heading fontFamily='Fira Sans Condensed' letterSpacing={0.5} as="h3" variant="section-title">
           Interesser
