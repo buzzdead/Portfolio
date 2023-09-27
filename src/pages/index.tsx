@@ -7,7 +7,6 @@ import Layout from "../components/layout/article";
 import {BioComponent} from '../components/bio'
 import { Scrambler } from "../components/scrambler";
 const profileImage = require('../../public/images/sigmund.jpg');
-const bioImage = require('../../public/images/biography.png');
 
 const bio = [
   {year: "1986", section: "Født i Lillehammer, Norge."},
