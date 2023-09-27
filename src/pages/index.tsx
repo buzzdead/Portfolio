@@ -33,8 +33,8 @@ const Page = () => {
 </Box>
 
 
-      <Box display={{ md: "flex" }} align='center'>
-        <Box flexGrow={1}>
+      <Box>
+        <Box flexGrow={1} alignItems={'center'} flexDir={'column'} display='flex'>
           <Heading as="h2" variant="page-title">
             Sigmund Volden
           </Heading>
