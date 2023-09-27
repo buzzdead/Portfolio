@@ -17,7 +17,7 @@ const bio = [
 
 const Page = () => {
   return (
-    <Layout title="Main">
+    <Layout title="Hovedside">
     <Container>
       <Box mt={6} borderRadius={"lg"} bg={useColorModeValue('whiteAlpha.400', 'whiteAlpha.200')} p={3} mb={6} alignSelf="center">
         <Scrambler text={"Hei, jeg er en full-stack utvikler bosatt i Norge."} />

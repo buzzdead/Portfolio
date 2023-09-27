@@ -1,13 +1,22 @@
 import NextLink from 'next/link'
 import { Box, Heading, Container, Divider, Button } from '@chakra-ui/react'
+import Layout from '../components/layout/article'
 
 const NotFound = () => {
     return (
-        <Container>
+        <Layout title={"404"}>
+        <Container
+            height="100vh" 
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            gap={3}
+        >
             <Heading as="h1">Not Found</Heading>
-            <Box>The page you're looking for was not found.</Box>
-            <Divider my={6} />
-            <Box my={6} display='flex' justifyContent="center">
+            <Box mb={4}>The page you're looking for was not found.</Box>
+            
+            <Box>
                 <NextLink href="/">
                     <Button colorScheme='teal'>
                         Return to home
@@ -15,6 +24,7 @@ const NotFound = () => {
                 </NextLink>
             </Box>
         </Container>
+        </Layout>
     )
 }
 export default NotFound

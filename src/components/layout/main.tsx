@@ -14,7 +14,7 @@ const Main = ({ children, router }: MainProps) => {
         <Box as={"main"} pb={8}>
             <Head>
                 <meta aria-description='Portefølje side for Sigmund Volden' name={"viewport"} content={"width=device-width, initial-scale=1"} />
-                <title>Sigmund Volden - Homepage</title>
+                <title>Portefølje</title>
             </Head>
             <Navbar path={router.asPath} />
             <Container maxW={'container.md'} pt={14}>

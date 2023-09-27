@@ -20,13 +20,13 @@ const Layout = ({ children, title }: Props) => {
     animate="enter"
     exit="exit"
     variants={variants}
-    transition={{ duration: 0.4, type: "easeInOut"}}
+    transition={{ duration: 0.2, type: "easeInOut"}}
     style={{ position: "relative" }}
   >
     <>
       {title && (
         <Head>
-          <title>{title} - Sigmund Volden</title>
+          <title>{title}</title>
         </Head>
       )}
       {children}
