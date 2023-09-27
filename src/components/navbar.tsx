@@ -32,7 +32,7 @@ const LinkItem = ({ href, path, children }: Props) => {
       <Link
         as={'div'}
         p={2}
-        bg={active ? "glassTeal" : undefined}
+        bg={active ? useColorModeValue("blue.200", "gray.200") : undefined}
         color={active ? "#202023" : inactiveColor}
       >
         {children}
@@ -61,7 +61,7 @@ const NavBar = (props: { path: any }) => {
         alignSelf="center"
         justifyContent={"space-between"}
       >
-        <Flex align="center" mr={5}>
+        <Flex flex={{base: 3, md: 1}} align="center" mr={5}>
           <Heading as="h1" size="lg" letterSpacing={"tighter"}>
             <Logo />
           </Heading>
@@ -75,26 +75,23 @@ const NavBar = (props: { path: any }) => {
           mt={{ base: 4, md: 0 }}
         >
             <LinkItem href={"/projects"} path={path}>
-            <Text fontWeight={'medium'} fontFamily={'body'}>Prosjekter</Text>
+            <Text minWidth={'80px'} textAlign={'center'} fontWeight={'medium'} fontFamily={'body'}>Prosjekter</Text>
           </LinkItem>
-          <LinkItem href={"/Lesestoff"} path={path}>
-            <Text fontWeight={'medium'} fontFamily={'body'}>Lesestoff</Text>
+          <LinkItem href={"/about"} path={path}>
+            <Text minWidth={'80px'} textAlign={'center'} fontWeight={'medium'} fontFamily={'body'}>CV</Text>
           </LinkItem>
         </Stack>
-        <Box flex={1} display={{base: 'flex'}} justifyContent="right">
+        <Box flex={1} display={{base: 'flex'}} justifyContent="right" mr={2.5}>
           <ThemeToggleButton />
-          <Box ml={2} display={{base: 'inline-block', md: 'none'}}>
+          <Box flex={1} ml={2} display={{base: 'inline-block', md: 'none'}}>
             <Menu>
               <MenuButton as={IconButton} icon={<HamburgerIcon color='green'/>} variant='outline' aria-label="Options" />
               <MenuList>
                 <NextLink href="/" passHref>
-                  <MenuItem as={"div"}>Om meg</MenuItem>
+                  <MenuItem as={"div"}>CV</MenuItem>
                 </NextLink>
                 <NextLink href="/" passHref>
                   <MenuItem as={"div"}>Prosjekter</MenuItem>
-                </NextLink>
-                <NextLink href="/" passHref>
-                  <MenuItem as={"div"}>Lesestoff</MenuItem>
                 </NextLink>
               </MenuList>
             </Menu>

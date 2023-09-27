@@ -35,6 +35,7 @@ const Logo = () => {
           letterSpacing={0}
           fontWeight="bold"
           transitionDuration={'800ms'}
+          minWidth={'150px'}
           ml={3}
         >
           Sigmund Volden

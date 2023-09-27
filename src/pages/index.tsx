@@ -7,6 +7,7 @@ import Layout from "../components/layout/article";
 import {BioComponent} from '../components/bio'
 import { Scrambler } from "../components/scrambler";
 const profileImage = require('../../public/images/sigmund.jpg');
+const bioImage = require('../../public/images/biography.png');
 
 const bio = [
   {year: "1986", section: "Født i Lillehammer, Norge."},
@@ -18,12 +19,22 @@ const bio = [
 const Page = () => {
   return (
     <Layout title="Hovedside">
-    <Container>
-      <Box mt={6} borderRadius={"lg"} bg={useColorModeValue('whiteAlpha.400', 'whiteAlpha.200')} p={3} mb={6} alignSelf="center">
-        <Scrambler text={"Hei, jeg er en full-stack utvikler bosatt i Norge."} />
-      </Box>
+    <Container maxW={{base: '100%', lg: '70%'}}>
+    <Box
+  mt={4}
+  borderRadius={'2xl'}
+  justifyContent={'center'}
+  bg={useColorModeValue('whiteAlpha.200', 'whiteAlpha.200')}
+  minHeight={50}
+  mb={4}
+  display="flex"        // Added display flex
+  alignItems="center"  // Added align-items center
+>
+  <Scrambler text={"Hei, jeg er en full-stack utvikler bosatt i Bergen."} />
+</Box>
 
-      <Box display={{ md: "flex" }}>
+
+      <Box display={{ md: "flex" }} align='center'>
         <Box flexGrow={1}>
           <Heading as="h2" variant="page-title">
             Sigmund Volden
@@ -33,11 +44,18 @@ const Page = () => {
         <Box
         flexShrink={0}
         mt={{ base: 4, md: 0 }}
-        ml={{ md: 6 }}
         display={{base: 'flex'}}
         justifyContent={{base: 'center', md: 'flex-start'}}
       >
-        <Image
+       
+      </Box>
+      </Box>
+      <Box display='flex' flexDir={'column'} gap={5} mt={15}>
+      <Section delay={0.1}>
+      <Heading fontFamily='Fira Sans Condensed' letterSpacing={0.5} as="h3" variant="section-title">
+        
+          <Box alignItems={'center'} flexDir={'column'} display='flex' gap={8}>
+          <Image
           borderColor="whiteAlpha.800"
           borderWidth={2}
           borderStyle={"solid"}
@@ -46,31 +64,28 @@ const Page = () => {
           borderRadius={"full"}
           src={profileImage.default.src}
           alt="Profile Image"
-        />
-      </Box>
-      </Box>
-      <Box>
-      <Section delay={0.1}>
-        <Heading letterSpacing={1} fontFamily='Fira Sans Condensed' as="h3" variant="section-title">
-          Prosjekter
-        </Heading>
+        /> 
+        </Box>
+          Om
+          
+          </Heading>
         <Paragraph as={"div"}>
-          Sigmund er en utvikler bosatt i Bergen som er glad i å utvikle nyttige applikasjoner. Med bred erfaring innen alt fra datasikkerhet, optimalisering og diverse rammeverk så holder han for tiden hovedsakelig med på utvikling av React og React Native applikasjoner. For tiden holder han på med et produkt kalt 
-          <NextLink style={{position: 'absolute', marginLeft: 5}} href={'/prosjekter/hypertrophy'}> 
+          Sigmund er en utvikler bosatt i Bergen som er glad i å utvikle nyttige applikasjoner. Med bred erfaring innen alt fra datasikkerhet, optimalisering og diverse rammeverk så er han største interesse utvikling av React og React Native applikasjoner. For tiden holder han på med et produkt kalt 
+          <NextLink style={{position: 'absolute', marginLeft: 5}} href={'/projects/hypertrophy'}> 
             <Link as='div'>Hypertrophy</Link>
           </NextLink>
         </Paragraph>
        
       </Section>
       <Section gap={2} delay={0.2}>
-        <Heading fontFamily='Fira Sans Condensed' letterSpacing={0.5} as="h3" variant="section-title">
-          Bio
-          </Heading>
+      <Heading fontFamily='Fira Sans Condensed' letterSpacing={0.5} as="h3" variant="section-title" >
+        Bio
+      </Heading>
           {bio.map((b, id) => <BioComponent key={id} year={b.year} section={b.section}/>)}
       </Section>
-      <Box  display='flex' justifyContent={'center'} my={6} mt={10}>
+      <Box  display='flex' justifyContent={'center'}>
           <NextLink href="/projects">
-            <Button rightIcon={<ChevronRightIcon />} colorScheme={useColorModeValue('blue', 'teal')}>
+            <Button transitionDuration={'800ms'} rightIcon={<ChevronRightIcon />} colorScheme={useColorModeValue('blue', 'gray')}>
               Min portefølje
             </Button>
           </NextLink>
