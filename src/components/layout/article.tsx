@@ -21,7 +21,7 @@ const Layout = ({ children, title, skipEnter = false }: Props) => {
   animate={skipEnter ? false : "enter"} 
     exit="exit"
     variants={variants}
-    transition={{ duration: 0.2, type: "easeInOut"}}
+    transition={{ duration: skipEnter ? 0 : 0.2, type: "easeInOut"}}
     style={{ position: "relative" }}
   >
     <>
