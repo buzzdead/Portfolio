@@ -1,14 +1,20 @@
-import { Container, Badge, Link, List, ListItem } from '@chakra-ui/react'
+import { Container, Badge, Link, List, ListItem, Flex } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import Paragraph from '../../components/paragraph'
 import { Title, Picture, Meta } from '../../components/project'
 import Layout from '../../components/layout/article'
-const thumbElKomplett = require('../../../public/images/ElKomplett.png');
+const homepage = require('../../../public/images//elkomplett/homepage.png');
+const inventory = require('../../../public/images/elkomplett/inventory.png');
+
+const product = require('../../../public/images/elkomplett/elkomplett-produkt.png');
+const configure = require('../../../public/images/elkomplett/elkomplett-konfigurer.png');
+const preset = require('../../../public/images/elkomplett/elkomplett-preset.png');
+const multikeys = require('../../../public/images/elkomplett/elkomplett-multikeys.png');
 
 const ElKomplett = () => {
     return (
         <Layout title={"ElKomplett"}>
-            <Container>
+            <Container maxW='100%'>
                 <Title >
                     ElKomplett <Badge>2023</Badge>
                 </Title>
@@ -31,7 +37,14 @@ const ElKomplett = () => {
                         <span>React, TypeScript, PostgreSQL, C#</span>
                     </ListItem>
                 </List>
-                <Picture src={thumbElKomplett.default.src} alt="ElKomplett"/>
+                <Flex display='flex' flexWrap={'wrap'} flexDir={'row'} gap={2}>
+                <Picture size='5xl' src={homepage.default.src} alt="ElKomplett"/>
+                <Picture size='5xl' src={inventory.default.src} alt="ElKomplett"/>
+                <Picture size='5xl' src={product.default.src} alt="ElKomplett"/>
+                <Picture size='5xl' src={configure.default.src} alt="ElKomplett"/>
+                <Picture size='5xl' src={preset.default.src} alt="ElKomplett"/>
+                <Picture size='5xl' src={multikeys.default.src} alt="ElKomplett"/>
+                </Flex>
             </Container>
         </Layout>
     )

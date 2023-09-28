@@ -1,14 +1,18 @@
-import { Container, Badge, Link, List, ListItem } from '@chakra-ui/react'
+import { Container, Badge, Link, List, ListItem, Flex } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import Paragraph from '../../components/paragraph'
 import { Title, Picture, Meta } from '../../components/project'
 import Layout from '../../components/layout/article'
-const thumbHypertrophy = require('../../../public/images/Hypertrophy.png');
+const progress = require('../../../public/images/hypertrophy/Progress.png');
+const filter = require('../../../public/images/hypertrophy/Filter.png');
+const settings = require('../../../public/images/hypertrophy/Settings.png');
+const weeklyProgress = require('../../../public/images/hypertrophy/ProgressWeekly.png');
+const exercises = require('../../../public/images/hypertrophy/Exercises.png');
 
 const Hypertrophy = () => {
     return (
         <Layout title={"ElKomplett"}>
-            <Container>
+            <Container maxW={'100%'}>
                 <Title >
                     Hypertrophy <Badge>2023</Badge>
                 </Title>
@@ -31,7 +35,13 @@ const Hypertrophy = () => {
                         <span>React Native, TypeScript, Realm, Android Studio</span>
                     </ListItem>
                 </List>
-                <Picture src={thumbHypertrophy.default.src} alt="ElKomplett"/>
+                <Flex  display='flex' flexWrap={'wrap'} flexDir={'row'} gap={2}>
+                <Picture size='sm' src={exercises.default.src} alt="ElKomplett"/>
+                <Picture size='sm' src={filter.default.src} alt="ElKomplett"/>
+                <Picture size='sm'  src={weeklyProgress.default.src} alt="ElKomplett"/>
+                <Picture size='sm'  src={progress.default.src} alt="ElKomplett"/>
+                <Picture size='sm'  src={settings.default.src} alt="ElKomplett"/>
+                </Flex>
             </Container>
         </Layout>
     )

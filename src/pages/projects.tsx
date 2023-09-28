@@ -1,16 +1,14 @@
-import { Container, Box, Heading, SimpleGrid, Divider } from '@chakra-ui/react'
+import { Container, Heading, SimpleGrid } from '@chakra-ui/react'
 import Section from '../components/section'
 import { ProjectGridItem } from '../components/grid-item'
 import Layout from '../components/layout/article';
-const thumbHypertrophy = require('../../public/images/Hypertrophy.png');
-const thumbElKomplett = require('../../public/images/ElKomplett.png');
-
-
+const thumbHypertrophy = require('../../public/images/hypertrophy/hypertrophy-main.png');
+const thumbElKomplett = require('../../public/images/elkomplett/homepage.png');
 
 const Projects = () => {
     return (
         <Layout title={"Prosjekter"}>
-        <Container>
+        <Container maxW={'100%'}>
             <Heading as="h3" fontSize={20} mb={4}>
                 Prosjekter
             </Heading>
