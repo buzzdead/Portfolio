@@ -16,8 +16,9 @@ const PDFViewer = () => {
   };
 
   return (
+    <Layout skipEnter title="CV">
     <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-      <Layout skipEnter title="CV">
+      
         <Box p={2.5} w='100%' h={{base: pdfLoaded ? 'auto' : '550px', md: pdfLoaded ? 'auto' : '900px'}}>
           <Viewer
             defaultScale={1}
@@ -27,8 +28,8 @@ const PDFViewer = () => {
             onDocumentLoad={handleLoadSuccess}
           />
         </Box>
-      </Layout>
     </Worker>
+    </Layout>
   );
 };
 
