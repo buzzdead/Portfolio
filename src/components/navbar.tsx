@@ -85,7 +85,7 @@ const NavBar = (props: { path: any }) => {
           <ThemeToggleButton />
           <Box flex={1} ml={2} display={{base: 'inline-block', md: 'none'}}>
             <Menu>
-              <MenuButton as={IconButton} icon={<HamburgerIcon color='green'/>} variant='outline' aria-label="Options" />
+              <MenuButton as={IconButton} icon={<HamburgerIcon transitionDuration={'400ms'} fontSize={'2xl'} color={useColorModeValue('black', 'white')}/>} variant='outline' aria-label="Options" />
               <MenuList>
                 <NextLink href="/about" passHref>
                   <MenuItem as={"div"}>CV</MenuItem>
