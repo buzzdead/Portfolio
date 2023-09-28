@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Text, useColorModeValue } from '@chakra-ui/react'
-import FootprintIcon from './icons/footprint'
+import WeightIcon from './icons/weighticon'
 import styled from '@emotion/styled'
 
 const LogoBox = styled.span`
@@ -28,7 +28,7 @@ const Logo = () => {
     (<Link href="/" scroll={false}>
 
       <LogoBox style={{}}>
-        <FootprintIcon fill={useColorModeValue("#000000", "white")}/>
+        <WeightIcon fill={useColorModeValue("#000000", "white")}/>
         <Text
           color={useColorModeValue('gray.800', 'whiteAlpha.900')}
           fontFamily='Fira Sans Condensed'
