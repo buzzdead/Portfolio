@@ -11,13 +11,14 @@ const variants = {
 interface Props {
     children: any
     title: string
+    skipEnter?: boolean
 }
 
-const Layout = ({ children, title }: Props) => {
+const Layout = ({ children, title, skipEnter = false }: Props) => {
     return (
   <motion.article
-    initial="hidden"
-    animate="enter"
+  initial={skipEnter ? false : "hidden"}
+  animate={skipEnter ? false : "enter"} 
     exit="exit"
     variants={variants}
     transition={{ duration: 0.2, type: "easeInOut"}}

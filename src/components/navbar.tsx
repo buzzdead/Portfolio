@@ -87,10 +87,10 @@ const NavBar = (props: { path: any }) => {
             <Menu>
               <MenuButton as={IconButton} icon={<HamburgerIcon color='green'/>} variant='outline' aria-label="Options" />
               <MenuList>
-                <NextLink href="/" passHref>
+                <NextLink href="/about" passHref>
                   <MenuItem as={"div"}>CV</MenuItem>
                 </NextLink>
-                <NextLink href="/" passHref>
+                <NextLink href="/projects" passHref>
                   <MenuItem as={"div"}>Prosjekter</MenuItem>
                 </NextLink>
               </MenuList>

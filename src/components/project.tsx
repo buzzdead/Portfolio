@@ -11,6 +11,7 @@ interface ImageProps {
   src: string;
   alt: string;
   size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl";
+  handleOnClick: () => void
 }
 
 export const Title = ({ children }: Props) => {
@@ -30,7 +31,7 @@ export const Title = ({ children }: Props) => {
   );
 };
 
-export const Picture = ({ src, alt, size = "lg" }: ImageProps) => {
+export const Picture = ({ src, alt, size = "lg", handleOnClick}: ImageProps) => {
   return (
     <Image
       borderRadius="lg"
@@ -38,6 +39,7 @@ export const Picture = ({ src, alt, size = "lg" }: ImageProps) => {
       src={src}
       alt={alt}
       mb={4}
+      onClick={handleOnClick}
     />
   );
 };
