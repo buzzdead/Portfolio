@@ -22,7 +22,7 @@ const PDFViewer = () => {
           <Viewer
             defaultScale={1}
             renderLoader={() => <Spinner />}
-            fileUrl='/Sigmund_CV.pdf'
+            fileUrl='./Sigmund_CV.pdf'
             plugins={[defaultLayoutPluginInstance]}
             onDocumentLoad={handleLoadSuccess}
           />
