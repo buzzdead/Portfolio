@@ -1,3 +1,4 @@
+import { getServerSideProps } from "../../components/chakra";
 import Layout from "../../components/layout/article";
 import ProjectPage, { Project } from "../../components/projectpage";
 
@@ -41,4 +42,4 @@ const Hypertrophy = () => {
 };
 
 export default Hypertrophy;
-export { getServerSideProps } from '../../components/chakra'
+export {getServerSideProps}
