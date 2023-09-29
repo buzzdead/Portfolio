@@ -12,6 +12,7 @@ const PDFViewer = () => {
   const [pdfLoaded, setPdfLoaded] = useState(false);
 
   const handleLoadSuccess = () => {
+
     setPdfLoaded(true);
   };
 
@@ -34,3 +35,4 @@ const PDFViewer = () => {
 };
 
 export default PDFViewer;
+export { getServerSideProps } from '../components/chakra'

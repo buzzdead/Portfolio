@@ -2,7 +2,7 @@ interface Props {
   fill: string
 }
 
-const FootprintIcon = ({fill}: Props) => {
+const WeightIcon = ({fill}: Props) => {
     return (
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
         width={25} height={25} viewBox="0 0 512.000000 512.000000"
@@ -35,4 +35,4 @@ const FootprintIcon = ({fill}: Props) => {
     )
   }
   
-  export default FootprintIcon
+  export default WeightIcon

@@ -1,9 +1,8 @@
-import { ChakraProvider } from '@chakra-ui/react'
 import Layout from '../components/layout/main'
 import { useRouter } from 'next/router'
-import theme from '../lib/theme'
 import Fonts from '../components/fonts'
 import { AnimatePresence } from 'framer-motion'
+import Chakra from '../components/chakra'
 
 interface Props {
     Component: any
@@ -12,15 +11,16 @@ interface Props {
 
 const Website = ({ Component, pageProps }: Props) => {
     const router = useRouter()
+
     return (
-        <ChakraProvider theme={theme}>
+        <Chakra cookies={pageProps.cookies}>
             <Fonts />
             <Layout router={router}>
-                <AnimatePresence mode="wait" initial={true}>
+                <AnimatePresence mode="wait" initial={false}>
                 <Component {...pageProps} key={router.asPath} />
                 </AnimatePresence>
             </Layout>
-        </ChakraProvider>
+        </Chakra>
     )
 }
 

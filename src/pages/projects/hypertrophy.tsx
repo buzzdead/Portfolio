@@ -1,3 +1,4 @@
+import Layout from "../../components/layout/article";
 import ProjectPage, { Project } from "../../components/projectpage";
 
 const images = [
@@ -36,7 +37,8 @@ const Hypertrophy = () => {
     images: images,
   };
 
-  return <ProjectPage project={project} smallImages />;
+  return <Layout title="Hypertrophy"><ProjectPage project={project} smallImages /></Layout>;
 };
 
 export default Hypertrophy;
+export { getServerSideProps } from '../../components/chakra'

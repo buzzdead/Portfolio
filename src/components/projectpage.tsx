@@ -6,7 +6,6 @@ import {
   ListItem,
   Flex,
   Modal,
-  Button,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -47,7 +46,6 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
   });
 
   const handleBlowUpImage = (id: number, title: string) => {
-    console.log(id);
     setBlowUpImage({ blownUp: true, id: id, title: title });
   };
 

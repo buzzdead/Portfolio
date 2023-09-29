@@ -8,12 +8,13 @@ const bgColors = {
     bgTest2: ""
 }
 
+
 const styles = {
     global: (props: StyleFunctionProps) => ({
         body: {
-            bg: mode(bgColors.bgTest1, bgColors.bg2)(props),
+            bg: mode(bgColors.bgTest1, bgColors.bg2)({...props}),
             transitionProperty: "all",
-            transitionDuration: "800ms"
+            transitionDuration: "800ms",
         }
     })
 }
@@ -48,10 +49,12 @@ const colors = {
     glassTeal: '#88ccca'
 }
 
+
+
 const config = {
     initialColorMode: 'light',
-    useSystemColorMode: true,
-    disableTransitionOnChange: false
+    useSystemColorMode: false,
+    disableTransitionOnChange: false,
 }
 
 const theme = extendTheme({

@@ -27,12 +27,17 @@ interface Props {
 const LinkItem = ({ href, path, children }: Props) => {
   const active = path === href;
   const inactiveColor = useColorModeValue("gray200", "whiteAlpha");
+  const gradientColor = useColorModeValue(
+    "linear-gradient(to left, #5c81cc, #8199c9, #b5bcc7)",
+    "linear-gradient(to left, #c8cacf, #5e5f61, #3d4040)"
+  );
   return (
     <NextLink href={href}>
       <Link
         as={'div'}
         p={2}
-        bg={active ? useColorModeValue("blue.200", "gray.200") : undefined}
+        borderRadius={'lg'}
+        bg={active ? gradientColor : undefined}
         color={active ? "#202023" : inactiveColor}
       >
         {children}
@@ -75,10 +80,10 @@ const NavBar = (props: { path: any }) => {
           mt={{ base: 4, md: 0 }}
         >
             <LinkItem href={"/projects"} path={path}>
-            <Text minWidth={'80px'} textAlign={'center'} fontWeight={'medium'} fontFamily={'body'}>Prosjekter</Text>
+            <Text minWidth={'80px'} textAlign={'center'} fontWeight={'medium'} transitionDuration={'800ms'} color={useColorModeValue('black', 'white')} fontFamily={'body'}>Prosjekter</Text>
           </LinkItem>
           <LinkItem href={"/about"} path={path}>
-            <Text minWidth={'80px'} textAlign={'center'} fontWeight={'medium'} fontFamily={'body'}>CV</Text>
+            <Text minWidth={'80px'} textAlign={'center'} fontWeight={'medium'} transitionDuration={'800ms'} color={useColorModeValue('black', 'white')} fontFamily={'body'}>CV</Text>
           </LinkItem>
         </Stack>
         <Box flex={1} display={{base: 'flex'}} justifyContent="right" mr={2.5}>

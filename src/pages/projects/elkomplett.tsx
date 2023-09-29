@@ -1,3 +1,4 @@
+import Layout from "../../components/layout/article";
 import ProjectPage, { Project } from "../../components/projectpage";
 
 const images = [
@@ -39,7 +40,8 @@ const project = () => {
     link: "asdf",
     images: images,
   };
-  return <ProjectPage project={project} />;
+  return <Layout title="ElKomplett"><ProjectPage project={project} /></Layout>;
 };
 
 export default project;
+export { getServerSideProps } from '../../components/chakra'
