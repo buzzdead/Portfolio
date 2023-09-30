@@ -2,7 +2,6 @@ import { Container, Heading, SimpleGrid } from '@chakra-ui/react'
 import Section from '../components/section'
 import { ProjectGridItem } from '../components/grid-item'
 import Layout from '../components/layout/article';
-import { getServerSideProps } from '../components/chakra';
 const thumbHypertrophy = require('../../public/images/hypertrophy/hypertrophy-main.png');
 const thumbElKomplett = require('../../public/images/elkomplett/homepage.png');
 
@@ -31,4 +30,4 @@ const Projects = () => {
 }
 
 export default Projects
-export {getServerSideProps}
+export { getServerSideProps } from '../components/chakra'

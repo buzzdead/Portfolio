@@ -6,7 +6,6 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { Box } from "@chakra-ui/react";
 import Layout from "../components/layout/article";
 import { Spinner } from '@chakra-ui/react';
-import { getServerSideProps } from "../components/chakra";
 
 const PDFViewer = () => {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
@@ -36,4 +35,4 @@ const PDFViewer = () => {
 };
 
 export default PDFViewer;
-export { getServerSideProps } 
+export { getServerSideProps } from '../components/chakra'
