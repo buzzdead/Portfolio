@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Achivement } from "./achievements";
 
 type REQ = string | string[] | undefined
 export type RecentGameSummary = { appid: number; name: string; playtime_2weeks: number; playtime_forever: number; img_icon_url: string;}

@@ -24,7 +24,7 @@ const PlayerCard = ({playerSummary}: Props) => {
             <Box
               mb={3}
               display="flex"
-              flexDir={"row"}
+              flexDir={"column"}
               justifyContent={"center"}
               gap={5}
             >
