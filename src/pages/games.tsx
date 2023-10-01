@@ -5,17 +5,17 @@ const Games = () => {
   const [userData, setUserData] = useState<{personaname: string, avatarfull: string, steamid: number} | null>(null);
 
   useEffect(() => {
-    const apiKey = 'adf'; // Replace with your actual API key
 
-    axios.get(`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${apiKey}`)
+    axios.get('/api/steamProxy/ISteamUser/GetPlayerSummaries/v2/&steamids=76561197960435530')
       .then(response => {
-        setUserData(response.data.response.players[0]);
+        console.log(response);
+        setUserData(response.data.players[0]);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
   }, []);
-  console.log(userData)
+
   if (userData) {
     return (
       <div>
