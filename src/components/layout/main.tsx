@@ -7,14 +7,15 @@ import { NextRouter } from 'next/router';
 interface MainProps {
     children: any
     router: NextRouter
+    title: string
 }
 
-const Main = ({ children, router }: MainProps) => {
+const Main = ({ children, router, title }: MainProps) => {
     return (
         <Box as={"main"} pb={8}>
             <Head>
                 <meta aria-description='Portefølje side for Sigmund Volden' name={"viewport"} content={"width=device-width, initial-scale=1"} />
-                <title>Portefølje</title>
+                <title>{router.pathname === "/" ? "Hovedside" : router.pathname === '/about' ? 'CV' : router.pathname === '/projects' ? 'Prosjekter' : 'Spill'}</title>
             </Head>
             <Navbar path={router.asPath} />
             <Container maxW={{base: 'container.md', lg: 'container.lg'}} pt={14}>

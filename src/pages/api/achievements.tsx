@@ -54,8 +54,6 @@ export default async function handler(
     return null;
   }).filter(Boolean);
 
-  console.log(filteredAchivements2)
-
   const filteredAchivements: Achivement[] = filteredAchivements2.filter((e: any) => e.unlocktime > 0).sort((a: { unlocktime: number; }, b: { unlocktime: number; }) => b.unlocktime - a.unlocktime).slice(0, 10); 
   return res.status(200).json(
     filteredAchivements
