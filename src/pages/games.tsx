@@ -87,7 +87,7 @@ const Games = () => {
                 <Image
                 loading='eager'
                 width={25}
-                  src={`http://media.steampowered.com/steamcommunity/public/images/apps/${rg.appid}/${rg.img_icon_url}.jpg`}
+                  src={`https://media.steampowered.com/steamcommunity/public/images/apps/${rg.appid}/${rg.img_icon_url}.jpg`}
                 />
                 </Box>
                 <Box display='flex' flexDir={'row'}><p style={{fontFamily: "Fira Sans"}}>Spilletid siste to ukene:</p>&nbsp;<p style={{fontWeight: 500, fontFamily: "Fira Sans"}}>{Math.floor(rg.playtime_2weeks / 60)} timer og {rg.playtime_2weeks % 60} minutter</p></Box>
