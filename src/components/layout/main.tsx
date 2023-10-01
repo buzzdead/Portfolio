@@ -7,10 +7,9 @@ import { NextRouter } from 'next/router';
 interface MainProps {
     children: any
     router: NextRouter
-    title: string
 }
 
-const Main = ({ children, router, title }: MainProps) => {
+const Main = ({ children, router }: MainProps) => {
     return (
         <Box as={"main"} pb={8}>
             <Head>
