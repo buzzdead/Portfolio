@@ -35,7 +35,9 @@ const LinkItem = ({ href, path, children }: Props) => {
     <NextLink href={href}>
       <Link
         as={'div'}
+        _hover={{ textDecoration: active ? 'auto' : 'underline' }}
         p={2}
+        textDecoration={'goldenrod'}
         borderRadius={'lg'}
         bg={active ? gradientColor : undefined}
         color={active ? "#202023" : inactiveColor}
