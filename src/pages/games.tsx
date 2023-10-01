@@ -63,8 +63,10 @@ const Games = () => {
             flexDir={"column"}
             gap={10}
           >
+            <Box maxWidth={200}>
             <PlayerCard playerSummary={userData.playerSummary} />
-            <Section>
+            </Box>
+            <Section delay={0.2}>
               I tillegg til å programmere så spiller jeg dataspill når jeg får
               tid til det. Vært en ivrig "gamer" siden jeg var ung, vokste opp
               med diverse spill som blant annet counter-strike. I disse dager så
@@ -73,7 +75,9 @@ const Games = () => {
               kommer min steam profil, hvis du ønsker kan du prøve å matche din
               spillhistorikk og se om det er noen spill vi begge har spilt.
             </Section>
+            
             {userData.recentGamesSummaries && userData.recentGamesSummaries.length > 0 && <Heading fontFamily="Fira Sans Condensed" fontSize={26}>Nylige spilte spill</Heading>}
+            <Box display='flex' flexDir={'row'} gap={10} flexWrap={'wrap'} justifyContent={'center'}>
             {userData.recentGamesSummaries && userData.recentGamesSummaries.map((rg) => (
               <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
                 
@@ -86,15 +90,16 @@ const Games = () => {
                   src={`http://media.steampowered.com/steamcommunity/public/images/apps/${rg.appid}/${rg.img_icon_url}.jpg`}
                 />
                 </Box>
-                <p>Spilletid siste to ukene: {Math.floor(rg.playtime_2weeks / 60)} timer og {rg.playtime_2weeks % 60} minutter</p>
-                <p>Siste achievements: </p>
-                <Box display={'flex'} flexDir={'row'} flexWrap={'wrap'} gap={1} alignSelf={'center'}>
-                  {achievements?.find(e => e.appid === rg.appid)?.achievements.map(e => <Tooltip label={`${e.displayName} - Unlocked: ${new Date(e.unlocktime * 1000).toDateString()}`}><img width={35} src={e.icon}/></Tooltip>)}
+                <Box display='flex' flexDir={'row'}><p style={{fontFamily: "Fira Sans"}}>Spilletid siste to ukene:</p>&nbsp;<p style={{fontWeight: 500, fontFamily: "Fira Sans"}}>{Math.floor(rg.playtime_2weeks / 60)} timer og {rg.playtime_2weeks % 60} minutter</p></Box>
+                <p style={{marginTop: 5, display: 'flex', justifyContent: 'center', fontWeight: 600, fontFamily: "Fira Sans Condensed"}}>Prestasjoner</p>
+                <Box display={'flex'} flexDir={'row'} flexWrap={'wrap'} gap={0.5} alignSelf={'center'}>
+                  {achievements?.find(e => e.appid === rg.appid)?.achievements.map(e => <Tooltip label={<div style={{display: 'flex', flexDirection: 'column'}}><p>{e.displayName}</p> <p>Unlocked: {new Date(e.unlocktime * 1000).toDateString()}</p><p>{e.description}</p></div>}><img width={30} src={e.icon}/></Tooltip>)}
                 </Box>
                 </Box>
                 
               </div>
             ))}
+            </Box>
           </Box>
         </Container>
       </Layout>
