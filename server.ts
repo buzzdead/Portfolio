@@ -17,6 +17,6 @@ app.get('/steam-api/*', (req, res) => {
     });
 });
 
-app.listen(process.env.PORT || 3001, () => {
-  console.log('Proxy server is running on port', process.env.PORT || 3001);
+app.listen(3005, () => {
+  console.log('Proxy server is running on port', 3005);
 });
