@@ -34,11 +34,11 @@ const LinkItem = ({ href, path, children }: Props) => {
   return (
     <NextLink href={href}>
       <Link
-        as={'div'}
-        _hover={{ textDecoration: active ? 'auto' : 'underline' }}
+        as={"div"}
+        _hover={{ textDecoration: active ? "auto" : "underline" }}
         p={2}
-        textDecoration={'goldenrod'}
-        borderRadius={'lg'}
+        textDecoration={"goldenrod"}
+        borderRadius={"lg"}
         bg={active ? gradientColor : undefined}
         color={active ? "#202023" : inactiveColor}
       >
@@ -55,8 +55,13 @@ const NavBar = (props: { path: any }) => {
       pos={"fixed"}
       as="nav"
       w="100%"
-      bg={useColorModeValue('whiteAlpha.900', "#20202380")}
-      style={{ backdropFilter: "blur(10px)", borderBottomColor: useColorModeValue("black", "white"), borderBottomWidth: 1, transition: 'background-color 800ms'}}
+      bg={useColorModeValue("whiteAlpha.900", "#20202380")}
+      style={{
+        backdropFilter: "blur(10px)",
+        borderBottomColor: useColorModeValue("black", "white"),
+        borderBottomWidth: 1,
+        transition: "background-color 800ms",
+      }}
       zIndex={2}
       {...props}
     >
@@ -68,7 +73,7 @@ const NavBar = (props: { path: any }) => {
         alignSelf="center"
         justifyContent={"space-between"}
       >
-        <Flex flex={{base: 3, md: 1}} align="center" mr={5}>
+        <Flex flex={{ base: 3, md: 1 }} align="center" mr={5}>
           <Heading as="h1" size="lg" letterSpacing={"tighter"}>
             <Logo />
           </Heading>
@@ -81,21 +86,70 @@ const NavBar = (props: { path: any }) => {
           alignItems={"center"}
           mt={{ base: 4, md: 0 }}
         >
-            <LinkItem href={"/projects"} path={path}>
-            <Text minWidth={'80px'} textAlign={'center'} fontWeight={'medium'} transitionDuration={'800ms'} color={useColorModeValue('black', 'white')} fontFamily={'body'}>Prosjekter</Text>
+          <LinkItem href={"/projects"} path={path}>
+            <Text
+              minWidth={"80px"}
+              textAlign={"center"}
+              fontWeight={"medium"}
+              transitionDuration={"800ms"}
+              color={useColorModeValue("black", "white")}
+              fontFamily={"body"}
+            >
+              Prosjekter
+            </Text>
+          </LinkItem>
+          <LinkItem href={"/games"} path={path}>
+            <Text
+              minWidth={"80px"}
+              textAlign={"center"}
+              fontWeight={"medium"}
+              transitionDuration={"800ms"}
+              color={useColorModeValue("black", "white")}
+              fontFamily={"body"}
+            >
+              Spill
+            </Text>
           </LinkItem>
           <LinkItem href={"/about"} path={path}>
-            <Text minWidth={'80px'} textAlign={'center'} fontWeight={'medium'} transitionDuration={'800ms'} color={useColorModeValue('black', 'white')} fontFamily={'body'}>CV</Text>
+            <Text
+              minWidth={"80px"}
+              textAlign={"center"}
+              fontWeight={"medium"}
+              transitionDuration={"800ms"}
+              color={useColorModeValue("black", "white")}
+              fontFamily={"body"}
+            >
+              CV
+            </Text>
           </LinkItem>
         </Stack>
-        <Box flex={1} display={{base: 'flex'}} justifyContent="right" mr={2.5}>
+        <Box
+          flex={1}
+          display={{ base: "flex" }}
+          justifyContent="right"
+          mr={2.5}
+        >
           <ThemeToggleButton />
-          <Box flex={1} ml={2} display={{base: 'inline-block', md: 'none'}}>
+          <Box flex={1} ml={2} display={{ base: "inline-block", md: "none" }}>
             <Menu>
-              <MenuButton as={IconButton} icon={<HamburgerIcon transitionDuration={'400ms'} fontSize={'2xl'} color={useColorModeValue('black', 'white')}/>} variant='outline' aria-label="Options" />
+              <MenuButton
+                as={IconButton}
+                icon={
+                  <HamburgerIcon
+                    transitionDuration={"400ms"}
+                    fontSize={"2xl"}
+                    color={useColorModeValue("black", "white")}
+                  />
+                }
+                variant="outline"
+                aria-label="Options"
+              />
               <MenuList>
                 <NextLink href="/about" passHref>
                   <MenuItem as={"div"}>CV</MenuItem>
+                </NextLink>
+                <NextLink href="/games" passHref>
+                  <MenuItem as={"div"}>Spill</MenuItem>
                 </NextLink>
                 <NextLink href="/projects" passHref>
                   <MenuItem as={"div"}>Prosjekter</MenuItem>
