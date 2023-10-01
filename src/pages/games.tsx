@@ -3,10 +3,11 @@ import axios from 'axios'
 
 const Games = () => {
   const [userData, setUserData] = useState<{personaname: string, avatarfull: string, steamid: number} | null>(null);
+  const key = process.env.STEAM_API_KEY
 
   useEffect(() => {
 
-    axios.get('/api/steamProxy/ISteamUser/GetPlayerSummaries/v2/&steamids=76561197960435530')
+    axios.get('https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/&steamids=76561198070961718')
       .then(response => {
         console.log(response);
         setUserData(response.data.players[0]);
