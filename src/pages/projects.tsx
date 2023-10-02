@@ -14,12 +14,12 @@ const Projects = () => {
             </Heading>
             <SimpleGrid columns={[1, 1, 2]} gap={6}>
                 <Section>
-                    <ProjectGridItem id="hypertrophy" title={"Hypertrophy"} thumbnail={thumbHypertrophy}>
+                    <ProjectGridItem id="hypertrophy" title={"Hypertrophy"} thumbnail={thumbHypertrophy.default.src}>
                        Treningsapp med muligheten til å konfigurere egne typer øvelser og kategorier. Legg enkelt til øvelser og følge dem i progresjons-taben.
                     </ProjectGridItem>
                 </Section>
                 <Section>
-                    <ProjectGridItem id="elkomplett" title={"ElKomplett"} thumbnail={thumbElKomplett}>
+                    <ProjectGridItem id="elkomplett" title={"ElKomplett"} thumbnail={thumbElKomplett.default.src}>
                        Nettbutikk med CRUD support. Legg til kategorier, produkter, produsenter og spesifiser produkttyper. Konfigurer produkter med egendefinerte attributter.
                     </ProjectGridItem>
                 </Section>
