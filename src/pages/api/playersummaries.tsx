@@ -42,7 +42,7 @@ export default async function handler(
       : steam.response.players[0].personastate === 3
       ? "Away 🥱"
       : "Offline 😴";
-      
+  
   const getGames = !steam.response.players[0].gameextrainfo
     ? false
     : `Playing - ${steam.response.players[0].gameextrainfo} 😆`;
