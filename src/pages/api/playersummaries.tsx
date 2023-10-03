@@ -26,6 +26,7 @@ export default async function handler(
   }
 
   const steam = await response.json();
+
   if (steam.item === null) {
     return res.status(200).json({
       steam: {

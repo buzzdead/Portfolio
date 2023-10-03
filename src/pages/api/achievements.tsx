@@ -20,8 +20,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { key, steamids, appid } = req.query;
+  const { key, steamids, appid, ignoreFilter = false } = req.query;
   const response = await getAchievements(key, steamids, appid);
+
   const gameSchemaResponse = await getGameSchema(key, appid);
 
   if (response.status != 200) {
@@ -53,7 +54,12 @@ export default async function handler(
   
     return null;
   }).filter(Boolean);
-
+  if(ignoreFilter) {
+    const filteredAchi = {total: filteredAchivements2.length, achieved: filteredAchivements2.filter((e: any) => e.unlocktime > 0).sort((a: { unlocktime: number; }, b: { unlocktime: number; }) => b.unlocktime - a.unlocktime).length}
+    return res.status(200).json(
+      filteredAchi
+    );
+  }
   const filteredAchivements: Achivement[] = filteredAchivements2.filter((e: any) => e.unlocktime > 0).sort((a: { unlocktime: number; }, b: { unlocktime: number; }) => b.unlocktime - a.unlocktime).slice(0, 10); 
   return res.status(200).json(
     filteredAchivements

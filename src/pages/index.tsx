@@ -21,7 +21,7 @@ import ContactLink from "../components/contactlink";
 const bio = [
   { year: "1986", section: "Født i Lillehammer, Norge." },
   {
-    year: "2018",
+    year: "2021",
     section:
       "Fullførte Bachelor i datasikkerhet på Universitet i Bergen. Lærte om alt fra kryptografi, optimalisering av kode tilogmed systemutvikling",
   },

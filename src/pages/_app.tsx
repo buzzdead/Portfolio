@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion'
 import Chakra from '../components/chakra'
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import React from 'react'
 
 interface Props {
     Component: any
@@ -13,21 +14,20 @@ interface Props {
 
 const Website = ({ Component, pageProps }: Props) => {
     const router = useRouter()
-    const queryClient = new QueryClient();
+    const [queryClient] = React.useState(() => new QueryClient())
 
     return (
+        <QueryClientProvider client={queryClient}>
         <Chakra cookies={pageProps.cookies}>
             <Fonts />
             <Layout router={router}>
-                
-                <QueryClientProvider client={queryClient}>
                 <AnimatePresence mode="wait" initial={false}>
                 <Component {...pageProps} key={router.asPath} />
                 </AnimatePresence>
-                <ReactQueryDevtools />
-                </QueryClientProvider>
             </Layout>
         </Chakra>
+        <ReactQueryDevtools />
+        </QueryClientProvider>
     )
 }
 

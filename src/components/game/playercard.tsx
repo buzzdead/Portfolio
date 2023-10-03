@@ -1,10 +1,9 @@
-import { Card, CardBody, Stack, Heading, Box, Image } from "@chakra-ui/react";
+import { Card, CardBody, Stack, Heading, Box, Image, useColorModeValue, Link } from "@chakra-ui/react";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { PlayerSummary } from "../pages/api/playersummaries";
-import ContactLink from "./contactlink";
+import { PlayerSummary } from "../../pages/api/playersummaries";
 
 interface Props {
-    playerSummary: PlayerSummary
+    playerSummary: Partial<PlayerSummary>
 }
 
 const PlayerCard = ({playerSummary}: Props) => {
@@ -13,9 +12,8 @@ const PlayerCard = ({playerSummary}: Props) => {
         <Card
         maxW="fit-content"
         bg={"inherit"}
-        variant={"elevated"}
+        variant={'unstyled'}
         borderColor={"gray.400"}
-        borderWidth={1}
         alignItems={"center"}
         display="flex"
       >
@@ -24,10 +22,11 @@ const PlayerCard = ({playerSummary}: Props) => {
             <Box
               mb={3}
               display="flex"
-              flexDir={"column"}
+              flexDir={"row"}
               justifyContent={"center"}
               gap={5}
             >
+              <Link pointerEvents={playerSummary.profileUrl === "" ? 'none' : 'inherit'} gap={2.5} display={'flex' } flexDir={'row'} href={playerSummary.profileUrl}  _hover={{textDecoration: 'none', color: useColorModeValue('blue', 'lightblue')}} target='_blank' color='inherit'>
               <Heading
                 justifyContent={"center"}
                 display="flex"
@@ -35,16 +34,11 @@ const PlayerCard = ({playerSummary}: Props) => {
               >
                 {personaName}
               </Heading>
-              <ContactLink
-                size={10}
-                iconSize={10}
-                icon={FaExternalLinkAlt}
-                title={"Profile"}
-                href={profileUrl}
-              />
+              <FaExternalLinkAlt fontSize={20} style={{display: 'flex', alignSelf: 'center'}} />
+              </Link>
             </Box>
           </Stack>
-          <Image src={avatar} alt="Avatar" borderRadius="lg" />
+          <Image src={avatar} alt="Avatar" borderRadius="lg" width={285} pb={5} />
         </CardBody>
       </Card>
     )

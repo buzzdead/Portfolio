@@ -16,14 +16,15 @@ interface Props {
   href: string;
   icon: IconType;
   size?: number
+  color?: string
   iconSize?: number
 }
 
-const ContactLink = ({ title, href, icon: Icon, size = 20, iconSize=35 }: Props) => {
+const ContactLink = ({ title, href, icon: Icon, size = 20, iconSize=35, color='inherit' }: Props) => {
   return (
-    <StyledLink href={href} isExternal target="_blank">
-      <Icon size={iconSize} />
-      <Text fontSize={size}>{title}</Text>
+    <StyledLink href={href}  isExternal target="_blank">
+      <Icon color={color} size={iconSize} />
+      <Text color={color} fontSize={size}>{title}</Text>
     </StyledLink>
   );
 };
