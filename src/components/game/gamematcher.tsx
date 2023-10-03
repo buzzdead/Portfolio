@@ -39,7 +39,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
   });
   const [commonGames, setCommonGames] = useState<CommonGame[]>([]);
   const [errorState, setErrorState] = useState<
-    { type: "left" | "right"; message: string }[]
+    { type: "left" | "right" | 'invalid'; message: string }[]
   >([]);
   const [customApi, setCustomApi] = useState("")
   const apiKey = customApi === "" ? process.env.NEXT_PUBLIC_STEAM_API_KEY : customApi
@@ -52,7 +52,6 @@ export const GameMatcher = ({ playerSummary }: Props) => {
         res.json()
       );
 
-      console.log(newOpponentProfile);
       if (newOpponentProfile?.steam?.personastate === "Offline") {
         setOpponentProfile(defaultProfile);
         !errorState.find((e) => e.type === "right") &&
@@ -64,8 +63,8 @@ export const GameMatcher = ({ playerSummary }: Props) => {
         newOpponentProfile.personaName !== opponentProfile.personaName
       ) {
         setOpponentProfile(newOpponentProfile);
-        setCommonGames([]);
-        setErrorState(errorState.filter((e) => e.type !== "right"));
+        
+        setErrorState(errorState.filter((e) => e.type !== "right" && e.type !== 'invalid'));
       }
     } catch (error) {
       setOpponentProfile(defaultProfile);
@@ -75,6 +74,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
           { type: "right", message: "API key or Steam ID wrong" },
         ]);
     }
+    setCommonGames([]);
   };
 
   const fetchMyProfile = async () => {
@@ -90,8 +90,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
           ]);
       } else if (myProfile.personaName !== newMyProfile.personaName) {
         setMyProfile(newMyProfile);
-        setCommonGames([]);
-        setErrorState(errorState.filter((e) => e.type !== "left"));
+        setErrorState(errorState.filter((e) => e.type !== "left" && e.type !== 'invalid'));
       }
     } catch (error) {
       setMyProfile(defaultProfile);
@@ -101,6 +100,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
           { type: "left", message: "API key or Steam ID wrong" },
         ]);
     }
+        setCommonGames([]);
   };
   const fetchGamesInCommon = async () => {
     setLoading(true)
@@ -113,7 +113,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
         ? await opponentGamesResponse.json()
         : [];
 
-      const cGames = myGames.filter((game: any) =>
+      const cGames = mySteamdId === opponentSteamId ? myGames : myGames.filter((game: any) =>
         opponentGames.some((game2: any) => game2.appid === game.appid)
       );
 
@@ -139,11 +139,12 @@ export const GameMatcher = ({ playerSummary }: Props) => {
 
       const extendedGames = await Promise.all(extendedGamesPromises);
       setCommonGames(extendedGames);
-      setLoading(false)
     } catch (error) {
       console.error("Error fetching games:", "profile not open");
+      setErrorState([...errorState, {type: 'invalid', message: 'Something went wrong'}])
       // Handle the error gracefully, e.g., display a message to the user
     }
+    setLoading(false)
   };
 
   const renderOnBig = () => {
@@ -163,11 +164,9 @@ export const GameMatcher = ({ playerSummary }: Props) => {
         >
           {commonGames &&
             commonGames.map((e: any, id) => (
-              <Box color={id % 2 === 0 ? "red" : "green"} p={2} key={e.name}>
+              <Box color={id % 2 === 0 ? "red" : "green"} p={2} key={id}>
                 {e.myProgress?.achieved}/{e.myProgress?.total} {e.name}{" "}
-                {e.opponentProgress?.achieved}
-                {e.achieved ? "/" : ""}
-                {e.opponentProgress?.total}
+                {e.opponentProgress?.achieved}/{e.opponentProgress?.total}
               </Box>
             ))}
         </Box>
@@ -188,7 +187,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
       >
         {commonGames &&
           commonGames.map((e: CommonGame, id) => (
-            <Box color={id % 2 === 0 ? "red" : "green"} p={2} key={e.name}>
+            <Box color={id % 2 === 0 ? "red" : "green"} p={2} key={id}>
               {e.myProgress?.achieved}/{e.myProgress?.total} {e.name}{" "}
               {e.opponentProgress?.achieved}/{e.opponentProgress?.total}
             </Box>
@@ -253,7 +252,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
             {" "}
             {errorState.map((es, id) => (
               <Box key={id}>
-                {es.type} profile: {es.message}
+                {es.type} {es.type !== 'invalid' && "profile"}: {es.message}
               </Box>
             ))}{" "}
           </Box>

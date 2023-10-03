@@ -32,6 +32,13 @@ export default async function handler(
       },
     });
   }
+  if (gameSchemaResponse.status != 200) {
+    return res.status(200).json({
+      steam: {
+        personastate: "Offline",
+      },
+    });
+  }
 
   const achivements = await response.json();
   const gameSchema = await gameSchemaResponse.json();
@@ -42,8 +49,8 @@ export default async function handler(
       },
     });
   }
-  const filteredAchivements2 = gameSchema.game.availableGameStats.achievements.map((a: any) => {
-    const matchingAchievement = achivements.playerstats.achievements.find((ach: any) => ach.apiname === a.name);
+  const filteredAchivements2 = gameSchema?.game?.availableGameStats?.achievements?.map((a: any) => {
+    const matchingAchievement = achivements?.playerstats?.achievements?.find((ach: any) => ach.apiname === a.name);
   
     if (matchingAchievement) {
       return {
@@ -55,7 +62,7 @@ export default async function handler(
     return null;
   }).filter(Boolean);
   if(ignoreFilter) {
-    const filteredAchi = {total: filteredAchivements2.length, achieved: filteredAchivements2.filter((e: any) => e.unlocktime > 0).sort((a: { unlocktime: number; }, b: { unlocktime: number; }) => b.unlocktime - a.unlocktime).length}
+    const filteredAchi = {total: filteredAchivements2?.length || 0, achieved: filteredAchivements2?.filter((e: any) => e.unlocktime > 0)?.sort((a: { unlocktime: number; }, b: { unlocktime: number; }) => b.unlocktime - a.unlocktime)?.length}
     return res.status(200).json(
       filteredAchi
     );

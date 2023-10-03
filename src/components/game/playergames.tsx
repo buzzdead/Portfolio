@@ -61,7 +61,7 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
             gap={0.5}
             alignSelf={"center"}
           >
-            {achievements?.find((e) => e?.appid === rg?.appid)
+            {achievements?.find((e) => e?.appid === rg?.appid) && Array.isArray(achievements?.find((e) => e?.appid === rg?.appid)?.achievements)
               ? achievements
                   ?.find((e) => e?.appid === rg?.appid)
                   ?.achievements?.map((e) => (
