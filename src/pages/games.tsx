@@ -57,7 +57,7 @@ const Games = () => {
                 flexWrap={"wrap"}
                 justifyContent={"center"}
               >
-                {recentGames.length > 0 && <PlayerGames recentGamesSummaries={recentGames.concat(ownedGames)} />}
+                {recentGames && recentGames.length > 0 && <PlayerGames recentGamesSummaries={recentGames.concat(ownedGames)} />}
               </Box>
             </Section>
           </Box>
