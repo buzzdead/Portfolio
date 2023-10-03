@@ -245,9 +245,9 @@ export const GameMatcher = ({ playerSummary }: Props) => {
         {commonGames.length === 0 &&
           opponentProfile.personaName !== "" &&
           errorState.length === 0 && (
-            <Box display={'flex'} flexDir={'column'} gap={1}>
-                <Box display='flex' flexDir={'row'}>
-                <FormLabel>Skip achievements</FormLabel>
+            <Box display={'flex'} flexDir={'column'} justifyContent={'center'} gap={1}>
+                <Box display='flex' flexDir={'row'} justifyContent={'center'} gap={2}>
+                <FormLabel p={0} m={0}>Skip achievements</FormLabel>
             <Checkbox size={'lg'} defaultChecked={skipAchievement} checked={skipAchievement} onChange={() => setSkipAchievement(!skipAchievement)}/>
             </Box>
             <Button isLoading={loading} onClick={fetchGamesInCommon} bgColor="green" width={200}>
