@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Checkbox,
   FormLabel,
   Input,
   useColorModeValue,
@@ -37,6 +38,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
   const [opponentProfile, setOpponentProfile] = useState({
     ...defaultProfile,
   });
+  const [skipAchievement, setSkipAchievement] = useState(true)
   const [commonGames, setCommonGames] = useState<CommonGame[]>([]);
   const [errorState, setErrorState] = useState<
     { type: "left" | "right" | 'invalid'; message: string }[]
@@ -117,7 +119,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
         opponentGames.some((game2: any) => game2.appid === game.appid)
       );
 
-      const extendedGamesPromises = cGames.map(
+      const extendedGamesPromises = skipAchievement ? cGames : cGames.map(
         async (game: CommonGame): Promise<CommonGame> => {
           const fetchMyProgress = `/api/achievements?key=${apiKey}&steamids=${mySteamdId}&appid=${game.appid}&ignoreFilter=1`;
           const fetchOpponentProgress = `/api/achievements?key=${apiKey}&steamids=${opponentSteamId}&appid=${game.appid}&ignoreFilter=1`;
@@ -243,9 +245,15 @@ export const GameMatcher = ({ playerSummary }: Props) => {
         {commonGames.length === 0 &&
           opponentProfile.personaName !== "" &&
           errorState.length === 0 && (
-            <Button isLoading={loading} onClick={fetchGamesInCommon} bgColor="green" width={400}>
+            <Box display={'flex'} flexDir={'column'} gap={1}>
+                <Box display='flex' flexDir={'row'}>
+                <FormLabel>Skip achievements</FormLabel>
+            <Checkbox size={'lg'} defaultChecked={skipAchievement} checked={skipAchievement} onChange={() => setSkipAchievement(!skipAchievement)}/>
+            </Box>
+            <Button isLoading={loading} onClick={fetchGamesInCommon} bgColor="green" width={200}>
               GO
             </Button>
+            </Box>
           )}
         {errorState.length > 0 && (
           <Box display="flex" flexDir={"column"}>
