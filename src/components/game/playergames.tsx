@@ -32,8 +32,7 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
       };
     });
 
-  return recentGamesSummaries?.map((rg, id) => (
-    !rg ? null : 
+  return recentGamesSummaries?.map((rg, id) => ( 
    <Card key={id}  display='flex' flexDir={'column'} variant='unstyled' transitionDuration={'800ms'} borderRadius={'unset'} bg={useColorModeValue('inherit', 'inherit')} py={5} px={2} overflow="hidden">
         <GameCard recentGame={rg}/>
         <Box
