@@ -201,7 +201,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
   return (
     <Box display="flex" flexDir={"column"} pb={10}>
         <Box display='flex' flexDir={'column'} justifyContent={'center'} alignItems={'center'}>
-        (Må være venn på steam... Legg meg til eller test med egen API her:)
+        (Må være venn på steam eller åpen profil. Legg meg til eller test med egen API her:)
         <FormLabel style={{paddingTop: 5, color: 'green'}}>Steam API nøkkel</FormLabel>
         <Input borderColor={useColorModeValue("black", "white")} value={customApi} onChange={(e) => setCustomApi(e.target.value)} width={'md'}></Input>
         </Box>
