@@ -6,6 +6,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  Spinner,
   useColorModeValue,
 } from "@chakra-ui/react";
 import Section from "../components/section";
@@ -18,8 +19,6 @@ const Games = () => {
   const { data: recentGames, isLoading: isLoadingRecentGames, isError: isErrorRecentGames  } = useCustomQuery('recentGames')
   const { data: playerSummary, isLoading: isLoadingPlayerSummary, isError: isErrorPlayerSummary  } = useCustomQuery('playerSummary')
   const { data: ownedGames, isLoading: isLoadingOwnedGames, isError: isErrorOwnedGames  } = useCustomQuery('ownedGames')
-  const [customApi, setCustomApi] = useState("")
-
   if (playerSummary && recentGames && ownedGames && !isErrorPlayerSummary && !isErrorRecentGames && !isLoadingPlayerSummary && !isLoadingRecentGames && !isErrorOwnedGames && !isLoadingOwnedGames)
     return (
       <Layout title="Spill">
@@ -65,15 +64,11 @@ const Games = () => {
         <Heading variant='section-title' display={'flex'} justifyContent={'center'}>
                   Spill matcher
         </Heading>
-        <Box display='flex' flexDir={'column'} justifyContent={'center'} alignItems={'center'}>
-        (Må være venn på steam... Legg meg til eller test med egen API her:)
-        <FormLabel style={{paddingTop: 5, color: 'green'}}>Steam API nøkkel</FormLabel>
-        <Input borderColor={useColorModeValue("black", "white")} value={customApi} onChange={(e) => setCustomApi(e.target.value)} width={'md'}></Input>
-        </Box>
-        <GameMatcher playerSummary={playerSummary} customApi={customApi}/>
+        
+        <GameMatcher playerSummary={playerSummary}/>
       </Layout>
     );
-  return <div>Loading...</div>;
+  return <Box w='100%' h={{base: 350, md: 600}}><Spinner pos='absolute' left='50%' top='50%' size='xl' />;</Box>
 };
 
 export default Games;

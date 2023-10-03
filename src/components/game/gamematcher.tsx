@@ -1,7 +1,9 @@
 import {
   Box,
   Button,
+  FormLabel,
   Input,
+  useColorModeValue,
   useMediaQuery,
 } from "@chakra-ui/react";
 import PlayerCard from "./playercard";
@@ -12,14 +14,13 @@ const steam_default = require("../../../public/images/steam_default.webp");
 
 interface Props {
   playerSummary: PlayerSummary;
-  customApi: string;
 }
 
 type CommonGame = Partial<RecentGameSummary> & {
   myProgress?: { achieved: number; total: number };
   opponentProgress?: { achieved: number; total: number };
 };
-export const GameMatcher = ({ playerSummary, customApi }: Props) => {
+export const GameMatcher = ({ playerSummary }: Props) => {
   const defaultProfile = {
     personaName: "",
     profileUrl: "",
@@ -40,8 +41,8 @@ export const GameMatcher = ({ playerSummary, customApi }: Props) => {
   const [errorState, setErrorState] = useState<
     { type: "left" | "right"; message: string }[]
   >([]);
-  const apiKey =
-    customApi !== "" ? customApi : process.env.NEXT_PUBLIC_STEAM_API_KEY;
+  const [customApi, setCustomApi] = useState("")
+  const apiKey = customApi === "" ? process.env.NEXT_PUBLIC_STEAM_API_KEY : customApi
   const [isLargerThan1000] = useMediaQuery("(min-width: 1000px)");
 
   const fetchOpponentProfile = async () => {
@@ -151,7 +152,7 @@ export const GameMatcher = ({ playerSummary, customApi }: Props) => {
         <Box
           w="100%"
           px={20}
-          top={-10}
+          top={ 0}
           pos={"absolute"}
           justifyContent={"center"}
           display="flex"
@@ -197,7 +198,12 @@ export const GameMatcher = ({ playerSummary, customApi }: Props) => {
   };
 
   return (
-    <Box display="flex" flexDir={"column"} py={10}>
+    <Box display="flex" flexDir={"column"} pb={10}>
+        <Box display='flex' flexDir={'column'} justifyContent={'center'} alignItems={'center'}>
+        (Må være venn på steam... Legg meg til eller test med egen API her:)
+        <FormLabel style={{paddingTop: 5, color: 'green'}}>Steam API nøkkel</FormLabel>
+        <Input borderColor={useColorModeValue("black", "white")} value={customApi} onChange={(e) => setCustomApi(e.target.value)} width={'md'}></Input>
+        </Box>
       <Box display="flex" justifyContent={"space-between"}>
         <Box
           display="flex"
@@ -245,8 +251,8 @@ export const GameMatcher = ({ playerSummary, customApi }: Props) => {
         {errorState.length > 0 && (
           <Box display="flex" flexDir={"column"}>
             {" "}
-            {errorState.map((es) => (
-              <Box>
+            {errorState.map((es, id) => (
+              <Box key={id}>
                 {es.type} profile: {es.message}
               </Box>
             ))}{" "}

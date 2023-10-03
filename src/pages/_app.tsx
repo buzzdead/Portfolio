@@ -26,7 +26,7 @@ const Website = ({ Component, pageProps }: Props) => {
                 </AnimatePresence>
             </Layout>
         </Chakra>
-        <ReactQueryDevtools />
+        
         </QueryClientProvider>
     )
 }
