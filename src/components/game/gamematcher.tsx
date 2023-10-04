@@ -2,14 +2,18 @@ import {
   Box,
   Button,
   Checkbox,
+  Flex,
   FormLabel,
   Input,
+  Tooltip,
   useColorModeValue,
   useMediaQuery,
 } from "@chakra-ui/react";
 import PlayerCard from "./playercard";
 import { useState } from "react";
 import { PlayerSummary, RecentGameSummary } from "../../types";
+import { InfoIcon, InfoOutlineIcon } from "@chakra-ui/icons";
+import { InfoApi } from "./infoapi";
 const steam_default = require("../../../public/images/steam_default.webp");
 
 interface Props {
@@ -28,7 +32,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
   };
   const [mySteamdId, setMySteamId] = useState("76561198070961718");
   const [opponentSteamId, setOpponentSteamId] = useState("");
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [myProfile, setMyProfile] = useState({
     personaName: playerSummary.personaName,
     profileUrl: playerSummary.profileUrl,
@@ -37,13 +41,14 @@ export const GameMatcher = ({ playerSummary }: Props) => {
   const [opponentProfile, setOpponentProfile] = useState({
     ...defaultProfile,
   });
-  const [skipAchievement, setSkipAchievement] = useState(true)
+  const [skipAchievement, setSkipAchievement] = useState(true);
   const [commonGames, setCommonGames] = useState<CommonGame[]>([]);
   const [errorState, setErrorState] = useState<
-    { type: "left" | "right" | 'invalid'; message: string }[]
+    { type: "left" | "right" | "invalid"; message: string }[]
   >([]);
-  const [customApi, setCustomApi] = useState("")
-  const apiKey = customApi === "" ? process.env.NEXT_PUBLIC_STEAM_API_KEY : customApi
+  const [customApi, setCustomApi] = useState("");
+  const apiKey =
+    customApi === "" ? process.env.NEXT_PUBLIC_STEAM_API_KEY : customApi;
   const [isLargerThan1000] = useMediaQuery("(min-width: 1000px)");
 
   const fetchOpponentProfile = async () => {
@@ -64,8 +69,10 @@ export const GameMatcher = ({ playerSummary }: Props) => {
         newOpponentProfile.personaName !== opponentProfile.personaName
       ) {
         setOpponentProfile(newOpponentProfile);
-        
-        setErrorState(errorState.filter((e) => e.type !== "right" && e.type !== 'invalid'));
+
+        setErrorState(
+          errorState.filter((e) => e.type !== "right" && e.type !== "invalid")
+        );
       }
     } catch (error) {
       setOpponentProfile(defaultProfile);
@@ -91,7 +98,9 @@ export const GameMatcher = ({ playerSummary }: Props) => {
           ]);
       } else if (myProfile.personaName !== newMyProfile.personaName) {
         setMyProfile(newMyProfile);
-        setErrorState(errorState.filter((e) => e.type !== "left" && e.type !== 'invalid'));
+        setErrorState(
+          errorState.filter((e) => e.type !== "left" && e.type !== "invalid")
+        );
       }
     } catch (error) {
       setMyProfile(defaultProfile);
@@ -101,10 +110,10 @@ export const GameMatcher = ({ playerSummary }: Props) => {
           { type: "left", message: "API key or Steam ID wrong" },
         ]);
     }
-        setCommonGames([]);
+    setCommonGames([]);
   };
   const fetchGamesInCommon = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const fetchMyGames = `/api/ownedgames?key=${apiKey}&steamids=${mySteamdId}&ignoreFilter=1`;
       const fetchOpponentGames = `/api/ownedgames?key=${apiKey}&steamids=${opponentSteamId}&ignoreFilter=1`;
@@ -114,38 +123,44 @@ export const GameMatcher = ({ playerSummary }: Props) => {
         ? await opponentGamesResponse.json()
         : [];
 
-      const cGames = mySteamdId === opponentSteamId ? myGames : myGames.filter((game: any) =>
-        opponentGames.some((game2: any) => game2.appid === game.appid)
-      );
+      const cGames =
+        mySteamdId === opponentSteamId
+          ? myGames
+          : myGames.filter((game: any) =>
+              opponentGames.some((game2: any) => game2.appid === game.appid)
+            );
 
-      const extendedGamesPromises = skipAchievement ? cGames : cGames.map(
-        async (game: CommonGame): Promise<CommonGame> => {
-          const fetchMyProgress = `/api/achievements?key=${apiKey}&steamids=${mySteamdId}&appid=${game.appid}&ignoreFilter=1`;
-          const fetchOpponentProgress = `/api/achievements?key=${apiKey}&steamids=${opponentSteamId}&appid=${game.appid}&ignoreFilter=1`;
+      const extendedGamesPromises = skipAchievement
+        ? cGames
+        : cGames.map(async (game: CommonGame): Promise<CommonGame> => {
+            const fetchMyProgress = `/api/achievements?key=${apiKey}&steamids=${mySteamdId}&appid=${game.appid}&ignoreFilter=1`;
+            const fetchOpponentProgress = `/api/achievements?key=${apiKey}&steamids=${opponentSteamId}&appid=${game.appid}&ignoreFilter=1`;
 
-          const myProgress = await fetch(fetchMyProgress).then((res) =>
-            res.json()
-          );
-          const opponentProgress = await fetch(fetchOpponentProgress).then(
-            (res) => res.json()
-          );
+            const myProgress = await fetch(fetchMyProgress).then((res) =>
+              res.json()
+            );
+            const opponentProgress = await fetch(fetchOpponentProgress).then(
+              (res) => res.json()
+            );
 
-          return {
-            name: game.name,
-            myProgress: myProgress,
-            opponentProgress: opponentProgress,
-          };
-        }
-      );
+            return {
+              name: game.name,
+              myProgress: myProgress,
+              opponentProgress: opponentProgress,
+            };
+          });
 
       const extendedGames = await Promise.all(extendedGamesPromises);
       setCommonGames(extendedGames);
     } catch (error) {
       console.error("Error fetching games:", "profile not open");
-      setErrorState([...errorState, {type: 'invalid', message: 'Something went wrong'}])
+      setErrorState([
+        ...errorState,
+        { type: "invalid", message: "Something went wrong" },
+      ]);
       // Handle the error gracefully, e.g., display a message to the user
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   const renderOnBig = () => {
@@ -154,7 +169,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
         <Box
           w="100%"
           px={20}
-          top={ 0}
+          top={0}
           pos={"absolute"}
           justifyContent={"center"}
           display="flex"
@@ -199,11 +214,27 @@ export const GameMatcher = ({ playerSummary }: Props) => {
 
   return (
     <Box display="flex" flexDir={"column"} pb={10}>
-        <Box display='flex' flexDir={'column'} justifyContent={'center'} alignItems={'center'}>
-        (Må være venn på steam eller åpen profil. Legg meg til eller test med egen API her:)
-        <FormLabel style={{paddingTop: 5, color: 'green'}}>Steam API nøkkel</FormLabel>
-        <Input borderColor={useColorModeValue("black", "white")} value={customApi} onChange={(e) => setCustomApi(e.target.value)} width={'md'}></Input>
-        </Box>
+      <Box
+        display="flex"
+        flexDir={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        (Må være venn på steam eller åpen profil. Legg meg til eller test med
+        egen API her:)
+        <Flex flexDir="row" alignItems={'center'}>
+          <FormLabel style={{ paddingTop: 5, color: "green" }}>
+            Steam API nøkkel
+          </FormLabel>
+         <InfoApi />
+        </Flex>
+        <Input
+          borderColor={useColorModeValue("black", "white")}
+          value={customApi}
+          onChange={(e) => setCustomApi(e.target.value)}
+          width={{ base: "sm", md: "md" }}
+        ></Input>
+      </Box>
       <Box display="flex" justifyContent={"space-between"}>
         <Box
           display="flex"
@@ -244,14 +275,36 @@ export const GameMatcher = ({ playerSummary }: Props) => {
         {commonGames.length === 0 &&
           opponentProfile.personaName !== "" &&
           errorState.length === 0 && (
-            <Box display={'flex'} flexDir={'column'} justifyContent={'center'} gap={1}>
-                <Box display='flex' flexDir={'row'} justifyContent={'center'} gap={2}>
-                <FormLabel p={0} m={0}>Skip achievements</FormLabel>
-            <Checkbox size={'lg'} defaultChecked={skipAchievement} checked={skipAchievement} onChange={() => setSkipAchievement(!skipAchievement)}/>
-            </Box>
-            <Button isLoading={loading} onClick={fetchGamesInCommon} bgColor="green" width={200}>
-              GO
-            </Button>
+            <Box
+              display={"flex"}
+              flexDir={"column"}
+              justifyContent={"center"}
+              gap={1}
+            >
+              <Box
+                display="flex"
+                flexDir={"row"}
+                justifyContent={"center"}
+                gap={2}
+              >
+                <FormLabel p={0} m={0}>
+                  Skip achievements
+                </FormLabel>
+                <Checkbox
+                  size={"lg"}
+                  defaultChecked={skipAchievement}
+                  checked={skipAchievement}
+                  onChange={() => setSkipAchievement(!skipAchievement)}
+                />
+              </Box>
+              <Button
+                isLoading={loading}
+                onClick={fetchGamesInCommon}
+                bgColor="green"
+                width={200}
+              >
+                GO
+              </Button>
             </Box>
           )}
         {errorState.length > 0 && (
@@ -259,7 +312,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
             {" "}
             {errorState.map((es, id) => (
               <Box key={id}>
-                {es.type} {es.type !== 'invalid' && "profile"}: {es.message}
+                {es.type} {es.type !== "invalid" && "profile"}: {es.message}
               </Box>
             ))}{" "}
           </Box>
