@@ -25,7 +25,7 @@ export default async function handler(
 
   const steam = await response.json();
 
-  if (steam.item === null) {
+  if (steam.item === null || steam.response?.players?.length === 0) {
     return res.status(200).json({
       steam: {
         personastate: "Offline",

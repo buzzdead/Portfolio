@@ -55,7 +55,7 @@ const NavBar = (props: { path: any }) => {
       pos={"fixed"}
       as="nav"
       w="100%"
-      bg={useColorModeValue("whiteAlpha.900", "#20202380")}
+      bg={useColorModeValue("whiteAlpha.500", "#20202380")}
       style={{
         backdropFilter: "blur(10px)",
         borderBottomColor: useColorModeValue("black", "white"),
