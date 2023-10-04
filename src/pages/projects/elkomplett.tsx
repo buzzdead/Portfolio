@@ -37,7 +37,7 @@ const project = () => {
       "Nettbutikk med CRUD support. Legg til kategorier, produkter, produsenter og spesifiser produkttyper. Konfigurer produkter med egendefinerte attributter.",
     stack: "React, TypeScript, PostgreSQL, C#",
     platform: "Windows/macOS/Linux/Android",
-    link: "https://www.elkomplett.com/",
+    link: "https://elkomplett.com/",
     images: images,
   };
   return <Layout title="ElKomplett"><ProjectPage project={project} /></Layout>;
