@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-
-type REQ = string | string[] | undefined
-export type RecentGameSummary = { appid: number; name: string; playtime_2weeks: number; playtime_forever: number; img_icon_url: string;}
+import { REQ, RecentGameSummary } from "../../types";
 
 export const getOwnedGames = (key: REQ, id: REQ) => {
   const playersummaries_endpoint = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${key}&steamid=${id}&include_appinfo=1`;
@@ -33,9 +31,13 @@ export default async function handler(
       },
     });
   }
-  const recentGamesSummaries: RecentGameSummary[] = steam.response.games
-  const gamesToRespond = ignoreFilter ? recentGamesSummaries : recentGamesSummaries.filter((e: RecentGameSummary) => e.appid === 546560 || e.appid === 578080)
-  return res.status(200).json(
-    gamesToRespond
-  );
+
+  const recentGamesSummaries: RecentGameSummary[] = steam.response.games;
+
+  const gamesToRespond = ignoreFilter
+    ? recentGamesSummaries
+    : recentGamesSummaries.filter(
+        (e: RecentGameSummary) => e.appid === 546560 || e.appid === 578080
+      );
+  return res.status(200).json(gamesToRespond);
 }

@@ -40,7 +40,7 @@ const project = () => {
     link: "https://elkomplett.com/",
     images: images,
   };
-  return <Layout title="ElKomplett"><ProjectPage project={project} /></Layout>;
+  return <ProjectPage project={project} />
 };
 
 export default project;

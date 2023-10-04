@@ -8,9 +8,8 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import PlayerCard from "./playercard";
-import { PlayerSummary } from "../../pages/api/playersummaries";
 import { useState } from "react";
-import { RecentGameSummary } from "../../pages/api/recentgames";
+import { PlayerSummary, RecentGameSummary } from "../../types";
 const steam_default = require("../../../public/images/steam_default.webp");
 
 interface Props {

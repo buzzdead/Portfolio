@@ -37,7 +37,7 @@ const Hypertrophy = () => {
     images: images,
   };
 
-  return <Layout title="Hypertrophy"><ProjectPage project={project} smallImages /></Layout>;
+  return <ProjectPage project={project} smallImages />
 };
 
 export default Hypertrophy;

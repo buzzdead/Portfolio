@@ -1,8 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Achivement } from "./achievements";
-
-type REQ = string | string[] | undefined
-export type RecentGameSummary = { appid: number; name: string; playtime_2weeks: number; playtime_forever: number; img_icon_url: string;}
+import { REQ, RecentGameSummary } from "../../types";
 
 export const getRecentGames = (key: REQ, id: REQ) => {
   const playersummaries_endpoint = `http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=${key}&steamid=${id}`;

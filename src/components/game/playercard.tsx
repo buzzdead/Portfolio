@@ -1,6 +1,6 @@
 import { Card, CardBody, Stack, Heading, Box, Image, useColorModeValue, Link } from "@chakra-ui/react";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { PlayerSummary } from "../../pages/api/playersummaries";
+import { PlayerSummary } from "../../types";
 
 interface Props {
     playerSummary: Partial<PlayerSummary>
@@ -26,7 +26,7 @@ const PlayerCard = ({playerSummary}: Props) => {
               justifyContent={"center"}
               gap={5}
             >
-              <Link pointerEvents={playerSummary.profileUrl === "" ? 'none' : 'inherit'} gap={2.5} display={'flex' } flexDir={'row'} href={playerSummary.profileUrl}  _hover={{textDecoration: 'none', color: useColorModeValue('blue', 'lightblue')}} target='_blank' color='inherit'>
+              <Link pointerEvents={profileUrl === "" ? 'none' : 'inherit'} gap={2.5} display={'flex' } flexDir={'row'} href={profileUrl}  _hover={{textDecoration: 'none', color: useColorModeValue('blue', 'lightblue')}} target='_blank' color='inherit'>
               <Heading
                 justifyContent={"center"}
                 display="flex"

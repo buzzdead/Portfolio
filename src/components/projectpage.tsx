@@ -19,6 +19,7 @@ import Paragraph from "./paragraph";
 import { Title, Picture, Meta } from "./project";
 import Layout from "./layout/article";
 import { useState } from "react";
+import Section from "./section";
 
 type Image = { title: string; image: any };
 
@@ -56,6 +57,7 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
   return (
     <Layout title={project.title}>
       <Container maxW="100%">
+        <Section delay={0.1}>
         <Title>
           {project.title} <Badge>{project.year}</Badge>
         </Title>
@@ -76,7 +78,9 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
             <span>{project.stack}</span>
           </ListItem>
         </List>
-        <Flex
+        </Section>
+          <Section delay={0.2}>
+          <Flex
           display="flex"
           flexWrap={"wrap"}
           flexDir={"row"}
@@ -92,7 +96,9 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
               alt={title}
             />
           ))}
+          
         </Flex>
+          </Section>
       </Container>
       <Modal isOpen={blowUpImage.blownUp} onClose={handleCloseModal}>
         <ModalOverlay />

@@ -1,25 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import Layout from "../components/layout/article";
 import {
   Box,
   Container,
-  FormLabel,
   Heading,
-  Input,
   Spinner,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import Section from "../components/section";
 import PlayerCard from "../components/game/playercard";
 import { PlayerGames } from "../components/game/playergames";
-import { useCustomQuery } from "../components/useCustomQuery";
+import { useCustomQuery } from "../components/hooks/useCustomQuery";
 import { GameMatcher } from "../components/game/gamematcher";
 
 const Games = () => {
   const { data: recentGames, isLoading: isLoadingRecentGames, isError: isErrorRecentGames  } = useCustomQuery('recentGames')
   const { data: playerSummary, isLoading: isLoadingPlayerSummary, isError: isErrorPlayerSummary  } = useCustomQuery('playerSummary')
   const { data: ownedGames, isLoading: isLoadingOwnedGames, isError: isErrorOwnedGames  } = useCustomQuery('ownedGames')
-  if (playerSummary && recentGames && ownedGames && !isErrorPlayerSummary && !isErrorRecentGames && !isLoadingPlayerSummary && !isLoadingRecentGames && !isErrorOwnedGames && !isLoadingOwnedGames)
+  if (!isLoadingPlayerSummary && !isLoadingRecentGames && !isErrorOwnedGames && !isLoadingOwnedGames)
     return (
       <Layout title="Spill">
         <Container maxW={"container.md"}>
@@ -67,8 +64,8 @@ const Games = () => {
         
         <GameMatcher playerSummary={playerSummary}/>
       </Layout>
-    );
-  return <Box w='100%' h={{base: 350, md: 600}}><Spinner pos='absolute' left='50%' top='50%' size='xl' />;</Box>
+    )
+  return <Box width='100vw' height='100vh'><Spinner pos='absolute' left='50%' top='50%' size='xl' /></Box>
 };
 
 export default Games;

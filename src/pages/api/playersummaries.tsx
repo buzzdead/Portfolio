@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-
-type REQ = string | string[] | undefined
-export type PlayerSummary = { personaName: string; avatar: string; status: string; activeGame: string | boolean; profileUrl: string }
+import { REQ, PlayerSummary } from "../../types";
 
 export const getPlayerSummaries = (key: REQ, id: REQ) => {
   const playersummaries_endpoint = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${key}&steamids=${id}`;

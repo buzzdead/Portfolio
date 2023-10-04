@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-
-type REQ = string | string[] | undefined
-export type Achivement = { name: string; displayName: string; description: string; icon: string; unlocktime: number }
+import { Achivement, REQ } from "../../types";
 
 export const getAchievements = (key: REQ, id: REQ, appid: REQ) => {
   const playersummaries_endpoint = `http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=${appid}&key=${key}&steamid=${id}`;
@@ -10,11 +8,11 @@ export const getAchievements = (key: REQ, id: REQ, appid: REQ) => {
   });
 };
 const getGameSchema = (key: REQ, appid: REQ) => {
-  const playersummaries_endpoint2 = `http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=${key}&appid=${appid}&l=english&format=json`
+  const playersummaries_endpoint2 = `http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=${key}&appid=${appid}&l=english&format=json`;
   return fetch(playersummaries_endpoint2, {
     method: "GET",
   });
-}
+};
 
 export default async function handler(
   req: NextApiRequest,
@@ -32,6 +30,7 @@ export default async function handler(
       },
     });
   }
+
   if (gameSchemaResponse.status != 200) {
     return res.status(200).json({
       steam: {
@@ -49,26 +48,46 @@ export default async function handler(
       },
     });
   }
-  const filteredAchivements2 = gameSchema?.game?.availableGameStats?.achievements?.map((a: any) => {
-    const matchingAchievement = achivements?.playerstats?.achievements?.find((ach: any) => ach.apiname === a.name);
-  
-    if (matchingAchievement) {
-      return {
-        ...a,
-        unlocktime: matchingAchievement.unlocktime
-      };
-    }
-  
-    return null;
-  }).filter(Boolean);
-  if(ignoreFilter) {
-    const filteredAchi = {total: filteredAchivements2?.length || 0, achieved: filteredAchivements2?.filter((e: any) => e.unlocktime > 0)?.sort((a: { unlocktime: number; }, b: { unlocktime: number; }) => b.unlocktime - a.unlocktime)?.length}
-    return res.status(200).json(
-      filteredAchi
-    );
+
+  const completedAchievements =
+    gameSchema?.game?.availableGameStats?.achievements
+      ?.map((a: any) => {
+        const matchingAchievement =
+          achivements?.playerstats?.achievements?.find(
+            (ach: any) => ach.apiname === a.name
+          );
+
+        if (matchingAchievement) {
+          return {
+            ...a,
+            unlocktime: matchingAchievement.unlocktime,
+          };
+        }
+
+        return null;
+      })
+      .filter(Boolean);
+
+  if (ignoreFilter) {
+    const achievementProgress = {
+      total: completedAchievements?.length || 0,
+      achieved: completedAchievements
+        ?.filter((e: any) => e.unlocktime > 0)
+        ?.sort(
+          (a: { unlocktime: number }, b: { unlocktime: number }) =>
+            b.unlocktime - a.unlocktime
+        )?.length,
+    };
+    return res.status(200).json(achievementProgress);
   }
-  const filteredAchivements: Achivement[] = filteredAchivements2.filter((e: any) => e.unlocktime > 0).sort((a: { unlocktime: number; }, b: { unlocktime: number; }) => b.unlocktime - a.unlocktime).slice(0, 10); 
-  return res.status(200).json(
-    filteredAchivements
-  );
+
+  const tenLastAchievements: Achivement[] = completedAchievements
+    .filter((e: any) => e.unlocktime > 0)
+    .sort(
+      (a: { unlocktime: number }, b: { unlocktime: number }) =>
+        b.unlocktime - a.unlocktime
+    )
+    .slice(0, 10);
+
+  return res.status(200).json(tenLastAchievements);
 }

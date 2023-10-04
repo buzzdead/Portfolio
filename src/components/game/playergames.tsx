@@ -1,9 +1,8 @@
 import { Box, Card, useColorModeValue } from "@chakra-ui/react";
-import { RecentGameSummary } from "../../pages/api/recentgames";
-import { Achivement } from "../../pages/api/achievements";
 import { useQuery } from "react-query";
 import { CustomToolTip } from "../customtooltip";
 import { GameCard } from "./gamecard";
+import { RecentGameSummary, Achivement } from "../../types";
 
 interface Props {
   recentGamesSummaries: RecentGameSummary[];
