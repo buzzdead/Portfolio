@@ -5,6 +5,7 @@ import { GameCard } from './gamecard'
 import { RecentGameSummary, Achivement } from '../../types'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import Section from '../section'
 
 interface Props {
   recentGamesSummaries: RecentGameSummary[]
@@ -41,7 +42,7 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
     }
 
     useEffect(() => {
-      setTimeout(() => setAchies(), 700)
+      setTimeout(() => setAchies(), 1500)
     }, []) */
   return (
     <Box
@@ -52,6 +53,7 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
       justifyContent={'center'}
     >
       {recentGamesSummaries?.map((rg, id) => (
+        <Section mb={0} delay={id * 0.2}>
         <Card
           key={id}
           display="flex"
@@ -76,7 +78,8 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
             Array.isArray(achievements?.find(e => e?.appid === rg?.appid)?.achievements)
               ? achievements
                   ?.find(e => e?.appid === rg?.appid)
-                  ?.achievements?.map(e => (
+                  ?.achievements?.map((e, id) => (
+                    <Section mb={0} delay={id * 0.05}>
                     <Box
                       height={30}
                       width={30}
@@ -85,13 +88,12 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
                     >
                       <motion.div
                         key={e.name}
-                        variants={{enter: {scale: 1, transitionDuration: '200ms'}}}
-                        initial={{ scale: 0, height: 0}}
                         exit={{ opacity: 0, scale: 0.2, transitionDuration: '150ms'}}
                       >
                         <CustomToolTip achievement={e} />
                       </motion.div>
                     </Box>
+                    </Section>
                   ))
               : Array.from({ length: 10 }, (_, i) => (
                 
@@ -103,7 +105,7 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
                   <Box
                     key={i}
                     width={30}
-                    opacity={1}
+                    opacity={0.25}
                     pos={'absolute'}
                     height={30}
                     border={'1px solid gold'}
@@ -115,6 +117,7 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
                 ))}
           </Box>
         </Card>
+        </Section>
       ))}
     </Box>
   )
