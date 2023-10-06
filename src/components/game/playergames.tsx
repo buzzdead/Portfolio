@@ -53,7 +53,6 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
       justifyContent={'center'}
     >
       {recentGamesSummaries?.map((rg, id) => (
-        <Section mb={0} delay={id * 0.2}>
         <Card
           key={id}
           display="flex"
@@ -79,7 +78,7 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
               ? achievements
                   ?.find(e => e?.appid === rg?.appid)
                   ?.achievements?.map((e, id) => (
-                    <Section mb={0} delay={id * 0.05}>
+                    <Section mb={0} delay={id * 0.03}>
                     <Box
                       height={30}
                       width={30}
@@ -117,7 +116,6 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
                 ))}
           </Box>
         </Card>
-        </Section>
       ))}
     </Box>
   )
