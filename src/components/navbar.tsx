@@ -32,7 +32,7 @@ const LinkItem = ({ href, path, children }: Props) => {
     "linear-gradient(to left, #c8cacf, #5e5f61, #3d4040)"
   );
   return (
-    <NextLink href={href}>
+    <NextLink scroll={false} href={href}>
       <Link
         as={"div"}
         _hover={{ textDecoration: active ? "auto" : "underline" }}

@@ -2,6 +2,7 @@ import {
   Box,
   Link,
 } from "@chakra-ui/react";
+import Section from "../section";
 
 interface Props {
   recentGame: {
@@ -23,6 +24,7 @@ export const GameCard = ({ recentGame }: Props) => {
         alignItems={"flex-end"}
         gap={2.5}
       >
+        <Section mb={0} delay={0.1}>
         <Link
           href={`https://store.steampowered.com/app/${appid}`}
           target="_blank"
@@ -35,6 +37,7 @@ export const GameCard = ({ recentGame }: Props) => {
         >
           {name}
         </Link>
+        </Section>
         
       </Box>
       <Box display="flex" flexDir={"row"} mt={1} mb={2} justifyContent={"center"}>

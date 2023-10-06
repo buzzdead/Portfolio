@@ -9,7 +9,7 @@ const ThemeToggleButton = () => {
   const onToggle = () => {
     toggleColorMode()
     setToggled(true)
-    setTimeout(() => setToggled(false), 300)
+    setTimeout(() => setToggled(false), 400)
   }
   return (
     <AnimatePresence mode="wait" initial={false}>

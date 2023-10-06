@@ -5,6 +5,7 @@ interface Props {
     children: any
     delay?: number
     gap?: number
+    mb?: number
 }
 
 const StyledDiv = chakra(motion.div, {
@@ -13,7 +14,7 @@ const StyledDiv = chakra(motion.div, {
     }
 })
 
-const Section = ({ children, delay = 0, gap = 0}: Props) => {
+const Section = ({ children, delay = 0, gap = 0, mb = 6}: Props) => {
     return (
     <StyledDiv
     display='flex'
@@ -22,7 +23,7 @@ const Section = ({ children, delay = 0, gap = 0}: Props) => {
     initial={{y: 0, opacity: 0.05}}
     animate={{y: 0, opacity: 1}}
     transition={{duration: 0.8, delay} as any}
-    mb={6}>
+    mb={mb}>
         {children}
     </StyledDiv>
     )

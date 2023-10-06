@@ -39,7 +39,6 @@ const Games = () => {
               kommer min steam profil, hvis du ønsker kan du prøve å matche din
               spillhistorikk og se om det er noen spill vi begge har spilt.
             </Section>
-            <Section delay={0.2}>
               {recentGames &&
                 recentGames.length > 0 && (
                   <Heading variant='section-title' fontFamily="Fira Sans Condensed" display={'flex'} justifyContent={'center'} mb={10} fontSize={22}>
@@ -55,7 +54,6 @@ const Games = () => {
               >
                 {recentGames && recentGames.length > 0 && <PlayerGames recentGamesSummaries={recentGames.concat(ownedGames)} />}
               </Box>
-            </Section>
           </Box>
         </Container>
         <Heading variant='section-title' display={'flex'} justifyContent={'center'}>

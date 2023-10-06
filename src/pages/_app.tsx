@@ -4,6 +4,7 @@ import Fonts from "../components/fonts";
 import { AnimatePresence } from "framer-motion";
 import Chakra from "../components/chakra";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from 'react-query/devtools';
 import React from "react";
 
 interface Props {
@@ -19,11 +20,16 @@ const Website = ({ Component, pageProps }: Props) => {
       <Chakra cookies={pageProps.cookies}>
         <Fonts />
           <Layout router={router}>
-          <AnimatePresence mode='wait' initial={false}>
+          <AnimatePresence onExitComplete={() => {
+            if (typeof window !== 'undefined') {
+              window.scrollTo({ top: 0 })
+            }
+          }} mode='wait' initial={true}>
             <Component {...pageProps} key={router.asPath} />
             </AnimatePresence>
           </Layout>
       </Chakra>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 };

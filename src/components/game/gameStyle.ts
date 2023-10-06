@@ -1,17 +1,17 @@
-import  {BoxProps}  from "@chakra-ui/react";
+import { BoxProps } from "@chakra-ui/react";
 
 
 export const commonGamesBig: BoxProps = {
     w: "100%",
-    px:20,
-    top:0,
-    pos:"absolute",
-    justifyContent:"center",
-    display:"flex",
-    alignItems:"center",
-    flexDir:"column",
-    flexWrap:"wrap",
-    gap:1
+    px: 20,
+    top: 0,
+    pos: "absolute",
+    justifyContent: "center",
+    display: "flex",
+    alignItems: "center",
+    flexDir: "column",
+    flexWrap: "wrap",
+    gap: 1
 }
 export const commonGamesSmall: BoxProps = {
     w: "100%",
