@@ -1,4 +1,4 @@
-import { Box, Card, useColorModeValue } from '@chakra-ui/react'
+import { Box, Card, Spinner, useColorModeValue } from '@chakra-ui/react'
 import { useQuery } from 'react-query'
 import { CustomToolTip } from '../customtooltip'
 import { GameCard } from './gamecard'
@@ -14,6 +14,7 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
   const fetcher = (url: RequestInfo) => fetch(url).then(res => res.json())
   const apiKey = process.env.NEXT_PUBLIC_STEAM_API_KEY
   const steamId = '76561198070961718'
+  /* const [achi, setAchi] = useState<{ achievements: Achivement[]; appid: number }[]>([]) */
 
   const achievements: { achievements: Achivement[]; appid: number }[] =
     recentGamesSummaries.map(game => {
@@ -33,14 +34,14 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
       }
     })
 
-  /*   const setAchies = async () => {
+    /* const setAchies = async () => {
       const achis = recentGamesSummaries.map(async game => {  return {achievements: await fetcher(`/api/achievements?appid=${game.appid}&key=${apiKey}&steamids=${steamId}`), appid: game.appid } })
       const abc = await Promise.all(achis)
       setAchi(abc)
     }
 
     useEffect(() => {
-      setAchies()
+      setTimeout(() => setAchies(), 700)
     }, []) */
   return (
     <Box
@@ -93,14 +94,24 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
                     </Box>
                   ))
               : Array.from({ length: 10 }, (_, i) => (
+                
+                <Box position={'relative'} width={30} height={30}>
+                  <motion.div
+                key={i}
+                variants={{enter: { opacity: 0.1, transitionDuration: '100ms'}}}
+              >
                   <Box
                     key={i}
                     width={30}
-                    opacity={0}
+                    opacity={1}
+                    pos={'absolute'}
                     height={30}
                     border={'1px solid gold'}
                     bgColor={'gray'}
                   />
+                  
+                  </motion.div>
+                  </Box>
                 ))}
           </Box>
         </Card>
