@@ -87,7 +87,7 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
                     >
                       <motion.div
                         key={e.name}
-                        exit={{ opacity: 0, scale: 0.2, transitionDuration: '150ms'}}
+                        exit={{ scale: 0.3, transitionDuration: id === 0 ? '515ms' : `${Math.round(900 / (id * 1.75))}ms`}}
                       >
                         <CustomToolTip achievement={e} />
                       </motion.div>
