@@ -4,6 +4,7 @@ import { CustomToolTip } from '../customtooltip'
 import { GameCard } from './gamecard'
 import { RecentGameSummary, Achivement } from '../../types'
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 interface Props {
   recentGamesSummaries: RecentGameSummary[]
@@ -31,6 +32,16 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
         appid: appid
       }
     })
+
+  /*   const setAchies = async () => {
+      const achis = recentGamesSummaries.map(async game => {  return {achievements: await fetcher(`/api/achievements?appid=${game.appid}&key=${apiKey}&steamids=${steamId}`), appid: game.appid } })
+      const abc = await Promise.all(achis)
+      setAchi(abc)
+    }
+
+    useEffect(() => {
+      setAchies()
+    }, []) */
   return (
     <Box
       display="flex"
@@ -85,6 +96,7 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
                   <Box
                     key={i}
                     width={30}
+                    opacity={0}
                     height={30}
                     border={'1px solid gold'}
                     bgColor={'gray'}
