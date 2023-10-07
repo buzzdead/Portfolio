@@ -11,6 +11,7 @@ import PlayerCard from "../components/game/playercard";
 import { PlayerGames } from "../components/game/playergames";
 import { useCustomQuery } from "../components/hooks/useCustomQuery";
 import { GameMatcher } from "../components/game/gamematcher";
+import Paragraph from "../components/paragraph";
 
 const defaultProfile = {
   personaName: '',
@@ -36,6 +37,7 @@ const Games = () => {
                 <PlayerCard playerSummary={isErrorPlayerSummary || isLoadingPlayerSummary ? defaultProfile : playerSummary} player/>
               </Box>
             <Section delay={0.1}>
+              <Paragraph>
               I tillegg til å programmere så spiller jeg dataspill når jeg får
               tid til det. Vært en ivrig "gamer" siden jeg var ung, vokste opp
               med diverse spill som blant annet counter-strike. I disse dager så
@@ -43,6 +45,7 @@ const Games = () => {
               jeg jo muligheten til å vise frem hva jeg liker av spill. Under
               kommer min steam profil, hvis du ønsker kan du prøve å matche din
               spillhistorikk og se om det er noen spill vi begge har spilt.
+              </Paragraph>
             </Section>
                   <Heading variant='section-title' fontFamily="Fira Sans Condensed" display={'flex'} justifyContent={'center'} mb={10} fontSize={22}>
                     Nylige spilte spill
