@@ -33,7 +33,7 @@ const Games = () => {
             gap={5}
           >
               <Box maxWidth={200}>
-                <PlayerCard playerSummary={isLoadingPlayerSummary ? defaultProfile : playerSummary} player/>
+                <PlayerCard playerSummary={isErrorPlayerSummary || isLoadingPlayerSummary ? defaultProfile : playerSummary} player/>
               </Box>
             <Section delay={0.1}>
               I tillegg til å programmere så spiller jeg dataspill når jeg får
@@ -54,7 +54,7 @@ const Games = () => {
                 flexWrap={"wrap"}
                 justifyContent={"center"}
               >
-                {<PlayerGames loading={isLoadingOwnedGames || isLoadingRecentGames} recentGamesSummaries={isLoadingOwnedGames || isLoadingRecentGames ? [] : recentGames.concat(ownedGames)} />}
+                {<PlayerGames loading={isErrorOwnedGames || isErrorRecentGames || isLoadingOwnedGames || isLoadingRecentGames} recentGamesSummaries={isErrorOwnedGames || isErrorRecentGames || isLoadingOwnedGames || isLoadingRecentGames ? [] : recentGames.concat(ownedGames)} />}
               </Box>
           </Box>
         </Container>
@@ -62,7 +62,7 @@ const Games = () => {
                   Spill matcher
         </Heading>
         
-        <GameMatcher playerSummary={isLoadingPlayerSummary ? defaultProfile : playerSummary}/>
+        <GameMatcher playerSummary={isErrorPlayerSummary || isLoadingPlayerSummary ? defaultProfile : playerSummary}/>
       </Layout>
     )
   return <Box width='100vw' height='100vh'><Spinner pos='absolute' left='50%' top='50%' size='xl' /></Box>
