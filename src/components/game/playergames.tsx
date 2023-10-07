@@ -17,26 +17,25 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
   const apiKey = process.env.NEXT_PUBLIC_STEAM_API_KEY
   const steamId = '76561198070961718'
 
-  const [achievements, setAchievements] = useState<{ achievements: Achivement[]; appid: number }[] | null>(null)
   const { colorMode } = useColorMode()
 
-  useEffect(() => {
-    const fetchAchievements = async () => {
-      const data = await Promise.all(recentGamesSummaries.map(async game => {
-        const appid = game?.appid;
-        const achievementsData = await fetcher(`/api/achievements?appid=${appid}&key=${apiKey}&steamids=${steamId}`);
-        return {
-          achievements: achievementsData,
-          appid: appid
-        };
-      }));
-      setAchievements(data);
-    };
-
-    if (!loading) {
-      fetchAchievements();
+  const achievements: { achievements: Achivement[]; appid: number }[] =
+  recentGamesSummaries.map(game => {
+    const appid = game?.appid
+    return {
+      achievements: useQuery(
+        ['achievements', apiKey, steamId, appid],
+        () =>
+          fetcher(
+            `/api/achievements?appid=${appid}&key=${apiKey}&steamids=${steamId}`
+          ),
+        {
+          staleTime: 60000
+        }
+      ).data,
+      appid: appid
     }
-  }, [recentGamesSummaries]);
+  })
   const skeletonRecentGameSummary = [
     {
       appid: 12345,
@@ -126,8 +125,8 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
                 <Box key={i} position={'relative'} width={30} height={30}>
                   <motion.div
                     initial={{opacity: 0}}
-                    animate={{opacity:colorMode === 'dark' ? 0.06 :0.1}}
-                    transition={{duration: i / 7.5}}
+                    animate={{opacity:colorMode === 'dark' ? 0.04 : 0.1}}
+                    transition={{duration: i / 10}}
               >
                   <Box
                     key={i}
@@ -136,7 +135,7 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
                     transitionDuration={'500ms'}
                     height={30}
                     border={'1px solid gold'}
-                    bgColor={'gray'}
+                    bgColor={useColorModeValue('gray.500', 'gray.100')}
                   />
                   
                   </motion.div>
