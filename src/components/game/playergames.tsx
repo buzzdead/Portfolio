@@ -1,23 +1,22 @@
-import { Box, Card, Spinner, useColorModeValue } from '@chakra-ui/react'
+import { Box, Card, useColorModeValue } from '@chakra-ui/react'
 import { useQuery } from 'react-query'
 import { CustomToolTip } from '../customtooltip'
 import { GameCard } from './gamecard'
 import { RecentGameSummary, Achivement } from '../../types'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
 import Section from '../section'
 
 interface Props {
   recentGamesSummaries: RecentGameSummary[]
+  loading?: boolean
 }
 
-export const PlayerGames = ({ recentGamesSummaries }: Props) => {
+export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
   const fetcher = (url: RequestInfo) => fetch(url).then(res => res.json())
   const apiKey = process.env.NEXT_PUBLIC_STEAM_API_KEY
   const steamId = '76561198070961718'
-  /* const [achi, setAchi] = useState<{ achievements: Achivement[]; appid: number }[]>([]) */
 
-  const achievements: { achievements: Achivement[]; appid: number }[] =
+  const achievements: { achievements: Achivement[]; appid: number }[] | null = loading ? null :
     recentGamesSummaries.map(game => {
       const appid = game?.appid
       return {
@@ -35,15 +34,42 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
       }
     })
 
-    /* const setAchies = async () => {
-      const achis = recentGamesSummaries.map(async game => {  return {achievements: await fetcher(`/api/achievements?appid=${game.appid}&key=${apiKey}&steamids=${steamId}`), appid: game.appid } })
-      const abc = await Promise.all(achis)
-      setAchi(abc)
-    }
+  const skeletonRecentGameSummary = [
+    {
+      appid: 12345,
+    name: "Game 1",
+    playtime_2weeks: 123455,
+    playtime_forever: 12345,
+    img_icon_url: "----------------"
+    },
+    {
+      
+      appid: 12345,
+    name: "Game 2",
+    playtime_2weeks: 123455,
+    playtime_forever: 12345,
+    img_icon_url: "123asdfasdf",
+    },
+    {
+      
+      appid: 12345,
+    name: "Game 3",
+    playtime_2weeks: 123455,
+    playtime_forever: 12345,
+    img_icon_url: "123asdfasdf",
+    },
+    {
+      
+      appid: 12345,
+    name: "Game 4",
+    playtime_2weeks: 123455,
+    playtime_forever: 12345,
+    img_icon_url: "123asdfasdf",
+    },
+  ]
 
-    useEffect(() => {
-      setTimeout(() => setAchies(), 1500)
-    }, []) */
+  const renderRg = loading ? skeletonRecentGameSummary : recentGamesSummaries
+
   return (
     <Box
       display="flex"
@@ -52,9 +78,9 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
       flexWrap={'wrap'}
       justifyContent={'center'}
     >
-      {recentGamesSummaries?.map((rg, id) => (
+      {renderRg?.map((rg, rgId) => (
         <Card
-          key={id}
+          key={rgId}
           display="flex"
           flexDir={'column'}
           variant="unstyled"
@@ -78,16 +104,14 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
               ? achievements
                   ?.find(e => e?.appid === rg?.appid)
                   ?.achievements?.map((e, id) => (
-                    <Section mb={0} delay={id * 0.03}>
+                    <Section key={id} mb={0} delay={id * 0.035}>
                     <Box
                       height={30}
                       width={30}
                       position="relative"
-                      key={e.name}
                     >
                       <motion.div
-                        key={e.name}
-                        exit={{ scale: 0.3, transitionDuration: id === 0 ? '135ms' : id === 1 ? '125ms' : `${Math.round(900 / (id * 6))}ms`}}
+                        exit={{ scale: 0.6, rotate: 210, opacity: '0.6', transitionDuration: id === 0 ? '190ms' : id === 1 ? '176ms' : `${Math.round(600 / (id * 1.75 ))}ms`}}
                       >
                         <CustomToolTip achievement={e} />
                       </motion.div>
@@ -96,10 +120,9 @@ export const PlayerGames = ({ recentGamesSummaries }: Props) => {
                   ))
               : Array.from({ length: 10 }, (_, i) => (
                 
-                <Box position={'relative'} width={30} height={30}>
+                <Box key={i} position={'relative'} width={30} height={30}>
                   <motion.div
-                key={i}
-                variants={{enter: { opacity: 0.1, transitionDuration: '100ms'}}}
+                variants={{enter: { opacity:'0.1', transitionDuration: i === 0 ? '190ms' : i === 1 ? '176ms' : `${Math.round(600 / (i * 1.75 ))}ms`}}}
               >
                   <Box
                     key={i}

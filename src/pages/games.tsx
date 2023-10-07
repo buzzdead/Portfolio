@@ -12,11 +12,16 @@ import { PlayerGames } from "../components/game/playergames";
 import { useCustomQuery } from "../components/hooks/useCustomQuery";
 import { GameMatcher } from "../components/game/gamematcher";
 
+const defaultProfile = {
+  personaName: '',
+  profileUrl: '',
+  avatar: '',
+}
+
 const Games = () => {
   const { data: recentGames, isLoading: isLoadingRecentGames, isError: isErrorRecentGames  } = useCustomQuery('recentGames')
   const { data: playerSummary, isLoading: isLoadingPlayerSummary, isError: isErrorPlayerSummary  } = useCustomQuery('playerSummary')
   const { data: ownedGames, isLoading: isLoadingOwnedGames, isError: isErrorOwnedGames  } = useCustomQuery('ownedGames')
-  if (!isLoadingPlayerSummary && !isLoadingRecentGames && !isErrorOwnedGames && !isLoadingOwnedGames)
     return (
       <Layout title="Spill">
         <Container maxW={"container.md"}>
@@ -28,7 +33,7 @@ const Games = () => {
             gap={5}
           >
               <Box maxWidth={200}>
-                <PlayerCard playerSummary={playerSummary} />
+                <PlayerCard playerSummary={isLoadingPlayerSummary ? defaultProfile : playerSummary} />
               </Box>
             <Section delay={0.1}>
               I tillegg til å programmere så spiller jeg dataspill når jeg får
@@ -39,12 +44,9 @@ const Games = () => {
               kommer min steam profil, hvis du ønsker kan du prøve å matche din
               spillhistorikk og se om det er noen spill vi begge har spilt.
             </Section>
-              {recentGames &&
-                recentGames.length > 0 && (
                   <Heading variant='section-title' fontFamily="Fira Sans Condensed" display={'flex'} justifyContent={'center'} mb={10} fontSize={22}>
                     Nylige spilte spill
                   </Heading>
-                )}
               <Box
                 display="flex"
                 flexDir={"row"}
@@ -52,7 +54,7 @@ const Games = () => {
                 flexWrap={"wrap"}
                 justifyContent={"center"}
               >
-                {recentGames && recentGames.length > 0 && <PlayerGames recentGamesSummaries={recentGames.concat(ownedGames)} />}
+                {<PlayerGames loading={isLoadingOwnedGames || isLoadingRecentGames} recentGamesSummaries={isLoadingOwnedGames || isLoadingRecentGames ? [] : recentGames.concat(ownedGames)} />}
               </Box>
           </Box>
         </Container>
@@ -60,7 +62,7 @@ const Games = () => {
                   Spill matcher
         </Heading>
         
-        <GameMatcher playerSummary={playerSummary}/>
+        <GameMatcher playerSummary={isLoadingPlayerSummary ? defaultProfile : playerSummary}/>
       </Layout>
     )
   return <Box width='100vw' height='100vh'><Spinner pos='absolute' left='50%' top='50%' size='xl' /></Box>
