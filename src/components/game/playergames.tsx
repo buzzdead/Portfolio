@@ -21,36 +21,46 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
 
   const queryClient = useQueryClient()
 
-  const {data: achievements, refetch} = useQuery<{achievements: Achivement[], appid: number}[]>(
+  const { data: achievements, refetch } = useQuery<
+    { achievements: Achivement[]; appid: number }[]
+  >(
     ['achievements', apiKey, steamId],
     async () => {
       const achievements = await Promise.all(
         recentGamesSummaries.map(async game => {
-          const achievementsData = await queryClient.fetchQuery(['achievements', apiKey, steamId, game.appid], () => {
-            return fetcher(`/api/achievements?appid=${game.appid}&key=${apiKey}&steamids=${steamId}`);
-          });
-          
+          const achievementsData = await queryClient.fetchQuery(
+            ['achievements', apiKey, steamId, game.appid],
+            () => {
+              return fetcher(
+                `/api/achievements?appid=${game.appid}&key=${apiKey}&steamids=${steamId}`
+              )
+            }, {
+              staleTime: 60000,
+              cacheTime: 60000
+            }
+          )
+
           return {
             achievements: achievementsData,
             appid: game.appid
-          };
+          }
         })
-      );
-      
-      return achievements;
+      )
+
+      return achievements
     },
     {
-      staleTime: 60000
+      staleTime: 60000,
+      cacheTime: 60000
     }
-  );
-  
+  )
+
   useEffect(() => {
-    if(achievements === undefined && recentGamesSummaries.length > 0) refetch()
+    if (achievements === undefined && recentGamesSummaries.length > 0) refetch()
     else if (recentGamesSummaries.length !== achievements?.length) {
-      refetch();
+      refetch()
     }
-  }, [recentGamesSummaries]);
-  
+  }, [recentGamesSummaries])
 
   const skeletonRecentGameSummary = [
     {
@@ -125,10 +135,9 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
                       <Box height={30} width={30} position="relative">
                         <motion.div
                           exit={{
-                            scale: 1.5,
-                            position: 'absolute',
-                            x: id % 2 === 1 ? -15 : 15,
-                            transitionDuration: '10ms'
+                            x: id % 2 === 1 ? -14 : 14,
+                            transitionDuration: '1ms',
+                            transitionDelay: '0ms'
                           }}
                         >
                           <CustomToolTip achievement={e} />
@@ -137,23 +146,19 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
                     </Section>
                   ))
               : Array.from({ length: 10 }, (_, i) => (
-                  <Box key={i} position={'relative'} width={30} height={30}>
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: colorMode === 'dark' ? 0.04 : 0.1 }}
-                      transition={{ duration: i / 10 }}
-                    >
-                      <Box
-                        key={i}
-                        width={30}
-                        pos={'absolute'}
-                        transitionDuration={'500ms'}
-                        height={30}
-                        border={'1px solid gold'}
-                        bgColor={useColorModeValue('gray.500', 'gray.100')}
-                      />
-                    </motion.div>
-                  </Box>
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: colorMode === 'dark' ? 0.1 : 0.3 }}
+                    transition={{ duration: 0.9 / (i + 3), delay: i  * 0.025, repeat: Infinity, repeatType: 'mirror', repeatDelay: 0.5}} // Adjust duration and delay
+                  >
+                    <Box
+                      width={30}
+                      height={30}
+                      border={'1px solid gold'}
+                      bgColor={useColorModeValue('gray.500', 'gray.600')}
+                    />
+                  </motion.div>
                 ))}
           </Box>
         </Card>
