@@ -12,117 +12,175 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Box,
-} from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
-import Paragraph from "./paragraph";
-import { Title, Picture, Meta } from "./project";
-import Layout from "./layout/article";
-import { useState } from "react";
-import Section from "./section";
+  Box
+} from '@chakra-ui/react'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
+import Paragraph from './paragraph'
+import { Title, Picture, Meta } from './project'
+import Layout from './layout/article'
+import { useState } from 'react'
+import Section from './section'
+import { useSwipeable } from 'react-swipeable'
 
-type Image = { title: string; image: any };
+type Image = { title: string; image: any }
 
 export type Project = {
-  title: string;
-  year: number;
-  type: string;
-  description: string;
-  stack: string;
-  platform: string;
-  link: string;
-  images: Image[];
-};
+  title: string
+  year: number
+  type: string
+  description: string
+  stack: string
+  platform: string
+  link: string
+  images: Image[]
+}
 
 interface Props {
-  project: Project;
-  smallImages?: boolean;
+  project: Project
+  smallImages?: boolean
 }
 
 const ProjectPage = ({ project, smallImages = false }: Props) => {
   const [blowUpImage, setBlowUpImage] = useState({
     blownUp: false,
     id: 0,
-    title: "",
-  });
+    title: ''
+  })
+
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+
+  const handleMouseDown = (e: any) => {
+    setIsDragging(true)
+    setStartX(e.clientX)
+  }
+
+  const handleMouseMove = (e: any) => {
+    if (isDragging) {
+      const deltaX = e.clientX - startX
+
+      if (deltaX > 50) {
+        // You can adjust this threshold for sensitivity
+        const newIndex =
+          (blowUpImage.id - 1 + project.images.length) % project.images.length
+        newIndex !== project.images.length - 1 && handleBlowUpImage(newIndex, project.images[newIndex].title)
+        setIsDragging(false)
+      } else if (deltaX < -50) {
+        // You can adjust this threshold for sensitivity
+        const newIndex = (blowUpImage.id + 1) % project.images.length
+        newIndex !== 0 && handleBlowUpImage(newIndex, project.images[newIndex].title)
+        setIsDragging(false)
+      }
+    }
+  }
+
+  const handleMouseUp = () => {
+    setIsDragging(false)
+  }
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      const newIndex = (blowUpImage.id + 1) % project.images.length
+      newIndex !== 0 &&
+        handleBlowUpImage(newIndex, project.images[newIndex].title)
+    },
+    onSwipedRight: () => {
+      const newIndex =
+        (blowUpImage.id - 1 + project.images.length) % project.images.length
+      newIndex !== project.images.length - 1 &&
+        handleBlowUpImage(newIndex, project.images[newIndex].title)
+    }
+  })
 
   const handleBlowUpImage = (id: number, title: string) => {
-    setBlowUpImage({ blownUp: true, id: id, title: title });
-  };
+    setBlowUpImage({ blownUp: true, id: id, title: title })
+  }
 
   const handleCloseModal = () => {
-    setBlowUpImage({ blownUp: false, id: 0, title: "" });
-  };
+    setBlowUpImage({ blownUp: false, id: 0, title: '' })
+  }
 
   return (
     <Layout title={project.title}>
       <Container maxW="100%">
         <Section delay={0.1}>
-        <Title>
-          {project.title} <Badge>{project.year}</Badge>
-        </Title>
-        <Paragraph>{project.description}</Paragraph>
-        <List ml={2} my={4}>
-          <ListItem>
-            <Meta>{project.type}</Meta>
-            <Link href={project.link} target="_blank">
-              {project.title} <ExternalLinkIcon mx="2px" />
-            </Link>
-          </ListItem>
-          <ListItem>
-            <Meta>Platform</Meta>
-            <span>{project.platform}</span>
-          </ListItem>
-          <ListItem>
-            <Meta>Stack</Meta>
-            <span>{project.stack}</span>
-          </ListItem>
-        </List>
+          <Title>
+            {project.title} <Badge>{project.year}</Badge>
+          </Title>
+          <Paragraph>{project.description}</Paragraph>
+          <List ml={2} my={4}>
+            <ListItem>
+              <Meta>{project.type}</Meta>
+              <Link href={project.link} target="_blank">
+                {project.title} <ExternalLinkIcon mx="2px" />
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Meta>Platform</Meta>
+              <span>{project.platform}</span>
+            </ListItem>
+            <ListItem>
+              <Meta>Stack</Meta>
+              <span>{project.stack}</span>
+            </ListItem>
+          </List>
         </Section>
-          <Section delay={0.2}>
+        <Section delay={0.2}>
           <Flex
-          display="flex"
-          flexWrap={"wrap"}
-          flexDir={"row"}
-          justifyContent={{ base: "center", md: "flex-start" }}
-          gap={2}
-        >
-          {project.images.map(({ image, title }, index) => (
-            <Picture
-              handleOnClick={() => handleBlowUpImage(index, title)}
-              key={index}
-              size={smallImages ? "sm" : "5xl"}
-              src={image.default.src}
-              alt={title}
-            />
-          ))}
-          
-        </Flex>
-          </Section>
+            display="flex"
+            flexWrap={'wrap'}
+            flexDir={'row'}
+            justifyContent={{ base: 'center', md: 'flex-start' }}
+            gap={2}
+          >
+            {project.images.map(({ image, title }, index) => (
+              <Picture
+                handleOnClick={() => handleBlowUpImage(index, title)}
+                key={index}
+                size={smallImages ? 'sm' : '5xl'}
+                src={image.default.src}
+                alt={title}
+              />
+            ))}
+          </Flex>
+        </Section>
       </Container>
       <Modal isOpen={blowUpImage.blownUp} onClose={handleCloseModal}>
         <ModalOverlay />
-        <ModalContent maxW={smallImages ? "xs" : "5xl"}>
-          <ModalHeader justifyContent={"center"} display="flex">
+        <ModalContent
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          maxW={smallImages ? 'xs' : '5xl'}
+        >
+          <ModalHeader justifyContent={'center'} display="flex">
             {blowUpImage.title}
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody padding={0} display='flex' justifyContent={'center'}>
+          <ModalBody
+            padding={0}
+            display="flex"
+            justifyContent={'center'}
+            {...handlers}
+          >
             {/* Display the blown-up image here */}
             <img
               src={project.images[blowUpImage.id].image.default.src}
               alt={project.title}
+              draggable={false}
+              style={{ userSelect: 'none' }}
             />
           </ModalBody>
           <ModalFooter py={10}>
             <Flex justifyContent="center" w="100%">
-              {project.images.map(({image, title}, index) => (
+              {project.images.map(({ image, title }, index) => (
                 <Box
                   key={index}
-                  w="8px"
-                  h="8px"
+                  w="14px"
+                  h="14px"
                   borderRadius="50%"
-                  bg={index === blowUpImage.id ? "blue.500" : "gray.300"}
+                  bg={index === blowUpImage.id ? 'blue.500' : 'gray.300'}
                   mx="2"
                   cursor="pointer"
                   onClick={() => handleBlowUpImage(index, title)}
@@ -133,7 +191,7 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
         </ModalContent>
       </Modal>
     </Layout>
-  );
-};
+  )
+}
 
-export default ProjectPage;
+export default ProjectPage
