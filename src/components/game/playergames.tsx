@@ -121,19 +121,18 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
               ? achievements
                   ?.find(e => e?.appid === rg?.appid)
                   ?.achievements?.map((e, id) => (
-                    <Section key={id} mb={0} delay={id * 0.035}>
+                    <Section key={id} mb={0} delay={id * 0.04}>
                       <Box height={30} width={30} position="relative">
                         <motion.div
                           exit={{
-                            scale: 0.3,
-                            rotate: 360,
-                            opacity: '0.4',
+                            scale: 0,
+                            rotate: 80,
                             transitionDuration:
                               id === 0
-                                ? '490ms'
+                                ? '160ms'
                                 : id === 1
-                                ? '466ms'
-                                : `${Math.round(550 / (id * 0.5))}ms`
+                                ? '156ms'
+                                : `${Math.round(550 / (id * 0.5)) + id > 2 ? 100 : 0}ms`
                           }}
                         >
                           <CustomToolTip achievement={e} />
