@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { Achivement, REQ } from "../../types";
 
 export const getAchievements = (key: REQ, id: REQ, appid: REQ) => {
+  console.log("really")
   const playersummaries_endpoint = `http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=${appid}&key=${key}&steamid=${id}`;
   return fetch(playersummaries_endpoint, {
     method: "GET",

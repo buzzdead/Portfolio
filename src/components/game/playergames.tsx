@@ -1,11 +1,11 @@
 import { Box, Card, useColorMode, useColorModeValue } from '@chakra-ui/react'
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import { CustomToolTip } from '../customtooltip'
 import { GameCard } from './gamecard'
 import { RecentGameSummary, Achivement } from '../../types'
 import { motion } from 'framer-motion'
 import Section from '../section'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 interface Props {
   recentGamesSummaries: RecentGameSummary[]
@@ -19,55 +19,68 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
 
   const { colorMode } = useColorMode()
 
-  const achievements: { achievements: Achivement[]; appid: number }[] =
-  recentGamesSummaries.map(game => {
-    const appid = game?.appid
-    return {
-      achievements: useQuery(
-        ['achievements', apiKey, steamId, appid],
-        () =>
-          fetcher(
-            `/api/achievements?appid=${appid}&key=${apiKey}&steamids=${steamId}`
-          ),
-        {
-          staleTime: 60000
-        }
-      ).data,
-      appid: appid
+  const queryClient = useQueryClient()
+
+  const {data: achievements, refetch} = useQuery<{achievements: Achivement[], appid: number}[]>(
+    ['achievements', apiKey, steamId],
+    async () => {
+      const achievements = await Promise.all(
+        recentGamesSummaries.map(async game => {
+          const achievementsData = await queryClient.fetchQuery(['achievements', apiKey, steamId, game.appid], () => {
+            return fetcher(`/api/achievements?appid=${game.appid}&key=${apiKey}&steamids=${steamId}`);
+          });
+          
+          return {
+            achievements: achievementsData,
+            appid: game.appid
+          };
+        })
+      );
+      
+      return achievements;
+    },
+    {
+      staleTime: 60000
     }
-  })
+  );
+  
+  useEffect(() => {
+    if(achievements === undefined && recentGamesSummaries.length > 0) refetch()
+    else if (recentGamesSummaries.length !== achievements?.length) {
+      refetch();
+    }
+  }, [recentGamesSummaries]);
+  
+
   const skeletonRecentGameSummary = [
     {
       appid: 12345,
-    name: "Game 1",
-    playtime_2weeks: 123455,
-    playtime_forever: 12345,
-    img_icon_url: "----------------"
+      name: 'Game 1',
+      playtime_2weeks: 123455,
+      playtime_forever: 12345,
+      img_icon_url: '----------------'
     },
     {
-      
       appid: 12345,
-    name: "Game 2",
-    playtime_2weeks: 123455,
-    playtime_forever: 12345,
-    img_icon_url: "123asdfasdf",
+      name: 'Game 2',
+      playtime_2weeks: 123455,
+      playtime_forever: 12345,
+      img_icon_url: '123asdfasdf'
     },
     {
-      
       appid: 12345,
-    name: "Game 3",
-    playtime_2weeks: 123455,
-    playtime_forever: 12345,
-    img_icon_url: "123asdfasdf",
+      name: 'Game 3',
+      playtime_2weeks: 123455,
+      playtime_forever: 12345,
+      img_icon_url: '123asdfasdf'
     },
     {
-      
       appid: 12345,
-    name: "Game 4",
-    playtime_2weeks: 123455,
-    playtime_forever: 12345,
-    img_icon_url: "123asdfasdf",
-    },
+      name: 'Game 4',
+      playtime_2weeks: 123455,
+      playtime_forever: 12345,
+      img_icon_url: '123asdfasdf'
+    }
   ]
 
   const renderRg = loading ? skeletonRecentGameSummary : recentGamesSummaries
@@ -102,43 +115,49 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
             alignSelf={'center'}
           >
             {achievements?.find(e => e?.appid === rg?.appid) &&
-            Array.isArray(achievements?.find(e => e?.appid === rg?.appid)?.achievements)
+            Array.isArray(
+              achievements?.find(e => e?.appid === rg?.appid)?.achievements
+            )
               ? achievements
                   ?.find(e => e?.appid === rg?.appid)
                   ?.achievements?.map((e, id) => (
                     <Section key={id} mb={0} delay={id * 0.035}>
-                    <Box
-                      height={30}
-                      width={30}
-                      position="relative"
-                    >
-                      <motion.div
-                        exit={{ scale: 0.6, rotate: 360, opacity: '0.6', transitionDuration: id === 0 ? '190ms' : id === 1 ? '176ms' : `${Math.round(600 / (id * 1.75 ))}ms`}}
-                      >
-                        <CustomToolTip achievement={e} />
-                      </motion.div>
-                    </Box>
+                      <Box height={30} width={30} position="relative">
+                        <motion.div
+                          exit={{
+                            scale: 0.3,
+                            rotate: 360,
+                            opacity: '0.4',
+                            transitionDuration:
+                              id === 0
+                                ? '490ms'
+                                : id === 1
+                                ? '466ms'
+                                : `${Math.round(550 / (id * 0.5))}ms`
+                          }}
+                        >
+                          <CustomToolTip achievement={e} />
+                        </motion.div>
+                      </Box>
                     </Section>
                   ))
               : Array.from({ length: 10 }, (_, i) => (
-                
-                <Box key={i} position={'relative'} width={30} height={30}>
-                  <motion.div
-                    initial={{opacity: 0}}
-                    animate={{opacity:colorMode === 'dark' ? 0.04 : 0.1}}
-                    transition={{duration: i / 10}}
-              >
-                  <Box
-                    key={i}
-                    width={30}
-                    pos={'absolute'}
-                    transitionDuration={'500ms'}
-                    height={30}
-                    border={'1px solid gold'}
-                    bgColor={useColorModeValue('gray.500', 'gray.100')}
-                  />
-                  
-                  </motion.div>
+                  <Box key={i} position={'relative'} width={30} height={30}>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: colorMode === 'dark' ? 0.04 : 0.1 }}
+                      transition={{ duration: i / 10 }}
+                    >
+                      <Box
+                        key={i}
+                        width={30}
+                        pos={'absolute'}
+                        transitionDuration={'500ms'}
+                        height={30}
+                        border={'1px solid gold'}
+                        bgColor={useColorModeValue('gray.500', 'gray.100')}
+                      />
+                    </motion.div>
                   </Box>
                 ))}
           </Box>

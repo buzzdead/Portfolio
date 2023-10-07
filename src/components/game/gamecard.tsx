@@ -16,7 +16,7 @@ interface Props {
 export const GameCard = ({ recentGame }: Props) => {
   const { name, img_icon_url, playtime_2weeks, appid } = recentGame;
   return (
-    <>
+    <Section mb={0} delay={0.25}>
       <Box
         display="flex"
         flexDir={"row"}
@@ -24,7 +24,6 @@ export const GameCard = ({ recentGame }: Props) => {
         alignItems={"flex-end"}
         gap={2.5}
       >
-        <Section mb={0} delay={0.1}>
         <Link
           href={`https://store.steampowered.com/app/${appid}`}
           target="_blank"
@@ -37,7 +36,6 @@ export const GameCard = ({ recentGame }: Props) => {
         >
           {name}
         </Link>
-        </Section>
         
       </Box>
       <Box display="flex" flexDir={"row"} mt={1} mb={2} justifyContent={"center"}>
@@ -53,6 +51,6 @@ export const GameCard = ({ recentGame }: Props) => {
           }
         </p>
       </Box>
-    </>
+    </Section>
   );
 };
