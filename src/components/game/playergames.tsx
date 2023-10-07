@@ -125,9 +125,10 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
                       <Box height={30} width={30} position="relative">
                         <motion.div
                           exit={{
-                            opacity: '0.125',
-                            scale: 1.55,
-                            transitionDuration: '200ms'
+                            scale: 1.5,
+                            position: 'absolute',
+                            x: id % 2 === 1 ? -15 : 15,
+                            transitionDuration: '10ms'
                           }}
                         >
                           <CustomToolTip achievement={e} />
