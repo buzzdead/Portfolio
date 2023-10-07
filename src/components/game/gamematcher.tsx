@@ -36,11 +36,12 @@ export const GameMatcher = ({ playerSummary }: Props) => {
   const renderPlayerProfile = (
     type: 'left' | 'right',
     steamId: string,
-    profile: Partial<PlayerSummary>
+    profile: Partial<PlayerSummary>,
+    player = false
   ) => {
     return (
       <Box {...playerCardStyle}>
-        <PlayerCard playerSummary={profile} />
+        <PlayerCard player={player  } playerSummary={profile} />
         <Input
           onChange={e =>
             dispatch({
@@ -92,7 +93,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
         ></Input>
       </Flex>
       <Flex justifyContent={'space-between'}>
-        {renderPlayerProfile('left', state.mySteamId, state.myProfile)}
+        {renderPlayerProfile('left', state.mySteamId, state.myProfile, true)}
         <CommonGames
           commonGames={state.commonGames}
           shouldRender={isLargerThan1000}

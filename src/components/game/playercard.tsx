@@ -2,13 +2,15 @@ import { Card, CardBody, Stack, Heading, Box, Image, useColorModeValue, Link } f
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { PlayerSummary } from "../../types";
 
-const steam_default = require('../../../public/images/default-spiller.jpg')
+const player_default = require('../../../public/images/default-spiller.jpg')
+const steam_default = require('../../../public/images/steam_default.webp')
 
 interface Props {
     playerSummary: Partial<PlayerSummary>
+    player?: boolean
 }
 
-const PlayerCard = ({playerSummary}: Props) => {
+const PlayerCard = ({playerSummary, player = false}: Props) => {
     const {personaName, profileUrl, avatar} = playerSummary
     return (  
         <Card
@@ -40,7 +42,7 @@ const PlayerCard = ({playerSummary}: Props) => {
               </Link>
             </Box>
           </Stack>
-           <Image opacity={profileUrl === "" ? 0.5 : 1} src={profileUrl === "" ? steam_default.default.src : avatar} alt={steam_default.default.src} borderRadius="lg" width={285} pb={5} />
+           <Image src={profileUrl === "" ? player ? player_default.default.src : steam_default.default.src : avatar} alt={player ? player_default.default.src :  steam_default.default.src} borderRadius="lg" width={285} pb={5} />
         </CardBody>
       </Card>
     )

@@ -33,7 +33,7 @@ const Games = () => {
             gap={5}
           >
               <Box maxWidth={200}>
-                <PlayerCard playerSummary={isLoadingPlayerSummary ? defaultProfile : playerSummary} />
+                <PlayerCard playerSummary={isLoadingPlayerSummary ? defaultProfile : playerSummary} player/>
               </Box>
             <Section delay={0.1}>
               I tillegg til å programmere så spiller jeg dataspill når jeg får
