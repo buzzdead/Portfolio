@@ -13,7 +13,6 @@ import NextLink from "next/link";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import Layout from "../components/layout/article";
 import { BioComponent } from "../components/bio";
-import { Scrambler } from "../components/scrambler";
 const profileImage = require("../../public/images/sigmund.jpg");
 import { FaGithub, FaLinkedin, FaMobileAlt } from "react-icons/fa";
 import ContactLink from "../components/contactlink";
@@ -44,15 +43,11 @@ const Page = () => {
           mt={4}
           borderRadius={"2xl"}
           justifyContent={"center"}
-          bg={useColorModeValue("whiteAlpha.200", "whiteAlpha.200")}
-          minHeight={50}
+          minHeight={25}
           mb={4}
           display="flex" // Added display flex
           alignItems="center" // Added align-items center
         >
-          <Scrambler
-            text={"Hei, jeg er en full-stack utvikler bosatt i Bergen."}
-          />
         </Box>
 
         <Box>
