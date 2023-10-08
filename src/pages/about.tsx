@@ -3,7 +3,7 @@ import { Viewer, Worker } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
-import { Box, useColorMode } from "@chakra-ui/react";
+import { Box, background, useColorMode } from "@chakra-ui/react";
 import Layout from "../components/layout/article";
 import { Spinner } from "@chakra-ui/react";
 
@@ -14,28 +14,39 @@ const PDFViewer = () => {
   const [scale, setScale] = useState(1);
   const { colorMode } = useColorMode();
   const [fileUrl, setFileUrl] = useState('./Sigmund_CV.pdf')
+const { toolbarPluginInstance } = defaultLayoutPluginInstance;
+const { zoomPluginInstance } = toolbarPluginInstance;
+const { zoomTo, ZoomIn, ZoomOut } = zoomPluginInstance;
 
-  useEffect(() => {
-    const handleResize = () => {
-      const isMobile = window.innerWidth <= 768
-
-      if (isMobile) {
-        setScale(0.5); // Set the scale for mobile devices
-      } else {
-        setScale(1); // Set the scale for non-mobile devices
+useEffect(() => {
+  const handleWheel = (e: any) => {
+    if (e.ctrlKey && e.srcElement.nodeName !== 'MAIN') {
+      e.preventDefault()
+      if (e.deltaY > 0) {
+        setTimeout(() => zoomTo(scale - 0.1), 50)
+        setScale(scale - 0.1)
+      } else if (e.deltaY < 0) {
+        setTimeout(() => zoomTo(scale + 0.1), 50)
+        setScale(scale + 0.1)
       }
-    };
-    // Initial call
-    handleResize();
+    }
+  };
 
-    // Add event listener for window resize
-    window.addEventListener("resize", handleResize);
+  document.addEventListener("wheel", handleWheel, {passive: false});
+  
+  return () => {
+    document.removeEventListener("wheel", handleWheel);
+  };
+}, [scale]);
 
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+useEffect(() => {
+  const isMobile = window.innerWidth <= 768
+
+  if (isMobile) {
+    setScale(0.5); // Set the scale for mobile devices
+  } 
+  else setScale(1)
+}, [])
 
   const handleLoadSuccess = () => {
     setPdfLoaded(true);
@@ -57,7 +68,7 @@ const PDFViewer = () => {
             defaultScale={scale}
             renderLoader={() => <Spinner />}
             fileUrl={fileUrl}
-            plugins={[defaultLayoutPluginInstance]}
+            plugins={[defaultLayoutPluginInstance, zoomPluginInstance]}
             onDocumentLoad={handleLoadSuccess}
           />
         </Box>
