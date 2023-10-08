@@ -150,7 +150,7 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
                     key={i}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: colorMode === 'dark' ? 0.1 : 0.3 }}
-                    transition={{ duration: 0.9 / (i + 3), delay: i  * 0.025, repeat: Infinity, repeatType: 'mirror', repeatDelay: 0.4}} // Adjust duration and delay
+                    transition={{ duration: 0.9 / (i + 3), delay: i  * 0.025, repeat: Infinity, repeatType: 'loop', repeatDelay: 0.25}} // Adjust duration and delay
                   >
                     <Box
                       width={30}
