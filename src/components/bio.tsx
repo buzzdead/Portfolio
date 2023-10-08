@@ -1,6 +1,5 @@
 import { Box } from '@chakra-ui/react'
 import styled from '@emotion/styled'
-import { Scrambler } from './scrambler'
 
 const BioSection = styled(Box) `
 padding-left: 3.4em;
