@@ -131,9 +131,10 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
                       }
                     },
                     animation: mounted ? 'pulse 0.5s ease' : 'none',
-                    animationIterationCount: 3
+                    animationIterationCount: 2
                   }}
-                  mb={1}             
+                  fontSize={'sm'}
+                  mb={1.25}
                 />
               </Link>
             </ListItem>
