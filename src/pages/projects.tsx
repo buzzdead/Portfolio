@@ -9,7 +9,7 @@ const Projects = () => {
     return (
         <Layout title={"Prosjekter"}>
         <Container maxW={'100%'}>
-            <Heading as="h3" fontSize={20} mb={4}>
+            <Heading mt={2} as="h3" fontSize={20} mb={4}>
                 Prosjekter
             </Heading>
             <SimpleGrid columns={[1, 1, 2]} gap={6}>

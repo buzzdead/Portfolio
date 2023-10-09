@@ -159,11 +159,15 @@ const Page = () => {
             title="@buzzdead"
             href="https://www.github.com/buzzdead"
             icon={FaGithub}
+            iconSize={24}
+            size={16}
           />
           <ContactLink
             title="sigmundvolden"
             href="https://www.linkedin.com/in/sigmundvolden/"
             icon={FaLinkedin}
+            iconSize={24}
+            size={16}
           />
         </Box>
       </Container>

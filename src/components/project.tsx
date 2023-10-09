@@ -16,10 +16,12 @@ interface ImageProps {
 
 export const Title = ({ children }: Props) => {
   return (
-    <Box>
+    <Box mt={1}>
+      <Box my={1}>
       <NextLink href={"/projects"}>
         <Link as="div">Prosjekter</Link>
       </NextLink>
+      </Box>
 
       <span>
         <ChevronRightIcon />

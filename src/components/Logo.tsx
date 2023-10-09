@@ -26,7 +26,6 @@ const LogoBox = styled.span`
 const Logo = () => {
   return (
     (<Link href="/" scroll={false}>
-
       <LogoBox style={{}}>
         <WeightIcon fill={useColorModeValue("#000000", "white")}/>
         <Text

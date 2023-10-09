@@ -1,7 +1,6 @@
 import {
   Container,
   Badge,
-  Link,
   List,
   ListItem,
   Flex,
@@ -12,13 +11,14 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Box
+  Box,
+  Link
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import Paragraph from './paragraph'
 import { Title, Picture, Meta } from './project'
 import Layout from './layout/article'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Section from './section'
 import { useSwipeable } from 'react-swipeable'
 
@@ -49,6 +49,11 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
 
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleMouseDown = (e: any) => {
     setIsDragging(true)
@@ -63,12 +68,14 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
         // You can adjust this threshold for sensitivity
         const newIndex =
           (blowUpImage.id - 1 + project.images.length) % project.images.length
-        newIndex !== project.images.length - 1 && handleBlowUpImage(newIndex, project.images[newIndex].title)
+        newIndex !== project.images.length - 1 &&
+          handleBlowUpImage(newIndex, project.images[newIndex].title)
         setIsDragging(false)
       } else if (deltaX < -50) {
         // You can adjust this threshold for sensitivity
         const newIndex = (blowUpImage.id + 1) % project.images.length
-        newIndex !== 0 && handleBlowUpImage(newIndex, project.images[newIndex].title)
+        newIndex !== 0 &&
+          handleBlowUpImage(newIndex, project.images[newIndex].title)
         setIsDragging(false)
       }
     }
@@ -111,8 +118,23 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
           <List ml={2} my={4}>
             <ListItem>
               <Meta>{project.type}</Meta>
-              <Link href={project.link} target="_blank">
-                {project.title} <ExternalLinkIcon mx="2px" />
+              <Link href={project.link} target='_blank'>
+                {project.title}{' '}
+                <ExternalLinkIcon
+                  css={{
+                    '@keyframes pulse': {
+                      from: {
+                        transform: 'scale(1)'
+                      },
+                      to: {
+                        transform: 'scale(1.25)'
+                      }
+                    },
+                    animation: mounted ? 'pulse 0.5s ease' : 'none',
+                    animationIterationCount: 3
+                  }}
+                  mb={1}             
+                />
               </Link>
             </ListItem>
             <ListItem>
