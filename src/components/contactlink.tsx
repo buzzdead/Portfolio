@@ -63,7 +63,7 @@ const ContactLink = ({ title, href, icon: Icon, size = 20, iconSize=35, color='i
           transform: "scale(1)",
         },
         to: {
-          transform: "scale(1.25)",
+          transform: "scale(1.2)",
         },
       },
       animation: shouldAnimate ? "pulse 0.5s ease" : 'none',

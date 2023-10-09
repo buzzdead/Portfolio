@@ -49,11 +49,6 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
 
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const handleMouseDown = (e: any) => {
     setIsDragging(true)
@@ -121,18 +116,6 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
               <Link href={project.link} target='_blank'>
                 {project.title}{' '}
                 <ExternalLinkIcon
-                  css={{
-                    '@keyframes pulse': {
-                      from: {
-                        transform: 'scale(1)'
-                      },
-                      to: {
-                        transform: 'scale(1.25)'
-                      }
-                    },
-                    animation: mounted ? 'pulse 0.5s ease' : 'none',
-                    animationIterationCount: 2
-                  }}
                   fontSize={'sm'}
                   mb={1.25}
                 />
