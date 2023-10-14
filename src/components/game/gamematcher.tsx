@@ -108,7 +108,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
 
       <Flex justifyContent={'center'}>
         {state.commonGames.length === 0 &&
-          state.opponentProfile.personaName !== '' &&
+          state.opponentProfile.personaName !== 'Unknown' &&
           state.errorState.length === 0 && (
             <Flex flexDir={'column'} justifyContent={'center'} gap={1}>
               <Flex flexDir={'row'} justifyContent={'center'} gap={2}>
