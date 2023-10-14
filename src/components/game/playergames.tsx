@@ -46,7 +46,6 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
           }
         })
       )
-
       return achievements
     },
     {
@@ -122,7 +121,7 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
             flexDir={'row'}
             flexWrap={'wrap'}
             gap={0.5}
-            alignSelf={'center'}
+            alignSelf={'flex-start'}
           >
             {achievements?.find(e => e?.appid === rg?.appid) &&
             Array.isArray(

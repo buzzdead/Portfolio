@@ -31,7 +31,8 @@ export default async function handler(
       },
     });
   }
-  const recentGamesSummaries: RecentGameSummary[] = steam.response.games
+  //Filtering out apps that's irrelevant
+  const recentGamesSummaries: RecentGameSummary[] = steam.response.games.filter((e: any) => e.appid !== 250820 && e.appid !== 719950)
   return res.status(200).json(
     recentGamesSummaries
   );

@@ -41,7 +41,7 @@ export const GameMatcher = ({ playerSummary }: Props) => {
   ) => {
     return (
       <Box {...playerCardStyle}>
-        <PlayerCard player={player  } playerSummary={profile} />
+        <PlayerCard player={player} playerSummary={profile} />
         <Input
           onChange={e =>
             dispatch({

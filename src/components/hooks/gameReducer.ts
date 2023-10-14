@@ -28,7 +28,7 @@ export const initialState = (playerSummary: any, avatar: string): State => {
             avatar: playerSummary.avatar,
         },
         opponentProfile: {
-            personaName: '',
+            personaName: 'Unknown',
             profileUrl: '',
             avatar: avatar,
         },
