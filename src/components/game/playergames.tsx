@@ -34,7 +34,8 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
               return fetcher(
                 `/api/achievements?appid=${game.appid}&key=${apiKey}&steamids=${steamId}`
               )
-            }, {
+            },
+            {
               staleTime: 60000,
               cacheTime: 60000
             }
@@ -122,12 +123,11 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
             gap={0.5}
             alignSelf={'flex-start'}
           >
-            {
-            achievements?.find(e => e?.appid === rg?.appid) &&
-            Array.isArray(
-              achievements?.find(e => e?.appid === rg?.appid)?.achievements
-            )
-              ? achievements
+            {achievements?.find(e => e?.appid === rg?.appid) ? (
+              Array.isArray(
+                achievements?.find(e => e?.appid === rg?.appid)?.achievements
+              ) ? (
+                achievements
                   ?.find(e => e?.appid === rg?.appid)
                   ?.achievements?.map((e, id) => (
                     <Section key={id} mb={0} delay={id * 0.04}>
@@ -144,21 +144,34 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
                       </Box>
                     </Section>
                   ))
-              : achievements?.find(e => e?.appid === rg?.appid)?.achievements?.steam?.personastate === "Offline" ? <Box display={'flex'} justifyContent={'center'} width={318}><Section delay={0.2}>No achievements found</Section></Box> : Array.from({ length: 10 }, (_, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: colorMode === 'dark' ? 0.1 : 0.3 }}
-                    transition={{ duration: 0.3, delay: i  * 0.025, repeat: Infinity, repeatType: 'loop', repeatDelay: 0.5}} // Adjust duration and delay
-                  >
-                    <Box
-                      width={30}
-                      height={30}
-                      border={'1px solid gold'}
-                      bgColor={useColorModeValue('gray.500', 'gray.600')}
-                    />
-                  </motion.div>
-                ))}
+              ) : (
+                <Box display={'flex'} justifyContent={'center'} width={318}>
+                  <Section delay={0.2}>No achievements found</Section>
+                </Box>
+              )
+            ) : (
+              Array.from({ length: 10 }, (_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: colorMode === 'dark' ? 0.1 : 0.3 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: i * 0.025,
+                    repeat: Infinity,
+                    repeatType: 'loop',
+                    repeatDelay: 0.5
+                  }} // Adjust duration and delay
+                >
+                  <Box
+                    width={30}
+                    height={30}
+                    border={'1px solid gold'}
+                    bgColor={useColorModeValue('gray.500', 'gray.600')}
+                  />
+                </motion.div>
+              ))
+            )}
           </Box>
         </Card>
       ))}
