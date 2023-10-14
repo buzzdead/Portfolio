@@ -82,13 +82,19 @@ export default async function handler(
     return res.status(200).json(achievementProgress);
   }
 
-  const tenLastAchievements: Achivement[] = completedAchievements
-    .filter((e: any) => e.unlocktime > 0)
-    .sort(
-      (a: { unlocktime: number }, b: { unlocktime: number }) =>
-        b.unlocktime - a.unlocktime
-    )
-    .slice(0, 10);
+  const unlockedAchievements = completedAchievements.filter((e: any) => e.unlocktime > 0);
 
-  return res.status(200).json(tenLastAchievements);
+// If there are less than 10 unlocked achievements, add locked achievements
+if (unlockedAchievements.length < 10) {
+  const lockedAchievements = completedAchievements.filter((e: any) => e.unlocktime === 0);
+  const unlockedLength = unlockedAchievements.length
+  for(var j = 0; j < 10 - unlockedLength; j++) unlockedAchievements.push(lockedAchievements[j])
+}
+
+const tenLastAchievements = unlockedAchievements
+  .sort((a: { unlocktime: number }, b: { unlocktime: number }) => b.unlocktime - a.unlocktime)
+  .slice(0, 10);
+
+return res.status(200).json(tenLastAchievements);
+
 }

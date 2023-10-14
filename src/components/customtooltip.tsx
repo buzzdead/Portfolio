@@ -29,7 +29,7 @@ export const CustomToolTip = ({ achievement }: Props) => {
             }}
           >
             <p>{displayName}</p>{" "}
-            <p>Unlocked: {new Date(unlocktime * 1000).toDateString()}</p>
+            <p>{unlocktime === 0 ? 'Not yet unlocked' : "Unlocked: " + new Date(unlocktime * 1000).toDateString()}</p>
             <p>{description}</p>
           </div>
         </Box>
