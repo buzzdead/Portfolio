@@ -93,7 +93,6 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
   ]
 
   const renderRg = loading ? skeletonRecentGameSummary : recentGamesSummaries
-
   return (
     <Box
       display="flex"
@@ -123,7 +122,8 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
             gap={0.5}
             alignSelf={'flex-start'}
           >
-            {achievements?.find(e => e?.appid === rg?.appid) &&
+            {
+            achievements?.find(e => e?.appid === rg?.appid) &&
             Array.isArray(
               achievements?.find(e => e?.appid === rg?.appid)?.achievements
             )
@@ -144,7 +144,7 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
                       </Box>
                     </Section>
                   ))
-              : Array.from({ length: 10 }, (_, i) => (
+              : achievements?.find(e => e?.appid === rg?.appid)?.achievements?.steam?.personastate === "Offline" ? <Box display={'flex'} justifyContent={'center'} width={318}><Section delay={0.2}>No achievements found</Section></Box> : Array.from({ length: 10 }, (_, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0 }}
