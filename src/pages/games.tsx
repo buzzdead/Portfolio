@@ -47,7 +47,7 @@ const Games = () => {
               spillhistorikk og se om det er noen spill vi begge har spilt.
               </Paragraph>
             </Section>
-                  <Heading variant='section-title' fontFamily="Fira Sans Condensed" display={'flex'} justifyContent={'center'} mb={10} fontSize={22}>
+                  <Heading variant='section-title' fontFamily="Fira Sans Condensed" display={'flex'} justifyContent={'center'} mb={7.5} fontSize={22}>
                     Nylige spilte spill
                   </Heading>
               <Box
@@ -61,10 +61,9 @@ const Games = () => {
               </Box>
           </Box>
         </Container>
-        <Heading variant='section-title' display={'flex'} justifyContent={'center'}>
+        <Heading mt={10} variant='section-title' display={'flex'} justifyContent={'center'}>
                   Spill matcher
         </Heading>
-        
         <GameMatcher playerSummary={isErrorPlayerSummary || isLoadingPlayerSummary ? defaultProfile : playerSummary}/>
       </Layout>
     )
