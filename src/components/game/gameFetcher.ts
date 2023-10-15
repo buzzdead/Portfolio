@@ -30,7 +30,7 @@ const fetchProfile = async ({dispatch, errorType, steamId, profileType, apiKey}:
             profile: defaultProfile,
             errorStates: {
               type: errorType,
-              message: 'problem with steamid og api key'
+              message: 'problem with steamid or api key'
             }
           }
         })
@@ -48,7 +48,7 @@ const fetchProfile = async ({dispatch, errorType, steamId, profileType, apiKey}:
           profile: defaultProfile,
           errorStates: {
             type: 'invalid',
-            message: 'problem with steamid og api key'
+            message: 'problem with steamid or api key'
           }
         }
       })
