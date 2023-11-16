@@ -2,10 +2,10 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { text } = req.body;
+    const { text, voice_id } = req.body;
 
     const API_KEY = process.env.ELEVEN_API_KEY;
-    const VOICE_ID = '70rymsvcj1TIa1tON70Z';
+    const VOICE_ID = voice_id || 'W9Sme726LTRRST7a9TqU';
 
     try {
         const options = {

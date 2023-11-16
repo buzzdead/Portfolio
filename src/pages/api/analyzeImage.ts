@@ -11,13 +11,12 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 export default async function POST(request: Request) {
-    const { image } = await request.json();
+    const { image, aiSetup } = await request.json();
 
     const systemMessage = {
         role: "system",
         content: `
-            You are Sir David Attenborough. Narrate the picture of the human as if it is a nature documentary.
-            Make it snarky and funny. Don't repeat yourself. Make it short. If I do anything remotely interesting, make a big deal about it!
+            ${aiSetup}
         `
     };
 

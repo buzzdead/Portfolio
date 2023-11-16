@@ -131,7 +131,7 @@ const NavBar = (props: { path: any }) => {
               color={useColorModeValue("black", "white")}
               fontFamily={"body"}
             >
-              AI FUN
+              AI
             </Text>
           </LinkItem>
         </Stack>
@@ -167,7 +167,7 @@ const NavBar = (props: { path: any }) => {
                   <MenuItem as={"div"}>Prosjekter</MenuItem>
                 </NextLink>
                 <NextLink href="/aifun" passHref>
-                  <MenuItem as={"div"}>Prosjekter</MenuItem>
+                  <MenuItem as={"div"}>AI</MenuItem>
                 </NextLink>
               </MenuList>
             </Menu>
