@@ -152,6 +152,9 @@ const AIFun: React.FC = () => {
         {voice.voiceType} vil våke over webcamet ditt om
         noen få sekunder, vent til indikasjonen dukker opp.
       </Paragraph>
+      <Paragraph>
+        "Strike a pose" f.eks tommelen opp, eller vis et objekt f.eks en fjernkontroll. Ingenting blir lagret.
+      </Paragraph>
       <RadioGroup defaultValue="Attenborough" onChange={handleSetVoice}>
         <Stack spacing={5} direction="row">
           {voices.map((v, id) => (
