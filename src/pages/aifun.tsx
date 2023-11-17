@@ -1,52 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import WebcamCapture from '../components/webcam'
-import { Flex, Heading, Radio, RadioGroup, Stack } from '@chakra-ui/react'
+import {
+  Flex,
+  Heading,
+  Radio,
+  RadioGroup,
+  Stack,
+  Tooltip,
+  useColorModeValue
+} from '@chakra-ui/react'
 import Paragraph from '../components/paragraph'
 import { FaRegThumbsUp } from 'react-icons/fa6'
 import { TbDeviceRemote } from 'react-icons/tb'
-
-type VoiceTypes = 'Attenborough' | 'MovieTrailerGuy'
-
-const voices: { voiceType: VoiceTypes; voice: string; aiSetup: string }[] = [
-  {
-    voiceType: 'Attenborough',
-    voice: '70rymsvcj1TIa1tON70Z',
-    aiSetup:
-      'You are Sir David Attenborough. Narrate the picture of the human as if it is a nature documentary.' +
-      "Make it snarky and funny. Don't repeat yourself. Make it short. If I do anything remotely interesting, make a big deal about it!"
-  },
-  {
-    voiceType: 'MovieTrailerGuy',
-    voice: 'W9Sme726LTRRST7a9TqU',
-    aiSetup:
-      'You are Don LaFontaine, the Movie Trailer Guy. Make a comical yet serious narration about the person in the image, make it dramatic and full of action. This is the coolest guy or girl on earth.' +
-      'Talk in a dramatic way, much like the movie trailer guy. A little bit up and a little bit down in the pitch of the voice.'
-  }
-]
+import { VoiceTypes, voices } from '../lib/voices'
 
 const AIFun: React.FC = () => {
   const [imageSrc, setImageSrc] = useState<string | null>(null)
   const [text, setText] = useState('')
-  const [countdown, setCountdown] = useState<number | null>(null);
+  const [countdown, setCountdown] = useState<number | null>(null)
   const [voice, setVoice] = useState<{
     voiceType: VoiceTypes
     voice: string
     aiSetup: string
-  }>({
-    voiceType: 'Attenborough',
-    voice: '70rymsvcj1TIa1tON70Z',
-    aiSetup:
-      'You are Sir David Attenborough. Narrate the picture of the human as if it is a nature documentary.' +
-      "Make it snarky and funny. Don't repeat yourself. Make it short. If I do anything remotely interesting, make a big deal about it!"
-  })
-  const [playingSound, setPlayingSound] = useState(false)
+  }>(voices[0])
+  const [playingSound, setPlayingSound] = useState(true)
 
   const handleImageCapture = (image: string | null) => {
     if (playingSound) return
     handleAudioStart()
     setImageSrc(image)
     if (image) {
-      setCountdown(5);
+      setCountdown(5)
       setTimeout(() => sendImageToOpenAI(image), 5000)
     } else {
       handleAudioEnd()
@@ -120,6 +104,7 @@ const AIFun: React.FC = () => {
       return response // Return the response object for streaming
     } catch (error) {
       console.error('Error converting text to speech:', error)
+      handleAudioEnd()
     }
   }
 
@@ -129,27 +114,26 @@ const AIFun: React.FC = () => {
   }, [text])
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: NodeJS.Timeout | null = null
     if (countdown !== null && countdown > 0) {
       interval = setInterval(() => {
-        setCountdown(currentCountdown => currentCountdown! - 1);
-      }, 1000);
+        setCountdown(currentCountdown => currentCountdown! - 1)
+      }, 1000)
     } else if (interval) {
-      clearInterval(interval);
+      clearInterval(interval)
     }
 
     // Clear interval on cleanup
     return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [countdown]);
-
+      if (interval) clearInterval(interval)
+    }
+  }, [countdown])
 
   const sendImageToOpenAI = async (base64Image: string) => {
     if (base64Image === '') return
     let finalString = ''
     try {
-      const response = await fetch('/api/analyzeImage', {
+      await fetch('/api/analyzeImage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -171,6 +155,7 @@ const AIFun: React.FC = () => {
       })
     } catch (error) {
       console.error('Error sending image to OpenAI:', error)
+      handleAudioEnd()
     }
     setText(finalString)
   }
@@ -187,7 +172,7 @@ const AIFun: React.FC = () => {
       <RadioGroup defaultValue="Attenborough" onChange={handleSetVoice}>
         <Stack spacing={5} direction="row">
           {voices.map((v, id) => (
-            <Radio colorScheme="green" value={v.voiceType}>
+            <Radio key={id} colorScheme="green" value={v.voiceType}>
               {v.voiceType}
             </Radio>
           ))}
@@ -195,17 +180,31 @@ const AIFun: React.FC = () => {
       </RadioGroup>
       <Flex flexDir="column" alignItems={'center'} gap={2}>
         <Heading>
-        {playingSound ? 
-          `${voice.voiceType} ser på deg.. ${countdown || ''}` : 
-          'Ready, steady, go...'}
+          {playingSound
+            ? `${voice.voiceType} ser på deg.. ${countdown || ''}`
+            : 'Ready, steady, go...'}
         </Heading>
         <Flex alignItems={'center'} gap={2}>
           <Paragraph style={{ verticalAlign: 'center' }}>
             "Strike a pose" f.eks
           </Paragraph>
-          <FaRegThumbsUp color="green" size={30} />
+          <Tooltip label={'Thumbs up'}>
+            <span>
+              <FaRegThumbsUp
+                color={useColorModeValue('blue', 'green')}
+                size={20}
+              />
+            </span>
+          </Tooltip>
           <Paragraph>Eller vis et objekt f.eks</Paragraph>
-          <TbDeviceRemote color="green" size={30} />
+          <Tooltip label="Remote control">
+            <span>
+              <TbDeviceRemote
+                color={useColorModeValue('blue', 'green')}
+                size={20}
+              />
+            </span>
+          </Tooltip>
         </Flex>
       </Flex>
       <WebcamCapture
@@ -217,3 +216,5 @@ const AIFun: React.FC = () => {
 }
 
 export default AIFun
+
+export { getServerSideProps } from '../components/chakra'
