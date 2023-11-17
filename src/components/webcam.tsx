@@ -1,14 +1,15 @@
-import { Button, Flex } from '@chakra-ui/react'
+import { Button, Flex, Spinner } from '@chakra-ui/react'
 import React, { useRef, useCallback } from 'react'
 import Webcam from 'react-webcam'
 const image = require('../../public/camerabutton.jpg')
 
 interface Props {
   onCapture: (image: string | null) => void
+  isLoading: boolean
   shouldCapture: boolean
 }
 
-const WebcamCapture: React.FC<Props> = ({ onCapture, shouldCapture }) => {
+const WebcamCapture: React.FC<Props> = ({ onCapture, shouldCapture, isLoading = false }) => {
   const webcamRef = useRef<Webcam>(null)
 
   const capture = useCallback(() => {
@@ -23,7 +24,7 @@ const WebcamCapture: React.FC<Props> = ({ onCapture, shouldCapture }) => {
     height: '450px',
     border: '3px solid #ccc',
     borderRadius: '8px',
-    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)'
+    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)',
   }
 
   return (
@@ -34,7 +35,10 @@ const WebcamCapture: React.FC<Props> = ({ onCapture, shouldCapture }) => {
           disabled={!shouldCapture}
           onClick={capture}
         >
+          {isLoading ? <Spinner />
+          :
           <img src={image.default.src} width={75} />
+          }
         </Button>
       </Flex>
       <Webcam

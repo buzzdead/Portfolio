@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools';
 import React from "react";
 
+
 interface Props {
   Component: any;
   pageProps: any;
