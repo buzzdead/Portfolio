@@ -6,6 +6,7 @@ import Chakra from "../components/chakra";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools';
 import React from "react";
+import '../app.css'
 
 
 interface Props {

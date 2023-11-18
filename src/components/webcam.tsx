@@ -1,5 +1,5 @@
 import { Button, Flex, Spinner } from '@chakra-ui/react'
-import React, { useRef, useCallback } from 'react'
+import React, { useRef, useCallback, useState } from 'react'
 import Webcam from 'react-webcam'
 const image = require('../../public/camerabutton.jpg')
 
@@ -7,17 +7,23 @@ interface Props {
   onCapture: (image: string | null) => void
   isLoading: boolean
   shouldCapture: boolean
+  captureStart: () => void
 }
 
-const WebcamCapture: React.FC<Props> = ({ onCapture, shouldCapture, isLoading = false }) => {
+const WebcamCapture: React.FC<Props> = ({ onCapture, captureStart, shouldCapture, isLoading = false }) => {
   const webcamRef = useRef<Webcam>(null)
+  const [pictureUrl, setPictureUrl] = useState('')
 
-  const capture = useCallback(() => {
+  const capture = () =>  {
     if (shouldCapture) {
-      const image = webcamRef.current?.getScreenshot()
+      captureStart()
+      setTimeout(() => {
+        const image = webcamRef.current?.getScreenshot()
       onCapture(image || null)
+      setPictureUrl(image || "")
+      }, 5000)
     }
-  }, [webcamRef, shouldCapture, onCapture])
+  }
 
   const webcamStyle = {
     width: '100%',
@@ -41,12 +47,17 @@ const WebcamCapture: React.FC<Props> = ({ onCapture, shouldCapture, isLoading = 
           }
         </Button>
       </Flex>
+      {shouldCapture ? 
       <Webcam
-        className="webcamStyle"
-        style={{ ...webcamStyle, objectFit: 'cover' }}
-        ref={webcamRef}
-        screenshotFormat="image/jpeg"
-      />
+      style={{ width: '100%', height: '450px', borderRadius: '8px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)', objectFit: 'cover' }}
+      ref={webcamRef}
+      screenshotFormat="image/jpeg"
+    /> :
+    <div className="block">
+      <img src={pictureUrl} />
+      </div>
+      }
+      
     </Flex>
   )
 }

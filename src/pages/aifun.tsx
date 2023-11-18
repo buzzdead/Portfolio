@@ -25,14 +25,19 @@ const AIFun: React.FC = () => {
   const { countdown, startCountdown } = useCountDown()
   const { sendImage, error, isLoading } = useOpenAI()
 
-  const handleImageCapture = (image: string | null) => {
+  const handleCaptureStart = () => {
     if (playingSound) return
-    handleAudioStart()
+    
+    startCountdown()
+  }
+
+  const handleImageCapture = async (image: string | null) => {
+    if (playingSound) return
     if (image) {
-      startCountdown()
-      setTimeout(async () => sendImage(image, voice.aiSetup).then(res => {
+      handleAudioStart()
+      await sendImage(image, voice.aiSetup).then(res => {
         if(res) setText(res)
-      }), 5000)
+      })
     } else {
       handleAudioEnd()
     }
@@ -57,14 +62,16 @@ const AIFun: React.FC = () => {
     }
   }
 
+  const cd = countdown ? countdown : ''
+
   return (
     <Flex align={'center'} flexDir={'column'} gap={10} mt={10}>
       <VoiceSelection voices={voices} currentVoice={voice} onVoiceChange={handleSetVoice} />
       <Flex flexDir="column" alignItems={'center'} gap={2}>
         <Heading>
           {playingSound
-            ? `${voice.voiceType} ser på deg.. ${ countdown || ''}`
-            : 'Ready, steady, go...'}
+            ? `${voice.voiceType} ser på deg..`
+            : 'Ready, steady, go...' + cd }
         </Heading>
         <Flex alignItems={'center'} gap={2}>
           <Paragraph style={{ verticalAlign: 'center' }}>
@@ -93,6 +100,7 @@ const AIFun: React.FC = () => {
       isLoading={isLoading}
         shouldCapture={!playingSound}
         onCapture={(image: string | null) => handleImageCapture(image)}
+        captureStart={handleCaptureStart}
       />
     </Flex>
   )
