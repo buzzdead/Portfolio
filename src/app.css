@@ -5,7 +5,7 @@ body {
   }
   
   .block {
-    width: 100%;
+    width: 600px;
     height: 450px;
     position: relative;
     background: linear-gradient(0deg, #000, #272727);

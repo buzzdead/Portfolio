@@ -4,11 +4,13 @@ import { CgProfile } from "react-icons/cg";
 import { MdAddLocation } from "react-icons/md";
 import { LiaIndustrySolid } from "react-icons/lia";
 import { Flex } from '@chakra-ui/react';
+import { HiMagnifyingGlassPlus } from "react-icons/hi2";
 
 type InputValues = {
     name: string;
     location: string;
     occupation: string;
+    lookAt: string
   };
 
 interface Props {
@@ -40,26 +42,34 @@ const InputManager = ({values, setValues}: Props) => {
   return (
     <Flex flexDir={'row'} gap={5}>
       <Inputs
-        icon={<CgProfile size={20} />}
+        icon={<CgProfile color='white' size={20} />}
         label={'Enter name'}
         isActive={activeInput === 'name'}
         onClick={() => handleInputClick('name')}
         handleBlur={(value: string) => handleInputBlur(value)}
       />
       <Inputs
-        icon={<MdAddLocation size={20} />}
+        icon={<MdAddLocation color='white' size={20} />}
         label={'Enter location'}
         isActive={activeInput === 'location'}
         onClick={() => handleInputClick('location')}
         handleBlur={(value: string) => handleInputBlur(value)}
       />
       <Inputs
-        icon={<LiaIndustrySolid size={20} />}
+        icon={<LiaIndustrySolid color='white' size={20} />}
         label={'Enter occupation'}
         isActive={activeInput === 'occupation'}
         onClick={() => handleInputClick('occupation')}
         handleBlur={(value: string) => handleInputBlur(value)}
       />
+      <Inputs
+        icon={<HiMagnifyingGlassPlus color='white' size={20} />}
+        label={'Look closely at'}
+        isActive={activeInput === 'lookAt'}
+        onClick={() => handleInputClick('lookAt')}
+        handleBlur={(value: string) => handleInputBlur(value)}
+      />
+      
     </Flex>
   );
 };

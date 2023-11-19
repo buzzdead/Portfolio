@@ -11,7 +11,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 export default async function POST(request: Request) {
-    const { image, aiSetup } = await request.json();
+    const { image, aiSetup, additional } = await request.json();
 
     const systemMessage = {
         role: "system",
@@ -23,7 +23,7 @@ export default async function POST(request: Request) {
     const userMessage = {
         role: "user",
         content: [
-            { type: "text", text: "What's in this image?" },
+            { type: "text", text: "What's in this image?" + additional },
             {
                 type: "image_url",
                 image_url: image

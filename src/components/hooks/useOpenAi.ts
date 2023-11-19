@@ -7,7 +7,7 @@ export const useOpenAI = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
 
-    const sendImageToOpenAI = async (base64Image: string, aiSetup: string) => {
+    const sendImageToOpenAI = async (base64Image: string, aiSetup: string, additional: string) => {
         if (base64Image === '') return
         let finalString = ''
         try {
@@ -18,7 +18,8 @@ export const useOpenAI = () => {
             },
             body: JSON.stringify({
               image: base64Image,
-              aiSetup: aiSetup
+              aiSetup: aiSetup,
+              additional: additional
             })
           }).then(async (res: any) => {
             const reader = res.body?.getReader()
@@ -37,11 +38,11 @@ export const useOpenAI = () => {
         return finalString
       }
   
-    const sendImage = async (base64Image: string, aiSetup: string) => {
+    const sendImage = async (base64Image: string, aiSetup: string, additional: string) => {
       setIsLoading(true);
       setError(null);
       try {
-        const finalString = await sendImageToOpenAI(base64Image, aiSetup);
+        const finalString = await sendImageToOpenAI(base64Image, aiSetup, additional);
         return finalString;
     } catch (error) {
         setError(error as Error); // Set the error state

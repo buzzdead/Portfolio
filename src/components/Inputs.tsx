@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react';
-import { Input, Button, Stack } from '@chakra-ui/react';
+import { Input, Button, Stack, useColorModeValue } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 
 const AnimatedInput = motion(Input);
@@ -34,6 +34,7 @@ const Inputs = ({ icon, label, isActive, onClick, handleBlur }: Props) => {
           borderRadius='full'
           size='md'
           p={2}
+          backgroundColor={'teal'}
           initial={{ scale: 0.5 }}
           animate={{ scale: 1 }}
           exit={{ scale: 0.5 }}
@@ -44,6 +45,8 @@ const Inputs = ({ icon, label, isActive, onClick, handleBlur }: Props) => {
       {isActive && (
         <AnimatedInput
           placeholder={label}
+          focusBorderColor={'teal'}
+          style={{borderColor: 'teal'}}
           onBlur={() => handleBlur(value)}
           initial={{ width: '50px', opacity: 0 }}
           animate={{ width: '200px', opacity: 1 }}

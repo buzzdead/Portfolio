@@ -2,13 +2,15 @@
   import WebcamCapture from '../components/webcam'
   import {
     Flex,
-    Heading} from '@chakra-ui/react'
+    Heading,
+    useColorModeValue} from '@chakra-ui/react'
   import { VoiceTypes, voices } from '../lib/voices'
   import { useAudio } from '../components/hooks/useAudio'
   import { useCountDown } from '../components/hooks/useCountDown'
   import { VoiceSelection } from '../components/voiceselection'
   import { useOpenAI } from '../components/hooks/useOpenAi'
 import InputManager from '../components/InputManager'
+import Paragraph from '../components/paragraph'
 
 
   type Voice = {voiceType: VoiceTypes, voice: string, aiSetup: string}
@@ -19,7 +21,7 @@ import InputManager from '../components/InputManager'
     const [voice, setVoice] = useState<Voice>(voices[0])
     const { countdown, startCountdown } = useCountDown()
     const { sendImage, error, isLoading } = useOpenAI()
-    const [values, setValues] = useState({name: '', location: '', occupation: ''})
+    const [values, setValues] = useState({name: '', location: '', occupation: '', lookAt: ''})
 
     const handleCaptureStart = () => {
       if (playingSound) return
@@ -40,7 +42,8 @@ import InputManager from '../components/InputManager'
       if (image) {
         handleAudioStart()
         const newAiSetup = updateAISetup()
-        await sendImage(image, newAiSetup).then(res => {
+        const lookCloselyAT = values.lookAt !== '' ? `If present, look closely at ${values.lookAt}` : ''
+        await sendImage(image, newAiSetup, lookCloselyAT).then(res => {
           if(res) setText(res)
         })
       } else {
@@ -79,7 +82,8 @@ import InputManager from '../components/InputManager'
               ? `${voice.voiceType} ser på deg..`
               : 'AI Selfie' + cd }
           </Heading>
-          <Flex gap={5} flexDir={'row'}>
+          <Flex gap={1} flexDir={'column'}>
+            <Paragraph style={{textAlign: 'center', fontSize: 14, color: useColorModeValue('black', 'teal')}}>Ekstra informasjon (Valgfritt)</Paragraph>
           <InputManager values={values} setValues={setValues} />
           </Flex>
           <VoiceSelection voices={voices} currentVoice={voice} onVoiceChange={handleSetVoice} />
