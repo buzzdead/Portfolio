@@ -125,7 +125,7 @@ const WebcamCapture: React.FC<Props> = ({
         />
       ) : (
         <div className="block">
-          <img src={pictureUrl} />
+          <img src={pictureUrl} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
         </div>
       )}
       {errorMessage && (

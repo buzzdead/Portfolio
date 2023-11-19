@@ -1,6 +1,8 @@
 import React, { ReactElement, useState } from 'react';
 import { Input, Button, Stack, useColorModeValue } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+
 
 const AnimatedInput = motion(Input);
 const AnimatedButton = motion(Button);
@@ -32,6 +34,7 @@ const Inputs = ({ icon, label, isActive, onClick, handleBlur }: Props) => {
         <AnimatedButton
           onClick={onClick} // Call onClick from props
           borderRadius='full'
+          _hover={{opacity: 0.5}}
           size='md'
           p={2}
           backgroundColor={'teal'}
@@ -42,6 +45,7 @@ const Inputs = ({ icon, label, isActive, onClick, handleBlur }: Props) => {
           {icon}
         </AnimatedButton>
       )}
+      <AnimatePresence>
       {isActive && (
         <AnimatedInput
           placeholder={label}
@@ -49,14 +53,15 @@ const Inputs = ({ icon, label, isActive, onClick, handleBlur }: Props) => {
           style={{borderColor: 'teal'}}
           onBlur={() => handleBlur(value)}
           initial={{ width: '50px', opacity: 0 }}
-          animate={{ width: '200px', opacity: 1 }}
-          exit={{ width: '50px', opacity: 0 }}
+          animate={{ width: '200px', opacity: 1, }}
+          exit={{ width: '50px', opacity: 0, position: 'absolute', border: '0px solid transparent', fontSize: 0}}
           value={value}
           onChange={handleOnChange}
           onKeyDown={handleKeyDown}
           autoFocus
         />
       )}
+      </AnimatePresence>
     </Stack>
   );
 };
