@@ -72,11 +72,14 @@ const WebcamCapture: React.FC<Props> = ({
       <Flex
         flexDir={'row'}
         justify={hasMultipleCameras ? 'space-between' : 'flex-end'}
-        pl={2}
+        pl={0}
       >
         {hasMultipleCameras && (
           <Button
-            padding={2}
+            padding={1}
+            paddingLeft={2}
+            paddingTop={4}
+            _hover={{bgColor: 'transparent'}}
             backgroundColor={'transparent'}
             onClick={() => setUseBackCamera(!useBackCamera)}
           >
@@ -86,9 +89,12 @@ const WebcamCapture: React.FC<Props> = ({
         <Button
           isDisabled={!shouldCapture}
           disabled={!shouldCapture}
+          backgroundColor={'transparent'}
           onClick={capture}
+          _hover={{bgColor: 'transparent', transform: 'translateY(2px)',
+          transition: 'transform 0.3s ease-in-out'}}
         >
-          {isLoading ? <Spinner /> : <img src={image.default.src} width={75} />}
+          {isLoading ? <Spinner /> : <img src={image.default.src} width={65} style={{paddingTop: 5}} />}
         </Button>
       </Flex>
       {shouldCapture ? (
@@ -98,6 +104,7 @@ const WebcamCapture: React.FC<Props> = ({
           style={{
             width: '100%',
             height: '450px',
+            border: '2px solid grey',
             borderRadius: '8px',
             boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)',
             objectFit: 'cover'

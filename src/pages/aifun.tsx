@@ -65,36 +65,16 @@ const AIFun: React.FC = () => {
   const cd = countdown ? countdown : ''
 
   return (
-    <Flex align={'center'} flexDir={'column'} gap={10} mt={10}>
-      <VoiceSelection voices={voices} currentVoice={voice} onVoiceChange={handleSetVoice} />
+    <Flex align={'center'} flexDir={'column'} gap={2} mt={10}>
+     
       <Flex flexDir="column" alignItems={'center'} gap={2}>
         <Heading>
           {playingSound
             ? `${voice.voiceType} ser på deg..`
-            : 'Ready, steady, go...' + cd }
+            : 'AI Selfie' + cd }
         </Heading>
-        <Flex alignItems={'center'} gap={2}>
-          <Paragraph style={{ verticalAlign: 'center' }}>
-            "Strike a pose" f.eks
-          </Paragraph>
-          <Tooltip label={'Thumbs up'}>
-            <span>
-              <FaRegThumbsUp
-                color={useColorModeValue('blue', 'green')}
-                size={20}
-              />
-            </span>
-          </Tooltip>
-          <Paragraph>Eller vis et objekt f.eks</Paragraph>
-          <Tooltip label="Remote control">
-            <span>
-              <TbDeviceRemote
-                color={useColorModeValue('blue', 'green')}
-                size={20}
-              />
-            </span>
-          </Tooltip>
-        </Flex>
+        <VoiceSelection voices={voices} currentVoice={voice} onVoiceChange={handleSetVoice} />
+      
       </Flex>
       <WebcamCapture
       isLoading={isLoading}
