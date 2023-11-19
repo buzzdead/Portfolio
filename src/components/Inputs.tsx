@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { MutableRefObject, ReactElement, useEffect, useState } from 'react';
 import { Input, Button, Stack, useColorModeValue } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
@@ -13,10 +13,14 @@ interface Props {
     isActive: boolean;
     onClick: () => void;
     handleBlur: (value: string) => void
+    valueRef: MutableRefObject<string>
 }
 
-const Inputs = ({ icon, label, isActive, onClick, handleBlur }: Props) => {
+const Inputs = ({ icon, label, isActive, onClick, handleBlur, valueRef }: Props) => {
   const [value, setValue] = useState('');
+  useEffect(() => {
+     valueRef.current = value
+  }, [value])
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -52,9 +56,9 @@ const Inputs = ({ icon, label, isActive, onClick, handleBlur }: Props) => {
           focusBorderColor={'teal'}
           style={{borderColor: 'teal'}}
           onBlur={() => handleBlur(value)}
-          initial={{ width: '50px', opacity: 0, backgroundColor: 'transparent' }}
+          initial={{ width: '50px', opacity: 1, backgroundColor: 'transparent' }}
           animate={{ width: '200px', opacity: 1, }}
-          exit={{ width: '50px',  position: 'absolute', scale: 0, backgroundColor: 'teal', border: '0px solid transparent', borderRadius: '100%', fontSize: 0, transition: {duration: 0.15}}}
+          exit={{ width: '5px',  position: 'absolute', scale: 0, backgroundColor: 'teal', border: '0px solid transparent', borderRadius: '100%', transition: {duration: 0.15}}}
           value={value}
           onChange={handleOnChange}
           onKeyDown={handleKeyDown}

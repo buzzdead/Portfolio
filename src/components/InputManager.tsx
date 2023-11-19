@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Inputs from './Inputs';
 import { CgProfile } from "react-icons/cg";
 import { MdAddLocation } from "react-icons/md";
@@ -20,6 +20,10 @@ interface Props {
 
 const InputManager = ({values, setValues}: Props) => {
   const [activeInput, setActiveInput] = useState('');
+  const valueRef = useRef('')
+  const valueRef2 = useRef('')
+  const valueRef3 = useRef('')
+  const valueRef4 = useRef('')
   let blurTimeoutId: NodeJS.Timeout;
 
   const handleInputClick = (inputName: string) => {
@@ -29,16 +33,12 @@ const InputManager = ({values, setValues}: Props) => {
   };
 
   const handleInputBlur = (value: string) => {
-    // Set a timeout to delay the closing of the input
-    setTimeout(() => {
-        setValues({...values, [activeInput as keyof InputValues]: value})
-    }, 200)
     blurTimeoutId = setTimeout(() => {
-      
       setActiveInput('');
-    }, 100); // Adjust the delay as needed
+      setValues({name: valueRef.current, location: valueRef2.current, occupation: valueRef3.current, lookAt: valueRef4.current})
+    }, 100); 
   };
-
+  
   return (
     <Flex flexDir={'row'} gap={5}>
       <Inputs
@@ -47,6 +47,7 @@ const InputManager = ({values, setValues}: Props) => {
         isActive={activeInput === 'name'}
         onClick={() => handleInputClick('name')}
         handleBlur={(value: string) => handleInputBlur(value)}
+        valueRef={valueRef}
       />
       <Inputs
         icon={<MdAddLocation color='white' size={20} />}
@@ -54,6 +55,7 @@ const InputManager = ({values, setValues}: Props) => {
         isActive={activeInput === 'location'}
         onClick={() => handleInputClick('location')}
         handleBlur={(value: string) => handleInputBlur(value)}
+        valueRef={valueRef2}
       />
       <Inputs
         icon={<LiaIndustrySolid color='white' size={20} />}
@@ -61,6 +63,7 @@ const InputManager = ({values, setValues}: Props) => {
         isActive={activeInput === 'occupation'}
         onClick={() => handleInputClick('occupation')}
         handleBlur={(value: string) => handleInputBlur(value)}
+        valueRef={valueRef3}
       />
       <Inputs
         icon={<HiMagnifyingGlassPlus color='white' size={20} />}
@@ -68,6 +71,7 @@ const InputManager = ({values, setValues}: Props) => {
         isActive={activeInput === 'lookAt'}
         onClick={() => handleInputClick('lookAt')}
         handleBlur={(value: string) => handleInputBlur(value)}
+        valueRef={valueRef4}
       />
       
     </Flex>
