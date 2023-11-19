@@ -58,7 +58,7 @@ const Inputs = ({ icon, label, isActive, onClick, handleBlur, valueRef }: Props)
           onBlur={() => handleBlur(value)}
           initial={{ width: '50px', opacity: 1, backgroundColor: 'transparent' }}
           animate={{ width: '200px', opacity: 1, }}
-          exit={{ width: '5px',  position: 'absolute', scale: 0, backgroundColor: 'teal', border: '0px solid transparent', borderRadius: '100%', transition: {duration: 0.15}}}
+          exit={{ width: '5px',  position: 'absolute', scale: 0, backgroundColor: 'teal', borderRadius: '100%', opacity: 0.5, transition: {duration: 0.20}}}
           value={value}
           onChange={handleOnChange}
           onKeyDown={handleKeyDown}

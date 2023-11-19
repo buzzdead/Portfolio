@@ -35,10 +35,10 @@ const InputManager = ({values, setValues}: Props) => {
   const handleInputBlur = (value: string) => {
     blurTimeoutId = setTimeout(() => {
       setActiveInput('');
-      setValues({name: valueRef.current, location: valueRef2.current, occupation: valueRef3.current, lookAt: valueRef4.current})
+      setTimeout(() => setValues({name: valueRef.current, location: valueRef2.current, occupation: valueRef3.current, lookAt: valueRef4.current}), 150)
     }, 100); 
   };
-  
+  console.log(values)
   return (
     <Flex flexDir={'row'} gap={5}>
       <Inputs
