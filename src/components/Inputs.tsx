@@ -42,9 +42,6 @@ const Inputs = ({ icon, label, isActive, onClick, handleBlur, valueRef }: Props)
           size='md'
           p={2}
           backgroundColor={'teal'}
-          initial={{ scale: 0.5 }}
-          animate={{ scale: 1 }}
-          exit={{ scale: 0.5 }}
         >
           {icon}
         </AnimatedButton>
@@ -56,9 +53,9 @@ const Inputs = ({ icon, label, isActive, onClick, handleBlur, valueRef }: Props)
           focusBorderColor={'teal'}
           style={{borderColor: 'teal'}}
           onBlur={() => handleBlur(value)}
-          initial={{ width: '50px', opacity: 1, backgroundColor: 'transparent' }}
+          initial={{ width: '50px', opacity: 1, }}
           animate={{ width: '200px', opacity: 1, }}
-          exit={{ width: '5px',  position: 'absolute', scale: 0, backgroundColor: 'teal', borderRadius: '100%', opacity: 0.5, transition: {duration: 0.20}}}
+          exit={{ width: '5px',  position: 'absolute', backgroundColor: 'teal', borderRadius: '100%', opacity: 0.8, transition: {duration: 0.2}}}
           value={value}
           onChange={handleOnChange}
           onKeyDown={handleKeyDown}

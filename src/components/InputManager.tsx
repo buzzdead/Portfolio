@@ -35,7 +35,7 @@ const InputManager = ({values, setValues}: Props) => {
   const handleInputBlur = (value: string) => {
     blurTimeoutId = setTimeout(() => {
       setActiveInput('');
-      setTimeout(() => setValues({name: valueRef.current, location: valueRef2.current, occupation: valueRef3.current, lookAt: valueRef4.current}), 150)
+      setTimeout(() => setValues({name: valueRef.current, location: valueRef2.current, occupation: valueRef3.current, lookAt: valueRef4.current}), 250)
     }, 100); 
   };
   console.log(values)
