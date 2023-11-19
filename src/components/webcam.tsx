@@ -100,14 +100,14 @@ const WebcamCapture: React.FC<Props> = ({
       {shouldCapture ? (
         <Webcam
           videoConstraints={videoConstraints}
-          onUserMediaError={handleCameraError}
+          onUserMediaError={handleCameraError}  
           style={{
-            width: '100%',
+            width: '600px',
             height: '450px',
             border: '2px solid grey',
             borderRadius: '8px',
             boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)',
-            objectFit: 'cover'
+            objectFit: 'cover',
           }}
           ref={webcamRef}
           screenshotFormat="image/jpeg"

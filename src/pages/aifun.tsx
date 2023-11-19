@@ -78,7 +78,7 @@ const AIFun: React.FC = () => {
       </Flex>
       <WebcamCapture
       isLoading={isLoading}
-        shouldCapture={!playingSound}
+        shouldCapture={!playingSound || countdown !== null}
         onCapture={(image: string | null) => handleImageCapture(image)}
         captureStart={handleCaptureStart}
       />
