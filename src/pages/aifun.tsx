@@ -76,13 +76,13 @@ import Paragraph from '../components/paragraph'
     return (
       <Flex align={'center'} flexDir={'column'} gap={2} mt={10}>
       
-        <Flex flexDir="column" alignItems={'center'} gap={2}>
+        <Flex flexDir="column" alignItems={'center'} gap={5}>
           <Heading>
             {playingSound
               ? `${voice.voiceType} ser på deg..`
               : 'AI Selfie' + cd }
           </Heading>
-          <Flex gap={1} flexDir={'column'}>
+          <Flex gap={2.5} flexDir={'column'} justify={'center'}>
             <Paragraph style={{textAlign: 'center', fontSize: 14, color: useColorModeValue('black', 'teal')}}>Ekstra informasjon (Valgfritt)</Paragraph>
           <InputManager values={values} setValues={setValues} />
           </Flex>
