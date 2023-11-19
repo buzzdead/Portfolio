@@ -11,7 +11,7 @@ export const useCountDown = () => {
         let interval: NodeJS.Timeout | null = null
         if (countdown !== null && countdown > 0) {
           interval = setInterval(() => {
-            setCountdown(currentCountdown => currentCountdown! - 1)
+            setCountdown(currentCountdown => currentCountdown === 1 ? null : currentCountdown! - 1)
           }, 1000)
         } else if (interval) {
           clearInterval(interval)

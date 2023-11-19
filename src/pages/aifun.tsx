@@ -63,7 +63,7 @@ const AIFun: React.FC = () => {
   }
 
   const cd = countdown ? countdown : ''
-
+  console.log(countdown)
   return (
     <Flex align={'center'} flexDir={'column'} gap={2} mt={10}>
      
@@ -78,7 +78,8 @@ const AIFun: React.FC = () => {
       </Flex>
       <WebcamCapture
       isLoading={isLoading}
-        shouldCapture={!playingSound || countdown !== null}
+        shouldCapture={!playingSound}
+        disableCapture={countdown !== null || playingSound}
         onCapture={(image: string | null) => handleImageCapture(image)}
         captureStart={handleCaptureStart}
       />

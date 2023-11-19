@@ -10,13 +10,15 @@ interface Props {
   isLoading: boolean
   shouldCapture: boolean
   captureStart: () => void
+  disableCapture: boolean
 }
 
 const WebcamCapture: React.FC<Props> = ({
   onCapture,
   captureStart,
   shouldCapture,
-  isLoading = false
+  isLoading = false,
+  disableCapture = false
 }) => {
   const webcamRef = useRef<Webcam>(null)
   const [pictureUrl, setPictureUrl] = useState('')
@@ -67,6 +69,16 @@ const WebcamCapture: React.FC<Props> = ({
     facingMode: useBackCamera ? { exact: 'environment' } : 'user'
   }
 
+  const captureHoverStyle = !disableCapture 
+  ? {
+      bgColor: 'transparent', 
+      transform: 'translateY(2px)',
+      transition: 'transform 0.3s ease-in-out'
+    }
+  : {
+      bgColor: 'transparent'
+    };
+
   return (
     <Flex flexDir={'column'} gap={2.5}>
       <Flex
@@ -87,12 +99,11 @@ const WebcamCapture: React.FC<Props> = ({
           </Button>
         )}
         <Button
-          isDisabled={!shouldCapture}
-          disabled={!shouldCapture}
+          isDisabled={disableCapture}
+          disabled={disableCapture}
           backgroundColor={'transparent'}
           onClick={capture}
-          _hover={{bgColor: 'transparent', transform: 'translateY(2px)',
-          transition: 'transform 0.3s ease-in-out'}}
+          _hover={captureHoverStyle}
         >
           {isLoading ? <Spinner /> : <img src={image.default.src} width={65} style={{paddingTop: 5}} />}
         </Button>
