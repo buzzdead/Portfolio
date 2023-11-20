@@ -80,7 +80,7 @@ const WebcamCapture: React.FC<Props> = ({
     };
 
   return (
-    <Flex flexDir={'column'} gap={1}>
+    <Flex flexDir={'column'} gap={2}>
       <Flex
         flexDir={'row'}
         justify={hasMultipleCameras ? 'space-between' : 'flex-end'}
@@ -89,7 +89,7 @@ const WebcamCapture: React.FC<Props> = ({
         {hasMultipleCameras && (
           <Button
             padding={1}
-            paddingLeft={2}
+            paddingLeft={1}
             paddingTop={4}
             _hover={{bgColor: 'transparent'}}
             backgroundColor={'transparent'}
@@ -101,6 +101,7 @@ const WebcamCapture: React.FC<Props> = ({
         <Button
           isDisabled={disableCapture}
           disabled={disableCapture}
+          pr={2}
           backgroundColor={'transparent'}
           onClick={capture}
           _hover={captureHoverStyle}

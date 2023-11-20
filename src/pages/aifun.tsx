@@ -78,12 +78,12 @@ import Paragraph from '../components/paragraph'
       
         <Flex flexDir="column" alignItems={'center'} gap={5}>
           <Flex alignItems={'center'} textAlign={'center'} flexDir={'column'}>
-          <Heading>
+          <Heading color={useColorModeValue('teal.600', 'teal.400')} >
             {playingSound
               ? `${voice.voiceType} ser på deg..`
               : 'AI Selfie' + cd }
           </Heading>
-          <Paragraph style={{fontSize: 12, textDecoration: 'underline'}}>Ingen data blir lagret (så vidt jeg vet)</Paragraph>
+          <Paragraph style={{fontSize: 14, textDecoration: 'underline'}}>Ingen data blir lagret (så vidt jeg vet)</Paragraph>
           </Flex>
           <Flex gap={2.5} flexDir={'column'} justify={'center'}>
            
