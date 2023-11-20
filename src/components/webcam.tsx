@@ -80,7 +80,7 @@ const WebcamCapture: React.FC<Props> = ({
     };
 
   return (
-    <Flex flexDir={'column'} gap={2.5}>
+    <Flex flexDir={'column'} gap={1}>
       <Flex
         flexDir={'row'}
         justify={hasMultipleCameras ? 'space-between' : 'flex-end'}

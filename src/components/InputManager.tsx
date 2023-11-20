@@ -43,7 +43,7 @@ const InputManager = ({values, setValues}: Props) => {
     <Flex flexDir={'row'} gap={5}>
       <Inputs
         icon={<CgProfile color='white' size={20} />}
-        label={'Enter name'}
+        label={'Name (optional)'}
         isActive={activeInput === 'name'}
         onClick={() => handleInputClick('name')}
         handleBlur={(value: string) => handleInputBlur(value)}
@@ -51,7 +51,7 @@ const InputManager = ({values, setValues}: Props) => {
       />
       <Inputs
         icon={<MdAddLocation color='white' size={20} />}
-        label={'Enter location'}
+        label={'Location (optional)'}
         isActive={activeInput === 'location'}
         onClick={() => handleInputClick('location')}
         handleBlur={(value: string) => handleInputBlur(value)}
@@ -59,7 +59,7 @@ const InputManager = ({values, setValues}: Props) => {
       />
       <Inputs
         icon={<LiaIndustrySolid color='white' size={20} />}
-        label={'Enter occupation'}
+        label={'Occupation (optional)'}
         isActive={activeInput === 'occupation'}
         onClick={() => handleInputClick('occupation')}
         handleBlur={(value: string) => handleInputBlur(value)}
@@ -67,7 +67,7 @@ const InputManager = ({values, setValues}: Props) => {
       />
       <Inputs
         icon={<HiMagnifyingGlassPlus color='white' size={20} />}
-        label={'Look closely at'}
+        label={'Look closely at (optional)'}
         isActive={activeInput === 'lookAt'}
         onClick={() => handleInputClick('lookAt')}
         handleBlur={(value: string) => handleInputBlur(value)}

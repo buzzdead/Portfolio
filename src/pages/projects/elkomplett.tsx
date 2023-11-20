@@ -3,6 +3,10 @@ import ProjectPage, { Project } from "../../components/projectpage";
 
 const images = [
   {
+    image: require('../../../public/images/elkomplett/dashboard.png'),
+    title: "Dashboard"
+  },
+  {
     image: require("../../../public/images/elkomplett/homepage.png"),
     title: "Homepage",
   },
@@ -34,7 +38,7 @@ const project = () => {
     year: 2023,
     type: "Website",
     description:
-      "Nettbutikk med CRUD support. Legg til kategorier, produkter, produsenter og spesifiser produkttyper. Konfigurer produkter med egendefinerte attributter.",
+      "Nettbutikk med CRUD support. Legg til kategorier, produkter, produsenter og spesifiser produkttyper. Konfigurer produkter med egendefinerte attributter. Følg med på transaksjoner på dashboardet (under utvikling).",
     stack: "React, TypeScript, PostgreSQL, C#",
     platform: "Windows/macOS/Linux/Android",
     link: "https://elkomplett.com/",

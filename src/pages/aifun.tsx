@@ -77,13 +77,16 @@ import Paragraph from '../components/paragraph'
       <Flex align={'center'} flexDir={'column'} gap={2} mt={10}>
       
         <Flex flexDir="column" alignItems={'center'} gap={5}>
+          <Flex alignItems={'center'} textAlign={'center'} flexDir={'column'}>
           <Heading>
             {playingSound
               ? `${voice.voiceType} ser på deg..`
               : 'AI Selfie' + cd }
           </Heading>
+          <Paragraph style={{fontSize: 12, textDecoration: 'underline'}}>Ingen data blir lagret (så vidt jeg vet)</Paragraph>
+          </Flex>
           <Flex gap={2.5} flexDir={'column'} justify={'center'}>
-            <Paragraph style={{textAlign: 'center', fontSize: 14, color: useColorModeValue('black', 'teal')}}>Ekstra informasjon (Valgfritt)</Paragraph>
+           
           <InputManager values={values} setValues={setValues} />
           </Flex>
           <VoiceSelection voices={voices} currentVoice={voice} onVoiceChange={handleSetVoice} />

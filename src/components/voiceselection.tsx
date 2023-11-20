@@ -16,7 +16,7 @@ function formatString(str: string) {
 
 export const VoiceSelection: React.FC<Props> = ({ voices, currentVoice, onVoiceChange }) => (
   <Flex flexDir={'column'} alignItems={'center'} gap={2}>
-    <Paragraph style={{fontSize: 20}}>Beskrevet med stemmen til</Paragraph>
+    <Paragraph style={{fontSize: 20}}>Beskrevet av</Paragraph>
     <RadioGroup defaultValue={currentVoice.voiceType} onChange={onVoiceChange}>
       <Stack spacing={5} direction="row">
         {voices.map((v, id) => (
