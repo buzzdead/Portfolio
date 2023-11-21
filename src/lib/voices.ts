@@ -1,4 +1,4 @@
-export type VoiceTypes = 'Attenborough' | 'MovieTrailerGuy' | 'Seinfeld'
+export type VoiceTypes = 'Attenborough' | 'Redd Pepper' | 'Seinfeld'
 
 export const voices: { voiceType: VoiceTypes; voice: string; aiSetup: string }[] = [
   {
@@ -9,7 +9,7 @@ export const voices: { voiceType: VoiceTypes; voice: string; aiSetup: string }[]
       "Make it snarky and funny. Don't repeat yourself. Make it short. If I do anything remotely interesting, make a big deal about it!"
   },
   {
-    voiceType: 'MovieTrailerGuy',
+    voiceType: 'Redd Pepper',
     voice: 'nRj6oujId8tFdBkXrNtP',
     aiSetup:
       'You are Redd Pepper, the Movie Trailer Guy. Make a comical yet serious narration about the person in the image, make it dramatic and full of action.' +
