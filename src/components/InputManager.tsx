@@ -38,7 +38,6 @@ const InputManager = ({values, setValues}: Props) => {
       setTimeout(() => setValues({name: valueRef.current, location: valueRef2.current, occupation: valueRef3.current, lookAt: valueRef4.current}), 250)
     }, 100); 
   };
-  console.log(values)
   return (
     <Flex flexDir={'row'} gap={5}>
       <Inputs

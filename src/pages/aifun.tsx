@@ -11,6 +11,7 @@
   import { useOpenAI } from '../components/hooks/useOpenAi'
 import InputManager from '../components/InputManager'
 import Paragraph from '../components/paragraph'
+import Layout from '../components/layout/article'
 
 
   type Voice = {voiceType: VoiceTypes, voice: string, aiSetup: string}
@@ -72,8 +73,9 @@ import Paragraph from '../components/paragraph'
 
     const cd = countdown ? countdown : ''
 
-    
+    console.log("hmm")
     return (
+      <Layout skipEnter title="AI">
       <Flex align={'center'} flexDir={'column'} gap={2} mt={10}>
       
         <Flex flexDir="column" alignItems={'center'} gap={5}>
@@ -100,6 +102,7 @@ import Paragraph from '../components/paragraph'
           captureStart={handleCaptureStart}
         />
       </Flex>
+      </Layout>
     )
   }
 

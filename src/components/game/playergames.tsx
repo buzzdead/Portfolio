@@ -77,20 +77,6 @@ export const PlayerGames = ({ recentGamesSummaries, loading }: Props) => {
       playtime_forever: 12345,
       img_icon_url: '123asdfasdf'
     },
-    {
-      appid: 12345,
-      name: 'Game 3',
-      playtime_2weeks: 123455,
-      playtime_forever: 12345,
-      img_icon_url: '123asdfasdf'
-    },
-    {
-      appid: 12345,
-      name: 'Game 4',
-      playtime_2weeks: 123455,
-      playtime_forever: 12345,
-      img_icon_url: '123asdfasdf'
-    }
   ]
 
   const renderRg = loading ? skeletonRecentGameSummary : recentGamesSummaries

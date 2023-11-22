@@ -20,8 +20,12 @@ const defaultProfile = {
 }
 
 const Games = () => {
+  const { data: recentGames, isLoading: isLoadingRecentGames, isError: isErrorRecentGames  } = useCustomQuery('recentGames')
   const { data: playerSummary, isLoading: isLoadingPlayerSummary, isError: isErrorPlayerSummary  } = useCustomQuery('playerSummary')
   const { data: ownedGames, isLoading: isLoadingOwnedGames, isError: isErrorOwnedGames  } = useCustomQuery('ownedGames')
+  const isLoading = isLoadingOwnedGames || isLoadingRecentGames || isLoadingPlayerSummary
+  const isError = isErrorOwnedGames || isErrorPlayerSummary || isErrorRecentGames
+
     return (
       <Layout title="Spill">
         <Container maxW={"container.md"}>
@@ -56,7 +60,7 @@ const Games = () => {
                 flexWrap={"wrap"}
                 justifyContent={"center"}
               >
-                {<PlayerGames loading={isErrorOwnedGames  || isLoadingOwnedGames} recentGamesSummaries={isErrorOwnedGames || isLoadingOwnedGames ? [] : ownedGames} />}
+                <PlayerGames loading={isError || isLoading} recentGamesSummaries={isError || isLoading ? [] : recentGames.concat(ownedGames)} />
               </Box>
           </Box>
         </Container>
@@ -66,7 +70,6 @@ const Games = () => {
         <GameMatcher playerSummary={isErrorPlayerSummary || isLoadingPlayerSummary ? defaultProfile : playerSummary}/>
       </Layout>
     )
-  return <Box width='100vw' height='100vh'><Spinner pos='absolute' left='50%' top='50%' size='xl' /></Box>
 };
 
 export default Games;

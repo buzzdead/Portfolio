@@ -24,6 +24,8 @@ const Main = ({ children, router }: MainProps) => {
             ? 'CV'
             : router.pathname === '/projects'
             ? 'Prosjekter'
+            : router.pathname === '/aifun'
+            ? 'AI'
             : 'Spill'}
         </title>
       </Head>
