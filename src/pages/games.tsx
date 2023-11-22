@@ -20,7 +20,6 @@ const defaultProfile = {
 }
 
 const Games = () => {
-  const { data: recentGames, isLoading: isLoadingRecentGames, isError: isErrorRecentGames  } = useCustomQuery('recentGames')
   const { data: playerSummary, isLoading: isLoadingPlayerSummary, isError: isErrorPlayerSummary  } = useCustomQuery('playerSummary')
   const { data: ownedGames, isLoading: isLoadingOwnedGames, isError: isErrorOwnedGames  } = useCustomQuery('ownedGames')
     return (
@@ -57,7 +56,7 @@ const Games = () => {
                 flexWrap={"wrap"}
                 justifyContent={"center"}
               >
-                {<PlayerGames loading={isErrorOwnedGames || isErrorRecentGames || isLoadingOwnedGames || isLoadingRecentGames} recentGamesSummaries={isErrorOwnedGames || isErrorRecentGames || isLoadingOwnedGames || isLoadingRecentGames ? [] : recentGames.concat(ownedGames)} />}
+                {<PlayerGames loading={isErrorOwnedGames  || isLoadingOwnedGames} recentGamesSummaries={isErrorOwnedGames || isLoadingOwnedGames ? [] : ownedGames} />}
               </Box>
           </Box>
         </Container>
