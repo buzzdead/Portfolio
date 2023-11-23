@@ -110,18 +110,6 @@ const NavBar = (props: { path: any }) => {
               Spill
             </Text>
           </LinkItem>
-          <LinkItem href={"/about"} path={path}>
-            <Text
-              minWidth={"80px"}
-              textAlign={"center"}
-              fontWeight={"medium"}
-              transitionDuration={"800ms"}
-              color={useColorModeValue("black", "white")}
-              fontFamily={"body"}
-            >
-              CV
-            </Text>
-          </LinkItem>
           <LinkItem href={"/aifun"} path={path}>
             <Text
               minWidth={"80px"}
@@ -157,9 +145,6 @@ const NavBar = (props: { path: any }) => {
                 aria-label="Options"
               />
               <MenuList>
-                <NextLink href="/about" passHref>
-                  <MenuItem as={"div"}>CV</MenuItem>
-                </NextLink>
                 <NextLink href="/games" passHref>
                   <MenuItem as={"div"}>Spill</MenuItem>
                 </NextLink>
