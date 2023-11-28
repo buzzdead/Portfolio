@@ -4,12 +4,7 @@ import Loader from './Loader'
 import { Dragon } from './dragon'
 
 const ThreeScene = () => {
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    setLoading(false)
-  }, [])
-  if (loading) return
   return (
     <Canvas
       className={`w-full bg-transparent absolute`}
@@ -18,7 +13,6 @@ const ThreeScene = () => {
     >
       <Suspense fallback={<Loader />}>
         <directionalLight position={[1, 1, 2]} intensity={2} />
-
         <Dragon />
       </Suspense>
     </Canvas>
