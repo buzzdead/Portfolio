@@ -39,16 +39,7 @@ const Page = () => {
   return (
     <Layout title="Hovedside">
       <Container maxW={{ base: "100%", lg: "60%" }}>
-        <Box
-          mt={4}
-          borderRadius={"2xl"}
-          justifyContent={"center"}
-          minHeight={25}
-          mb={4}
-          display="flex" // Added display flex
-          alignItems="center" // Added align-items center
-        >
-        </Box>
+       
 
         <Box>
           <Box
