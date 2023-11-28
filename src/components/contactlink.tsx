@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { Box, LinkProps, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-const StyledLink = styled.a<LinkProps>`
+const StyledLink = styled.a<any>`
   text-decoration: none;
   gap: 2px;
   color: inherit;
