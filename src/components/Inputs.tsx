@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
 
 
-const AnimatedInput = motion(Input);
-const AnimatedButton = motion(Button);
+const AnimatedInput = motion(Input as React.ComponentType<any>);
+const AnimatedButton = motion(Button as React.ComponentType<any>);
 
 interface Props {
     icon: ReactElement;
