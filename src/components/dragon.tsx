@@ -5,7 +5,12 @@ import { AnimationActionLoopStyles } from 'three'
 
 type Tuple = [number, number, number]
 
-export function Dragon() {
+interface Props {
+  pageRef: string
+}
+
+export function Dragon({pageRef}: Props) {
+  let oldPage = '/'
   const ref = useRef<THREE.Mesh>(null)
   const [modelPosition, setModelPosition] = useState({
     pos: [0, 0, 0],
@@ -64,10 +69,10 @@ export function Dragon() {
 
       action
         .getMixer()
-        .addEventListener('finished', () => setTimeout(startFlapping, 5000))
+        .addEventListener('finished', () => setTimeout(startFlapping, 8000))
     }
   }
-
+  setTimeout(startFlapping, 5000)
   const adjustBiplaneForScreenSize = () => {
     console.log('isadj')
     let screenScale, screenPosition
@@ -78,11 +83,21 @@ export function Dragon() {
     return [screenScale, screenPosition]
   }
 
-  useFrame(() => {})
-
-  useEffect(() => {
-    setTimeout(startFlapping, 5000)
-  }, [])
+  useFrame(() => {
+    if(oldPage !== pageRef) {
+      const action = actions["flying"]
+      if (action) {
+        action.reset()
+        action.setLoop(2200 as AnimationActionLoopStyles, 1)
+        action.clampWhenFinished = true
+        action.play()
+        action.getMixer().addEventListener('finished', () => {
+          action.stop()
+        })
+      } 
+      oldPage = pageRef
+    }
+  })
 
   return (
     <mesh

@@ -3,6 +3,7 @@ import { Box, Container } from '@chakra-ui/react'
 import Navbar from '../navbar'
 import { NextRouter } from 'next/router'
 import ThreeScene2 from '../three'
+import { useRef } from 'react'
 
 interface MainProps {
   children: any
@@ -10,6 +11,8 @@ interface MainProps {
 }
 
 const Main = ({ children, router }: MainProps) => {
+  const pageRef = useRef<string>()
+  pageRef.current = router.pathname
   return (
     <Box as={'main'} pb={8}>
       <Head>
@@ -32,7 +35,7 @@ const Main = ({ children, router }: MainProps) => {
       </Head>
       <Navbar path={router.asPath} />
       <Container maxW={{ base: 'container.md', lg: 'container.lg' }} pt={14}>
-        <ThreeScene2 />
+        <ThreeScene2 pageRef={pageRef.current}/>
         {children}
       </Container>
     </Box>

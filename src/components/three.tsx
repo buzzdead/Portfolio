@@ -3,7 +3,11 @@ import { Suspense, useEffect, useRef, useState } from 'react'
 import Loader from './Loader'
 import { Dragon } from './dragon'
 
-const ThreeScene = () => {
+interface Props {
+  pageRef: string
+}
+
+const ThreeScene = ({pageRef}: Props) => {
 
   return (
     <Canvas
@@ -13,7 +17,7 @@ const ThreeScene = () => {
     >
       <Suspense fallback={<Loader />}>
         <directionalLight position={[1, 1, 2]} intensity={2} />
-        <Dragon />
+        <Dragon pageRef={pageRef} />
       </Suspense>
     </Canvas>
   )
