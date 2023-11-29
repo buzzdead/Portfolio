@@ -73,7 +73,6 @@ import Layout from '../components/layout/article'
 
     const cd = countdown ? countdown : ''
 
-    console.log("hmm")
     return (
       <Layout skipEnter title="AI">
       <Flex align={'center'} flexDir={'column'} gap={2} mt={10}>

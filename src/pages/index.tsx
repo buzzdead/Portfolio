@@ -38,7 +38,6 @@ const bio = [
 
 const Page = () => {
   const { state } = useThreeScene()
-  console.log(state.hitName)
   return (
     <Layout title="Hovedside">
       <Container maxW={{ base: "100%", lg: "60%" }}>
