@@ -52,10 +52,24 @@ body {
     }
   }
   
+
+
+  @keyframes burningText {
+    0%, 100% {
+      color: #fff;
+      filter: drop-shadow(0 0 5px red) blur(0.25px);
+    }
+    50% {
+      color: yellow;
+      filter: drop-shadow(0 0 8px orange) blur(0.5px);
+    }
+  }
+  
   .burning-effect {
+    will-change: filter, color, text-shadow;
     font-size: 40px;
     font-weight: bold;
-    color: red;
-    text-shadow: 0 0 5px red, 0 0 10px darkred;
-    animation: burningTextLight 3s linear infinite;
+    color: yellow;
+    text-shadow: 0 0 10px red, 0 0 20px red;
+    animation: burningText 3s linear infinite;
   }
