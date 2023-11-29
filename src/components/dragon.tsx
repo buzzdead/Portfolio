@@ -19,6 +19,7 @@ export function Dragon({pageRef}: Props) {
     pos: [0, 0, 0],
     scale: [0, 0, 0]
   })
+  const rotateTimeOut = useRef<NodeJS.Timeout>()
   const lastTouchX = useRef(0)
   const { scene, animations } = useGLTF('./young-red-dragon.glb')
   scene.scale.set(0.5, 0.5, 0.5)
@@ -64,22 +65,30 @@ export function Dragon({pageRef}: Props) {
   };
 
   const rotateDragon = (event: any) => {
-    
-    let movementX = 0
+    let movementX = 0;
     if (event.type === 'touchmove') {
-      const touch = event.touches[0]
-
-      movementX = touch.clientX - lastTouchX.current
-      lastTouchX.current = touch.clientX
+      const touch = event.touches[0];
+      const currentX = touch.clientX;
+  
+      // Check if lastTouchX.current is not 0 to prevent initial jump
+      if (lastTouchX.current !== 0) {
+        movementX = currentX - lastTouchX.current;
+      }
+  
+      lastTouchX.current = currentX;
+  
+      // Reset lastTouchX.current after a delay to enable continuous rotation
+      clearTimeout(rotateTimeOut.current);
+      rotateTimeOut.current = setTimeout(() => lastTouchX.current = 0, 100);
     } else if (event.type === 'mousemove') {
-      if (event.buttons !== 1) return
-      console.log(scene.rotation.y)
-      movementX = event.movementX
+      if (event.buttons !== 1) return;
+      movementX = event.movementX;
     }
-
-    const rotationSpeed = 0.005
-    scene.rotation.y += movementX * rotationSpeed
+  
+    const rotationSpeed = 0.0075;
+    scene.rotation.y += movementX * rotationSpeed;
   }
+  
 
   useEffect(() => {
     window.addEventListener('mousemove', rotateDragon)
@@ -101,8 +110,8 @@ export function Dragon({pageRef}: Props) {
   const adjustBiplaneForScreenSize = () => {
     let screenScale, screenPosition
 
-    screenPosition = [0, -2.5, -10]
-    screenScale = [1.5, 1.5, 1.5]
+    screenPosition = [0, -2.5, -20]
+    screenScale = [2, 2, 2]
 
     return [screenScale, screenPosition]
   }
@@ -125,6 +134,7 @@ export function Dragon({pageRef}: Props) {
 
   return (
     <mesh
+      
       onClick={onDoubleClick}
       position={modelPosition.pos as Tuple}
       scale={modelPosition.scale as Tuple}
