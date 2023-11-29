@@ -120,6 +120,7 @@ export function Dragon({pageRef}: Props) {
     if(state.hitName) return
     if(state.hitProject.left && scene.rotation.y < -1) return
     if(state.hitProject.right && scene.rotation.y > -0.74) return 
+   
     if(pageRef === "/") setState({...state, hitName: true})
     if(pageRef === "/projects") setState({...state, hitProject: {left: (scene.rotation.y < -1 && scene.rotation.y  > -1.2) || state.hitProject.left ? true : false, right: (scene.rotation.y > -0.96 && scene.rotation.y < -0.74) || state.hitProject.right ? true : false}})
   }
@@ -129,6 +130,7 @@ export function Dragon({pageRef}: Props) {
       playActionOnce('flying', () => console.log(pageRef));
       oldPage = pageRef
     }
+    if(state.hitName || state.hitProject.left || state.hitProject.right) return
     if(actions["SpitFire"] && actions["SpitFire"].time > 2 && actions["SpitFire"].time < 4){updateThreeState()}
   })
 
@@ -138,7 +140,7 @@ export function Dragon({pageRef}: Props) {
       onClick={onDoubleClick}
       position={modelPosition.pos as Tuple}
       scale={modelPosition.scale as Tuple}
-      rotation={[0, 1, 0]}
+      rotation={[0, 0., 0]}
       ref={ref}
     >
       <primitive object={scene} />
