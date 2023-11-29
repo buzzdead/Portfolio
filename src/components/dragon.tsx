@@ -22,18 +22,42 @@ export function Dragon({pageRef}: Props) {
 
   const { actions } = useAnimations(animations, ref)
   const onDoubleClick = () => {
-    const action = actions['SpitFire']
-
-    if (action) {
-      action.reset()
-      action.setLoop(2200 as AnimationActionLoopStyles, 1)
-      action.clampWhenFinished = true
-      action.play()
-      action.getMixer().addEventListener('finished', () => {
-        action.stop()
-      })
-    }
+    const fireballMeshes = scene.children.filter(child => child.name.startsWith('Sphere'));
+    fireballMeshes.forEach(mesh => {
+      mesh.visible = true; // or scene.remove(mesh) to remove them from the scene
+    });
+    playActionOnce('SpitFire', () => {
+      hideFireballs()
+    });
   }
+
+  const hideFireballs = () => {
+    // Assuming the fireballs are part of your dragon model and have a known name
+    const fireballMeshes = scene.children.filter(child => child.name.startsWith('Sphere'));
+    fireballMeshes.forEach(mesh => {
+      mesh.visible = false; // or scene.remove(mesh) to remove them from the scene
+    });
+  };
+
+  const playActionOnce = (actionName: string, callback: () => void) => {
+    const action = actions[actionName];
+
+    if (action && !action.isRunning()) {
+      action.reset();
+      action.setLoop(2200 as AnimationActionLoopStyles, 1);
+      action.clampWhenFinished = true;
+      action.play();
+
+      const onFinish = (e: any) => {
+        if (e.action === action) {
+          action.getMixer().removeEventListener('finished', onFinish);
+          callback();
+        }
+      };
+
+      action.getMixer().addEventListener('finished', onFinish);
+    }
+  };
 
   const rotateDragon = (event: any) => {
     let movementX = 0
@@ -59,20 +83,15 @@ export function Dragon({pageRef}: Props) {
   }, [])
 
   const startFlapping = () => {
-    const action = actions['wings']
+    playActionOnce('wings', () => {
+      setTimeout(startFlapping, 10000); // Continue the loop after a 5000ms delay
+    });
+  };
 
-    if (action) {
-      action.reset()
-      action.setLoop(2201 as AnimationActionLoopStyles, 1)
-      action.clampWhenFinished = true
-      action.play()
-
-      action
-        .getMixer()
-        .addEventListener('finished', () => setTimeout(startFlapping, 8000))
-    }
-  }
-  setTimeout(startFlapping, 5000)
+  useEffect(() => {
+    const timeoutId = setTimeout(startFlapping, 5000);
+    return () => clearTimeout(timeoutId); // Clean up the timeout if the component unmounts
+  }, []);
   const adjustBiplaneForScreenSize = () => {
     console.log('isadj')
     let screenScale, screenPosition
@@ -85,16 +104,7 @@ export function Dragon({pageRef}: Props) {
 
   useFrame(() => {
     if(oldPage !== pageRef) {
-      const action = actions["flying"]
-      if (action) {
-        action.reset()
-        action.setLoop(2200 as AnimationActionLoopStyles, 1)
-        action.clampWhenFinished = true
-        action.play()
-        action.getMixer().addEventListener('finished', () => {
-          action.stop()
-        })
-      } 
+      playActionOnce('flying', () => console.log(pageRef));
       oldPage = pageRef
     }
   })
