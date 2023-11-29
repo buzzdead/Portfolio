@@ -10,6 +10,7 @@ interface Props {
     id?: string
     title: string
     thumbnail: string
+    hit: boolean
 }
 
 export const GridItem = ({ children, href, title, thumbnail }: Props) => {
@@ -26,11 +27,11 @@ export const GridItem = ({ children, href, title, thumbnail }: Props) => {
     )
 }
 
-export const ProjectGridItem = ({ children, id, title, thumbnail}: Props) => {
+export const ProjectGridItem = ({ children, id, title, thumbnail, hit = false}: Props) => {
     return (
-    <Box w="100%" textAlign="center">
+    <Box w="100%" textAlign="center" >
         <NextLink href={`/projects/${id}`}>
-            <LinkBox cursor={"pointer"}>
+            <LinkBox className={hit ? 'burning-effect' : 'none'} cursor={"pointer"}>
                 <Image src={thumbnail} alt={title} className="grid-item-thumbnail" placeholder='blur'/>
                 <LinkOverlay as="div" href={`/projects/${id}`}>
                     <Text mt={2} fontSize={20}>

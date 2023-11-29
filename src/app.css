@@ -41,3 +41,25 @@ body {
     filter: blur(25px);
   }
   
+  @keyframes burningText {
+    0% {
+      color: #fff;
+      text-shadow: 0 0 10px red, 0 0 20px red, 0 0 30px orange, 0 0 40px yellow, 0 0 70px yellow;
+    }
+    50% {
+      color: yellow;
+      text-shadow: 0 0 10px orange, 0 0 20px red, 0 0 30px red, 0 0 40px orange, 0 0 70px yellow;
+    }
+    100% {
+      color: #fff;
+      text-shadow: 0 0 10px red, 0 0 20px red, 0 0 30px orange, 0 0 40px yellow, 0 0 70px yellow;
+    }
+  }
+  
+  .burning-effect {
+    font-size: 40px;
+    font-weight: bold;
+    color: yellow;
+    text-shadow: 0 0 10px red, 0 0 20px red, 0 0 30px orange, 0 0 40px yellow, 0 0 70px yellow;
+    animation: burningText 3s linear infinite;
+  }

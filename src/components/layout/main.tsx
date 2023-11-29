@@ -4,6 +4,7 @@ import Navbar from '../navbar'
 import { NextRouter } from 'next/router'
 import ThreeScene2 from '../three'
 import { useRef } from 'react'
+import { ThreeSceneProvider } from '../threeprovider'
 
 interface MainProps {
   children: any
@@ -35,8 +36,10 @@ const Main = ({ children, router }: MainProps) => {
       </Head>
       <Navbar path={router.asPath} />
       <Container maxW={{ base: 'container.md', lg: 'container.lg' }} pt={14}>
+        <ThreeSceneProvider>
         <ThreeScene2 pageRef={pageRef.current}/>
         {children}
+        </ThreeSceneProvider>
       </Container>
     </Box>
   )

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { AnimationActionLoopStyles } from 'three'
+import { initialState, useThreeScene } from './threeprovider'
 
 type Tuple = [number, number, number]
 
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export function Dragon({pageRef}: Props) {
+  const { state, setState } = useThreeScene();
+
   let oldPage = '/'
   const ref = useRef<THREE.Mesh>(null)
   const [modelPosition, setModelPosition] = useState({
@@ -27,7 +30,8 @@ export function Dragon({pageRef}: Props) {
       mesh.visible = true; // or scene.remove(mesh) to remove them from the scene
     });
     playActionOnce('SpitFire', () => {
-      hideFireballs()
+      hideFireballs();
+      setState(initialState)
     });
   }
 
@@ -60,6 +64,7 @@ export function Dragon({pageRef}: Props) {
   };
 
   const rotateDragon = (event: any) => {
+    
     let movementX = 0
     if (event.type === 'touchmove') {
       const touch = event.touches[0]
@@ -68,6 +73,7 @@ export function Dragon({pageRef}: Props) {
       lastTouchX.current = touch.clientX
     } else if (event.type === 'mousemove') {
       if (event.buttons !== 1) return
+      console.log(scene.rotation.y)
       movementX = event.movementX
     }
 
@@ -93,7 +99,6 @@ export function Dragon({pageRef}: Props) {
     return () => clearTimeout(timeoutId); // Clean up the timeout if the component unmounts
   }, []);
   const adjustBiplaneForScreenSize = () => {
-    console.log('isadj')
     let screenScale, screenPosition
 
     screenPosition = [0, -2.5, -10]
@@ -102,11 +107,20 @@ export function Dragon({pageRef}: Props) {
     return [screenScale, screenPosition]
   }
 
+  const updateThreeState = () => {
+    if(state.hitName) return
+    if(state.hitProject.left && scene.rotation.y < -1) return
+    if(state.hitProject.right && scene.rotation.y > -0.74) return 
+    if(pageRef === "/") setState({...state, hitName: true})
+    if(pageRef === "/projects") setState({...state, hitProject: {left: (scene.rotation.y < -1 && scene.rotation.y  > -1.2) || state.hitProject.left ? true : false, right: (scene.rotation.y > -0.96 && scene.rotation.y < -0.74) || state.hitProject.right ? true : false}})
+  }
+
   useFrame(() => {
     if(oldPage !== pageRef) {
       playActionOnce('flying', () => console.log(pageRef));
       oldPage = pageRef
     }
+    if(actions["SpitFire"] && actions["SpitFire"].time > 2 && actions["SpitFire"].time < 4){updateThreeState()}
   })
 
   return (
@@ -114,7 +128,7 @@ export function Dragon({pageRef}: Props) {
       onClick={onDoubleClick}
       position={modelPosition.pos as Tuple}
       scale={modelPosition.scale as Tuple}
-      rotation={[0, 0, 0]}
+      rotation={[0, 1, 0]}
       ref={ref}
     >
       <primitive object={scene} />

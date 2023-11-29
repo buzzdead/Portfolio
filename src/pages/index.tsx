@@ -16,6 +16,7 @@ import { BioComponent } from "../components/bio";
 const profileImage = require("../../public/images/sigmund.jpg");
 import { FaGithub, FaLinkedin, FaMobileAlt } from "react-icons/fa";
 import ContactLink from "../components/contactlink";
+import { useThreeScene } from "../components/threeprovider";
 
 const bio = [
   { year: "1986", section: "Født i Lillehammer, Norge." },
@@ -36,11 +37,11 @@ const bio = [
 ];
 
 const Page = () => {
+  const { state } = useThreeScene()
+  console.log(state.hitName)
   return (
     <Layout title="Hovedside">
       <Container maxW={{ base: "100%", lg: "60%" }}>
-       
-
         <Box>
           <Box
             flexGrow={1}
@@ -48,7 +49,7 @@ const Page = () => {
             flexDir={"column"}
             display="flex"
           >
-            <Heading as="h2" variant="page-title">
+            <Heading className={state.hitName ? 'burning-effect' : 'none'} as="h2" variant="page-title">
               Sigmund Volden
             </Heading>
             <p>App utvikler (Frontend, Backend)</p>
