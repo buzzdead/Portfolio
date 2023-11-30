@@ -2,10 +2,14 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { REQ, RecentGameSummary } from "../../types";
 
 export const getOwnedGames = (key: REQ, id: REQ) => {
-  const playersummaries_endpoint = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${key}&steamid=${id}&include_appinfo=1`;
-  return fetch(playersummaries_endpoint, {
-    method: "GET",
-  });
+  const endpoint = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${key}&steamid=${id}&include_appinfo=1`;
+  return fetch(endpoint, { method: "GET" });
+};
+
+const processOwnedGames = (games: RecentGameSummary[], ignoreFilter: boolean) => {
+  return ignoreFilter
+    ? games
+    : games.filter(game => game.appid === 546560 || game.appid === 578080);
 };
 
 export default async function handler(
@@ -13,31 +17,19 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { key, steamids, ignoreFilter = false } = req.query;
-  const response = await getOwnedGames(key, steamids);
 
-  if (response.status != 200) {
-    return res.status(200).json({
-      steam: {
-        personastate: "Offline",
-      },
-    });
+  try {
+    const response = await getOwnedGames(key, steamids);
+    if (response.status !== 200) throw new Error('Steam API Error');
+
+    const steam = await response.json();
+    if (!steam?.response?.games) throw new Error('No Games Found');
+
+    const recentGamesSummaries: RecentGameSummary[] = steam.response.games;
+    const gamesToRespond = processOwnedGames(recentGamesSummaries, ignoreFilter as boolean);
+    return res.status(200).json(gamesToRespond);
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(200).json({ steam: { personastate: "Offline" } });
   }
-
-  const steam = await response.json();
-  if (steam.item === null) {
-    return res.status(200).json({
-      steam: {
-        personastate: "Offline",
-      },
-    });
-  }
-
-  const recentGamesSummaries: RecentGameSummary[] = steam.response.games;
-
-  const gamesToRespond = ignoreFilter
-    ? recentGamesSummaries
-    : recentGamesSummaries.filter(
-        (e: RecentGameSummary) => e.appid === 546560 || e.appid === 578080
-      );
-  return res.status(200).json(gamesToRespond);
 }

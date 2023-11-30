@@ -2,53 +2,36 @@ import {
   Container,
   Box,
   Heading,
-  Image,
   useColorModeValue,
-  Link,
-  Button,
-} from "@chakra-ui/react";
-import Section from "../components/section";
-import Paragraph from "../components/paragraph";
-import NextLink from "next/link";
-import { ChevronRightIcon } from "@chakra-ui/icons";
-import Layout from "../components/layout/article";
-import { BioComponent } from "../components/bio";
-const profileImage = require("../../public/images/sigmund.jpg");
-import { FaGithub, FaLinkedin, FaMobileAlt } from "react-icons/fa";
-import ContactLink from "../components/contactlink";
-import { useThreeScene } from "../components/threeprovider";
-
-const bio = [
-  { year: "1986", section: "Født i Lillehammer, Norge." },
-  {
-    year: "2021",
-    section:
-      "Fullførte Bachelor i datasikkerhet på Universitet i Bergen. Lærte om alt fra kryptografi, optimalisering av kode tilogmed systemutvikling",
-  },
-  {
-    year: "2022",
-    section: "Jobbet som webutvikler for Wide Assessment i Bergen",
-  },
-  {
-    year: "2022",
-    section:
-      "Jobber som webkonsulent for VVS Komplett, utvikler applikasjoner på fritiden.",
-  },
-];
+  Button
+} from '@chakra-ui/react'
+import NextLink from 'next/link'
+import { ChevronRightIcon } from '@chakra-ui/icons'
+import Layout from '../components/layout/article'
+import { Bio } from '../components/about/bio'
+import { FaGithub, FaLinkedin } from 'react-icons/fa'
+import ContactLink from '../components/contactlink'
+import { useThreeScene } from '../components/three/threeprovider'
+import { About } from '../components/about/about'
+import { Interests } from '../components/about/interests'
 
 const Page = () => {
   const { state } = useThreeScene()
   return (
     <Layout title="Hovedside">
-      <Container maxW={{ base: "100%", lg: "60%" }}>
+      <Container maxW={{ base: '100%', lg: '60%' }}>
         <Box>
           <Box
             flexGrow={1}
-            alignItems={"center"}
-            flexDir={"column"}
+            alignItems={'center'}
+            flexDir={'column'}
             display="flex"
           >
-            <Heading className={state.hitName ? 'burning-effect' : 'none'} as="h2" variant="page-title">
+            <Heading
+              className={state.hitName ? 'burning-effect' : 'none'}
+              as="h2"
+              variant="page-title"
+            >
               Sigmund Volden
             </Heading>
             <p>App utvikler (Frontend, Backend)</p>
@@ -56,94 +39,31 @@ const Page = () => {
           <Box
             flexShrink={0}
             mt={{ base: 4, md: 0 }}
-            display={{ base: "flex" }}
-            justifyContent={{ base: "center", md: "flex-start" }}
+            display={{ base: 'flex' }}
+            justifyContent={{ base: 'center', md: 'flex-start' }}
           ></Box>
         </Box>
-        <Box display="flex" flexDir={"column"} gap={5} mt={15}>
-          <Section delay={0.1}>
-            <Heading
-              fontFamily="Fira Sans Condensed"
-              letterSpacing={0.5}
-              as="h3"
-              variant="section-title"
-            >
-              <Box
-                alignItems={"center"}
-                flexDir={"column"}
-                display="flex"
-                gap={8}
-              >
-                <Image
-                  borderColor="whiteAlpha.800"
-                  borderWidth={2}
-                  borderStyle={"solid"}
-                  maxWidth="100px"
-                  display="inline-block"
-                  borderRadius={"full"}
-                  src={profileImage.default.src}
-                  alt="Profile Image"
-                />
-              </Box>
-              Om
-            </Heading>
-            <Paragraph as={"div"}>
-              Sigmund er en utvikler bosatt i Bergen som er glad i å utvikle
-              nyttige applikasjoner. Med bred erfaring innen alt fra
-              datasikkerhet, optimalisering og diverse rammeverk så er han
-              største interesse utvikling av React og React Native
-              applikasjoner. For tiden holder han på med et produkt kalt
-              <NextLink
-                style={{ position: "absolute", marginLeft: 5 }}
-                href={"/projects/hypertrophy"}
-              >
-                <Link as="div">Hypertrophy</Link>
-              </NextLink>
-            </Paragraph>
-          </Section>
-          <Section gap={2} delay={0.2}>
-            <Heading
-              fontFamily="Fira Sans Condensed"
-              letterSpacing={0.5}
-              as="h3"
-              variant="section-title"
-            >
-              Bio
-            </Heading>
-            {bio.map((b, id) => (
-              <BioComponent key={id} year={b.year} section={b.section} />
-            ))}
-          </Section>
-          <Box display="flex" justifyContent={"center"}>
+        <Box display="flex" flexDir={'column'} gap={5} mt={15}>
+          <About />
+          <Bio />
+          <Box display="flex" justifyContent={'center'}>
             <NextLink href="/projects">
               <Button
-                transitionDuration={"800ms"}
+                transitionDuration={'800ms'}
                 rightIcon={<ChevronRightIcon />}
-                colorScheme={useColorModeValue("blue", "gray")}
+                colorScheme={useColorModeValue('blue', 'gray')}
               >
                 Min portefølje
               </Button>
             </NextLink>
           </Box>
-          <Section delay={0.3}>
-            <Heading
-              fontFamily="Fira Sans Condensed"
-              letterSpacing={0.5}
-              as="h3"
-              variant="section-title"
-            >
-              Interesser
-            </Heading>
-            <Paragraph>
-              Musikk, Programmering, Trening, Gå tur, Spill, Teknologi
-            </Paragraph>
-          </Section>
+          <Interests />
         </Box>
         <Box
           mt={5}
           display="flex"
-          flexDir={"row"}
-          justifyContent={"center"}
+          flexDir={'row'}
+          justifyContent={'center'}
           gap={50}
         >
           <ContactLink
@@ -163,8 +83,8 @@ const Page = () => {
         </Box>
       </Container>
     </Layout>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page
 export { getServerSideProps } from '../components/chakra'

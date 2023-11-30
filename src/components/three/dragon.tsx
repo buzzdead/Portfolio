@@ -30,7 +30,7 @@ export function Dragon({ pageRef }: Props) {
       child.name.startsWith('Sphere')
     )
     fireballMeshes.forEach(mesh => {
-      mesh.visible = true // or scene.remove(mesh) to remove them from the scene
+      mesh.visible = true
     })
     playActionOnce('SpitFire', () => {
       hideFireballs()
@@ -39,12 +39,11 @@ export function Dragon({ pageRef }: Props) {
   }
 
   const hideFireballs = () => {
-    // Assuming the fireballs are part of your dragon model and have a known name
     const fireballMeshes = scene.children.filter(child =>
       child.name.startsWith('Sphere')
     )
     fireballMeshes.forEach(mesh => {
-      mesh.visible = false // or scene.remove(mesh) to remove them from the scene
+      mesh.visible = false
     })
   }
 
@@ -73,14 +72,12 @@ export function Dragon({ pageRef }: Props) {
     if (event.type === 'touchmove') {
       const touch = event.touches[0]
       const currentX = touch.clientX
-      // Check if lastTouchX.current is not 0 to prevent initial jump
       if (lastTouchX.current !== 0) {
         movementX = currentX - lastTouchX.current
       }
 
       lastTouchX.current = currentX
 
-      // Reset lastTouchX.current after a delay to enable continuous rotation
       clearTimeout(rotateTimeOut.current)
       rotateTimeOut.current = setTimeout(() => (lastTouchX.current = 0), 100)
     } else if (event.type === 'mousemove') {
@@ -93,29 +90,25 @@ export function Dragon({ pageRef }: Props) {
   }
 
   useEffect(() => {
-    window.addEventListener('mousemove', rotateDragon)
-    window.addEventListener('touchmove', rotateDragon)
-    const [biplaneScale, biplanePosition] = adjustBiplaneForScreenSize()
-    setModelPosition({ pos: biplanePosition, scale: biplaneScale })
+    const timeoutId = setTimeout(startFlapping, 5000)
+
+    const handleMouseMove = (event: any) => rotateDragon(event)
+    const handleTouchMove = (event: any) => rotateDragon(event)
+
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('touchmove', handleTouchMove)
+    setModelPosition({ pos: [0, -2.5, -20], scale: [2, 2, 2] })
+    return () => {
+      clearTimeout(timeoutId)
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('touchmove', handleTouchMove)
+    }
   }, [])
 
   const startFlapping = () => {
     playActionOnce('wings', () => {
-      setTimeout(startFlapping, 10000) // Continue the loop after a 5000ms delay
+      setTimeout(startFlapping, 10000)
     })
-  }
-
-  useEffect(() => {
-    const timeoutId = setTimeout(startFlapping, 5000)
-    return () => clearTimeout(timeoutId) // Clean up the timeout if the component unmounts
-  }, [])
-  const adjustBiplaneForScreenSize = () => {
-    let screenScale, screenPosition
-
-    screenPosition = [0, -2.5, -20]
-    screenScale = [2, 2, 2]
-
-    return [screenScale, screenPosition]
   }
 
   const updateThreeState = () => {

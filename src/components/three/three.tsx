@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber'
-import { Suspense, useEffect, useRef, useState } from 'react'
+import { Suspense } from 'react'
 import Loader from './Loader'
 import { Dragon } from './dragon'
 

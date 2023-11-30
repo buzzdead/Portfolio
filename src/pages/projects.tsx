@@ -2,7 +2,7 @@ import { Container, Heading, SimpleGrid } from '@chakra-ui/react'
 import Section from '../components/section'
 import { ProjectGridItem } from '../components/grid-item'
 import Layout from '../components/layout/article';
-import { useThreeScene } from '../components/threeprovider';
+import { useThreeScene } from '../components/three/threeprovider';
 const thumbHypertrophy = require('../../public/images/hypertrophy/hypertrophy-main.png');
 const thumbElKomplett = require('../../public/images/elkomplett/homepage.png');
 

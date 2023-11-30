@@ -9,7 +9,7 @@
   import { useCountDown } from '../components/hooks/useCountDown'
   import { VoiceSelection } from '../components/voiceselection'
   import { useOpenAI } from '../components/hooks/useOpenAi'
-import InputManager from '../components/InputManager'
+import InputManager from '../components/input/InputManager'
 import Paragraph from '../components/paragraph'
 import Layout from '../components/layout/article'
 

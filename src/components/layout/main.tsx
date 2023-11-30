@@ -1,48 +1,52 @@
-import Head from 'next/head'
-import { Box, Container } from '@chakra-ui/react'
-import Navbar from '../navbar'
-import { NextRouter } from 'next/router'
-import ThreeScene2 from '../three'
-import { useRef } from 'react'
-import { ThreeSceneProvider } from '../threeprovider'
+import Head from 'next/head';
+import { Box, Container } from '@chakra-ui/react';
+import Navbar from '../navbar';
+import ThreeScene2 from '../three/three';
+import { useEffect, useState } from 'react';
+import { ThreeSceneProvider } from '../three/threeprovider';
+import { NextRouter } from 'next/router';
 
 interface MainProps {
-  children: any
-  router: NextRouter
+  children: React.ReactNode;
+  router: NextRouter;
 }
 
 const Main = ({ children, router }: MainProps) => {
-  const pageRef = useRef<string>()
-  pageRef.current = router.pathname
+  const [pagePath, setPagePath] = useState<string>(router.pathname);
+
+  useEffect(() => {
+    setPagePath(router.pathname);
+  }, [router.pathname]);
+
+  const getTitle = (path: string) => {
+    switch(path) {
+      case '/': return 'Hovedside';
+      case '/about': return 'CV';
+      case '/projects': return 'Prosjekter';
+      case '/aifun': return 'AI';
+      default: return 'Spill';
+    }
+  };
+
   return (
-    <Box as={'main'} pb={8}>
+    <Box as='main' pb={8}>
       <Head>
         <meta
           aria-description="Portefølje side for Sigmund Volden"
-          name={'viewport'}
-          content={'width=device-width, initial-scale=1'}
+          name='viewport'
+          content='width=device-width, initial-scale=1'
         />
-        <title>
-          {router.pathname === '/'
-            ? 'Hovedside'
-            : router.pathname === '/about'
-            ? 'CV'
-            : router.pathname === '/projects'
-            ? 'Prosjekter'
-            : router.pathname === '/aifun'
-            ? 'AI'
-            : 'Spill'}
-        </title>
+        <title>{getTitle(pagePath)}</title>
       </Head>
       <Navbar path={router.asPath} />
       <Container maxW={{ base: 'container.md', lg: 'container.lg' }} pt={14}>
         <ThreeSceneProvider>
-        <ThreeScene2 pageRef={pageRef.current}/>
-        {children}
+          <ThreeScene2 pageRef={pagePath} />
+          {children}
         </ThreeSceneProvider>
       </Container>
     </Box>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

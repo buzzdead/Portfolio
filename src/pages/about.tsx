@@ -16,7 +16,7 @@ const PDFViewer = () => {
   const [fileUrl, setFileUrl] = useState('./Sigmund_CV.pdf')
 const { toolbarPluginInstance } = defaultLayoutPluginInstance;
 const { zoomPluginInstance } = toolbarPluginInstance;
-const { zoomTo, ZoomIn, ZoomOut } = zoomPluginInstance;
+const { zoomTo } = zoomPluginInstance;
 
 useEffect(() => {
   const handleWheel = (e: any) => {
