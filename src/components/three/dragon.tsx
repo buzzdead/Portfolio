@@ -13,7 +13,7 @@ interface Props {
 export function Dragon({ pageRef }: Props) {
   const { state, setState } = useThreeScene()
 
-  let oldPage = '/'
+  const [oldPage, setOldPage] = useState('/')
   const ref = useRef<THREE.Mesh>(null)
   const [modelPosition, setModelPosition] = useState({
     pos: [0, 0, 0],
@@ -106,9 +106,12 @@ export function Dragon({ pageRef }: Props) {
   }, [])
 
   const startFlapping = () => {
+    if(actions["flying"] && !actions["flying"]?.paused)
+    setTimeout(() => startFlapping(), 10000)
+  else{
     playActionOnce('wings', () => {
       setTimeout(startFlapping, 10000)
-    })
+    })}
   }
 
   const updateThreeState = () => {
@@ -136,8 +139,9 @@ export function Dragon({ pageRef }: Props) {
 
   useFrame(() => {
     if (oldPage !== pageRef) {
-      playActionOnce('flying', () => console.log(pageRef))
-      oldPage = pageRef
+      actions['wings']?.stop()
+      playActionOnce('flying', () => setTimeout(() => startFlapping(), 10000))
+      setOldPage(pageRef)
     }
     if (state.hitName || state.hitProject.left || state.hitProject.right) return
     if (
