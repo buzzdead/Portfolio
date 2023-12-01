@@ -116,9 +116,13 @@ export function Dragon({ pageRef }: Props) {
 
   const updateThreeState = () => {
     if (state.hitName) return
+    if(state.hitSteam) return
+    if(state.hitAi) return
     if (state.hitProject.left && scene.rotation.y < -1) return
     if (state.hitProject.right && scene.rotation.y > -0.74) return
     if (pageRef === '/') setState({ ...state, hitName: true })
+    if(pageRef === '/games') setState({...state, hitSteam: true})
+    if(pageRef === '/aifun') setState({...state, hitAi: true})
     if (pageRef === '/projects')
       setState({
         ...state,

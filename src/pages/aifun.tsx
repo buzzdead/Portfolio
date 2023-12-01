@@ -12,6 +12,7 @@
 import InputManager from '../components/input/InputManager'
 import Paragraph from '../components/paragraph'
 import Layout from '../components/layout/article'
+import { useThreeScene } from '../components/three/threeprovider'
 
 
   type Voice = {voiceType: VoiceTypes, voice: string, aiSetup: string}
@@ -23,6 +24,7 @@ import Layout from '../components/layout/article'
     const { countdown, startCountdown } = useCountDown()
     const { sendImage, error, isLoading } = useOpenAI()
     const [values, setValues] = useState({name: '', location: '', occupation: '', lookAt: ''})
+    const {state} = useThreeScene()
 
     const handleCaptureStart = () => {
       if (playingSound) return
@@ -79,7 +81,7 @@ import Layout from '../components/layout/article'
       
         <Flex flexDir="column" alignItems={'center'} gap={5}>
           <Flex alignItems={'center'} textAlign={'center'} flexDir={'column'}>
-          <Heading color={useColorModeValue('teal.600', 'teal.400')} >
+          <Heading className={state.hitAi ? 'burning-effect' : 'none'} color={useColorModeValue('teal.600', 'teal.400')} >
             {playingSound
               ? `${voice.voiceType} ser på deg..`
               : 'AI Selfie' + cd }

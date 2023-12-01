@@ -8,9 +8,10 @@ const steam_default = require('../../../public/images/steam_default.webp')
 interface Props {
     playerSummary: Partial<PlayerSummary>
     player?: boolean
+    hit?: boolean
 }
 
-const PlayerCard = ({playerSummary, player = false}: Props) => {
+const PlayerCard = ({playerSummary, player = false, hit = false}: Props) => {
     const {personaName, profileUrl, avatar} = playerSummary
     return (  
         <Card
@@ -30,7 +31,7 @@ const PlayerCard = ({playerSummary, player = false}: Props) => {
               justifyContent={"center"}
               gap={5}
             >
-              <Link pointerEvents={profileUrl === "" ? 'none' : 'inherit'} gap={2.5} display={'flex' } flexDir={'row'} href={profileUrl}  _hover={{textDecoration: 'none', color: useColorModeValue('blue', 'lightblue')}} target='_blank' color='inherit'>
+              <Link className={hit ? 'burning-effect' : 'none'} pointerEvents={profileUrl === "" ? 'none' : 'inherit'} gap={2.5} display={'flex' } flexDir={'row'} href={profileUrl}  _hover={{textDecoration: 'none', color: useColorModeValue('blue', 'lightblue')}} target='_blank' color='inherit'>
               <Heading
                 justifyContent={"center"}
                 display="flex"

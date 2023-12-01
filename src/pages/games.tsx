@@ -12,6 +12,7 @@ import { PlayerGames } from "../components/game/playergames";
 import { useCustomQuery } from "../components/hooks/useCustomQuery";
 import { GameMatcher } from "../components/game/gamematcher";
 import Paragraph from "../components/paragraph";
+import { useThreeScene } from "../components/three/threeprovider";
 
 const defaultProfile = {
   personaName: '',
@@ -25,7 +26,8 @@ const Games = () => {
   const { data: ownedGames, isLoading: isLoadingOwnedGames, isError: isErrorOwnedGames  } = useCustomQuery('ownedGames')
   const isLoading = isLoadingOwnedGames || isLoadingRecentGames || isLoadingPlayerSummary
   const isError = isErrorOwnedGames || isErrorPlayerSummary || isErrorRecentGames
-
+  const { state } = useThreeScene()
+console.log(state.hitSteam)
     return (
       <Layout title="Spill">
         <Container maxW={"container.md"}>
@@ -36,11 +38,11 @@ const Games = () => {
             flexDir={"column"}
             gap={5}
           >
-              <Box maxWidth={200}>
-                <PlayerCard playerSummary={isErrorPlayerSummary || isLoadingPlayerSummary ? defaultProfile : playerSummary} player/>
+              <Box maxWidth={200} >
+                <PlayerCard hit={state.hitSteam} playerSummary={isErrorPlayerSummary || isLoadingPlayerSummary ? defaultProfile : playerSummary} player/>
               </Box>
             <Section delay={0.1}>
-              <Paragraph>
+              <Paragraph >
               I tillegg til å programmere så spiller jeg dataspill når jeg får
               tid til det. Vært en ivrig "gamer" siden jeg var ung, vokste opp
               med diverse spill som blant annet counter-strike. I disse dager så

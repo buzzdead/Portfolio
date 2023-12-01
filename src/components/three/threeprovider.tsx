@@ -5,11 +5,15 @@ import React, {
 
 interface State {
   hitName: boolean
+  hitSteam: boolean
+  hitAi: boolean
   hitProject: { left: boolean; right: boolean }
 }
 
 export const initialState: State = {
   hitName: false,
+  hitSteam: false,
+  hitAi: false,
   hitProject: { left: false, right: false }
 }
 
