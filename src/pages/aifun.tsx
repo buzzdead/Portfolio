@@ -22,14 +22,21 @@ import { useThreeScene } from '../components/three/threeprovider'
     const { handleAudioEnd, handleAudioStart, getTextAndPlayIt, playingSound } = useAudio()
     const [voice, setVoice] = useState<Voice>(voices[0])
     const { countdown, startCountdown } = useCountDown()
-    const { sendImage, error, isLoading } = useOpenAI()
+    const { sendImage, error, isLoading, createImageFromPrompt } = useOpenAI()
     const [values, setValues] = useState({name: '', location: '', occupation: '', lookAt: ''})
+    const [image, setImage] = useState('')
     const {state} = useThreeScene()
 
     const handleCaptureStart = () => {
       if (playingSound) return
       
       startCountdown()
+    }
+
+    const promptImage = async () => {
+      await getTextAndPlayIt(text, voice.voice)
+      const abc = await createImageFromPrompt(text)
+      setImage(abc.data[0].url)
     }
 
     const updateAISetup = () => {
@@ -56,7 +63,7 @@ import { useThreeScene } from '../components/three/threeprovider'
 
     useEffect(() => {
       if (text === '') return
-      getTextAndPlayIt(text, voice.voice)
+      promptImage()
     }, [text])
 
     useEffect(() => {
@@ -65,6 +72,9 @@ import { useThreeScene } from '../components/three/threeprovider'
           handleAudioEnd();
       }
     }, [error]);
+    useEffect(() => {
+      if(!playingSound && image !== '') setImage('')
+    }, [playingSound])
 
     const handleSetVoice = (voiceType: VoiceTypes) => {
       const theVoice = voices.find(e => e.voiceType === voiceType)
@@ -97,6 +107,7 @@ import { useThreeScene } from '../components/three/threeprovider'
         </Flex>
         <WebcamCapture
         isLoading={isLoading}
+        receivedImage={image}
           shouldCapture={!playingSound}
           disableCapture={countdown !== null || playingSound}
           onCapture={(image: string | null) => handleImageCapture(image)}

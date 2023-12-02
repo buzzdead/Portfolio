@@ -11,6 +11,7 @@ interface Props {
   shouldCapture: boolean;
   captureStart: () => void;
   disableCapture: boolean;
+  receivedImage: string
 }
 
 const WebcamCapture: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const WebcamCapture: React.FC<Props> = ({
   shouldCapture,
   isLoading = false,
   disableCapture = false,
+  receivedImage
 }) => {
   const webcamRef = useRef<Webcam>(null);
   const [pictureUrl, setPictureUrl] = useState('');
@@ -112,7 +114,7 @@ const WebcamCapture: React.FC<Props> = ({
         />
       ) : (
         <div className="block">
-          <img src={pictureUrl} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+          <img src={receivedImage === '' ? pictureUrl : receivedImage} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
         </div>
       )}
       {errorMessage && (
