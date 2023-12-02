@@ -87,7 +87,7 @@ import { useThreeScene } from '../components/three/threeprovider'
 
     return (
       <Layout skipEnter title="AI">
-      <Flex align={'center'} flexDir={'column'} gap={2} mt={10}>
+      <Flex align={'center'} flexDir={'column'} gap={2}>
       
         <Flex flexDir="column" alignItems={'center'} gap={5}>
           <Flex alignItems={'center'} textAlign={'center'} flexDir={'column'}>

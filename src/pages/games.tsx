@@ -32,7 +32,6 @@ console.log(state.hitSteam)
       <Layout title="Spill">
         <Container maxW={"container.md"}>
           <Box
-            mt={10}
             display={"flex"}
             alignItems={"center"}
             flexDir={"column"}
