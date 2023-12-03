@@ -22,6 +22,7 @@ export function Dragon({ pageRef }: Props) {
   const rotateTimeOut = useRef<NodeJS.Timeout>()
   const lastTouchX = useRef(0)
   const { scene, animations } = useGLTF('./young-red-dragon.glb')
+  const flappingTimeout = useRef<NodeJS.Timeout>()
   scene.scale.set(0.5, 0.5, 0.5)
 
   const { actions } = useAnimations(animations, ref)
@@ -90,7 +91,9 @@ export function Dragon({ pageRef }: Props) {
   }
 
   useEffect(() => {
-    const timeoutId = setTimeout(startFlapping, 5000)
+    playActionOnce('wings', () => {
+      createFlappingTimeout()
+    })
 
     const handleMouseMove = (event: any) => rotateDragon(event)
     const handleTouchMove = (event: any) => rotateDragon(event)
@@ -99,18 +102,22 @@ export function Dragon({ pageRef }: Props) {
     window.addEventListener('touchmove', handleTouchMove)
     setModelPosition({ pos: [0, -2.5, -20], scale: [2, 2, 2] })
     return () => {
-      clearTimeout(timeoutId)
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('touchmove', handleTouchMove)
     }
   }, [])
 
+  const createFlappingTimeout = () => {
+    clearTimeout(flappingTimeout.current)
+    flappingTimeout.current = setTimeout(() => startFlapping(), 10000)
+  }
+
   const startFlapping = () => {
     if(actions["flying"] && !actions["flying"]?.paused)
-    setTimeout(() => startFlapping(), 10000)
+    createFlappingTimeout()
   else{
     playActionOnce('wings', () => {
-      setTimeout(startFlapping, 10000)
+      createFlappingTimeout()
     })}
   }
 
@@ -144,7 +151,7 @@ export function Dragon({ pageRef }: Props) {
   useFrame(() => {
     if (oldPage !== pageRef) {
       actions['wings']?.stop()
-      playActionOnce('flying', () => setTimeout(() => startFlapping(), 10000))
+      playActionOnce('flying', () => createFlappingTimeout())
       setOldPage(pageRef)
     }
     if (state.hitName || state.hitProject.left || state.hitProject.right) return
