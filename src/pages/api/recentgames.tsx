@@ -32,7 +32,7 @@ export default async function handler(
     });
   }
   //Filtering out apps that's irrelevant
-  const recentGamesSummaries: RecentGameSummary[] = steam.response.games?.filter((e: any) => e.appid !== 250820 && e.appid !== 719950 && e.appid !== 1408230 && e.appid !== 730 && e.appid !== 685110 && e.appid !== 684380 && e.appid !== 899770 && e.appid !== 1966720)
+  const recentGamesSummaries: RecentGameSummary[] = steam.response.games?.filter((e: any) => e.appid !== 250820 && e.appid !== 719950 && e.appid !== 1408230 && e.appid !== 730 && e.appid !== 685110 && e.appid !== 684380 && e.appid !== 899770 && e.appid !== 1966720 && e.appid !== 2497920)
   return res.status(200).json(
     recentGamesSummaries || []
   );
