@@ -61,7 +61,7 @@ const Games = () => {
                 flexWrap={"wrap"}
                 justifyContent={"center"}
               >
-                <PlayerGames loading={isError || isLoading} recentGamesSummaries={isError || isLoading || !Array.isArray(recentGames) ? [] : recentGames.concat(ownedGames)} />
+                 <PlayerGames loading={isError || isLoading} recentGamesSummaries={isError || isLoading ? [] : recentGames.concat(ownedGames)} />
               </Box>
           </Box>
         </Container>
