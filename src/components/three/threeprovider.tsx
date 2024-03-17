@@ -1,17 +1,22 @@
 import React, {
   createContext,
   useState,
-  useContext} from 'react'
+  useContext
+} from 'react'
+
+type Modes = 'Solar' | 'std'
 
 interface State {
   hitName: boolean
   hitSteam: boolean
   hitAi: boolean
+  mode: Modes
   hitProject: { left: boolean; right: boolean }
 }
 
 export const initialState: State = {
   hitName: false,
+  mode: 'std',
   hitSteam: false,
   hitAi: false,
   hitProject: { left: false, right: false }

@@ -2,6 +2,7 @@ import { Canvas } from '@react-three/fiber'
 import { Suspense } from 'react'
 import Loader from './Loader'
 import { Dragon } from './dragon'
+import { useThreeScene } from './threeprovider'
 
 interface Props {
   pageRef: string
@@ -9,6 +10,8 @@ interface Props {
 
 const ThreeScene = ({pageRef}: Props) => {
 
+  const threeScene = useThreeScene()
+  if(threeScene.state.mode === 'Solar') return null
   return (
     <Canvas
       className={`w-full bg-transparent absolute`}

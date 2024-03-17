@@ -27,7 +27,7 @@ const Games = () => {
   const isLoading = isLoadingOwnedGames || isLoadingRecentGames || isLoadingPlayerSummary
   const isError = isErrorOwnedGames || isErrorPlayerSummary || isErrorRecentGames
   const { state } = useThreeScene()
-console.log(state.hitSteam)
+  
     return (
       <Layout title="Spill">
         <Container maxW={"container.md"}>
@@ -61,7 +61,7 @@ console.log(state.hitSteam)
                 flexWrap={"wrap"}
                 justifyContent={"center"}
               >
-                <PlayerGames loading={isError || isLoading} recentGamesSummaries={isError || isLoading ? [] : recentGames.concat(ownedGames)} />
+               <PlayerGames loading={isError || isLoading} recentGamesSummaries={isError || isLoading ? [] : recentGames.concat(ownedGames)} />
               </Box>
           </Box>
         </Container>

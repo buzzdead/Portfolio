@@ -3,6 +3,7 @@ import Section from '../components/section'
 import { ProjectGridItem } from '../components/grid-item'
 import Layout from '../components/layout/article';
 import { useThreeScene } from '../components/three/threeprovider';
+import Link from 'next/link';
 const thumbHypertrophy = require('../../public/images/hypertrophy/hypertrophy-main.png');
 const thumbElKomplett = require('../../public/images/elkomplett/homepage.png');
 
@@ -26,6 +27,16 @@ const Projects = () => {
                     </ProjectGridItem>
                 </Section>
             </SimpleGrid>
+            <Heading mt={2} as="h3" fontSize={20} mb={4}>
+                Mini-prosjekter
+            </Heading>
+            <SimpleGrid columns={[1, 1, 2]} gap={6}>
+                <Section>
+                    <Link href='./projects/solarsystem'>
+                    Solarsystem
+                    </Link>
+                </Section>
+                </SimpleGrid>
         </Container>
         </Layout>
     )
