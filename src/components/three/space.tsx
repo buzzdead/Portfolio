@@ -1,8 +1,8 @@
-import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
-import { Suspense, useEffect, useRef } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Suspense, useRef } from 'react'
 import Loader from './Loader'
-import * as THREE from 'three';
 import { OrbitControls, Stars, useGLTF } from '@react-three/drei'
+import { Mesh } from 'three'
 const image = require('../../../public/images/space.jpg')
 
 const Sun = () => {
@@ -17,7 +17,7 @@ const Sun = () => {
 
 const Mercury = () => {
   const { scene } = useGLTF('/mercurycomp.glb');
-  const mercuryRef = useRef();
+  const mercuryRef = useRef<Mesh>(null);
 
   // Rotate Mercury around the Sun
   useFrame(() => {
@@ -36,7 +36,7 @@ const Mercury = () => {
 }
 const Venus = () => {
     const { scene } = useGLTF('/venuscomp.glb');
-    const venusRef = useRef()
+    const venusRef = useRef<Mesh>(null)
     useFrame(() => {
       if (venusRef.current) {
           venusRef.current.rotation.y += 0.0025; // Adjust the speed of rotation as needed
@@ -55,7 +55,7 @@ const Venus = () => {
 
 const Earth = () => {
   const { scene } = useGLTF('/comp.glb');
-  const earthRef = useRef()
+  const earthRef = useRef<Mesh>(null)
   useFrame(() => {
     if (earthRef.current) {
         earthRef.current.rotation.y += 0.001; // Adjust the speed of rotation as needed
