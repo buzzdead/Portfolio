@@ -3,7 +3,6 @@ import { Suspense, useRef } from 'react'
 import Loader from './Loader'
 import { OrbitControls, Stars, useGLTF } from '@react-three/drei'
 import { Mesh } from 'three'
-const image = require('../../../public/images/space.jpg')
 
 const Sun = () => {
     const { scene } = useGLTF('/suncomp.glb');
