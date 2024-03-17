@@ -1,76 +1,111 @@
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Suspense, useRef } from 'react'
+import { Suspense, useRef, useState } from 'react'
 import Loader from './Loader'
 import { OrbitControls, Stars, useGLTF } from '@react-three/drei'
 import { Mesh } from 'three'
 
-const Sun = () => {
-    const { scene } = useGLTF('/suncomp.glb');
-    scene.scale.set(0.1, 0.1, 0.1)
-    return (
-        <mesh>
-        <primitive object={scene} />
-        </mesh>
-    );
+type Planet = {
+  name: string
+  distanceFromSun: number
+  daysAroundSun: number
+  scale?: number
 }
 
-const Mercury = () => {
-  const { scene } = useGLTF('/mercurycomp.glb');
-  const mercuryRef = useRef<Mesh>(null);
+const planets: Planet[] = [
+  {
+    name: 'Mercury',
+    distanceFromSun: 4,
+    daysAroundSun: 88
+  },
+  {
+    name: 'Venus',
+    distanceFromSun: 7.2,
+    daysAroundSun: 225
+  },
+  {
+    name: 'Earth',
+    distanceFromSun: 10,
+    daysAroundSun: 365,
+    scale: 0.002
+  },
+  {
+    name: 'Mars',
+    distanceFromSun: 15,
+    daysAroundSun: 687
+  },
+  {
+    name: 'Jupiter',
+    distanceFromSun: 52,
+    daysAroundSun: 4380,
+    scale: 0.4
+  },
+  {
+    name: 'Saturn',
+    distanceFromSun: 95,
+    daysAroundSun: 10767,
+    scale: 0.0008
+  },
+  {
+    name: 'Uranus',
+    distanceFromSun: 192,
+    daysAroundSun: 30660,
+    scale: 0.4
+  },
+  {
+    name: 'Neptune',
+    distanceFromSun: 301,
+    daysAroundSun: 60152
+  }
+]
 
-  // Rotate Mercury around the Sun
+interface CelestialObjectProps {
+  planet: Planet
+  rotationSpeed: number
+}
+
+const CelestialObject = ({planet, rotationSpeed}: CelestialObjectProps) => {
+  const { scene } = useGLTF('/' + planet.name.toLowerCase() + '.glb')
+  const planetRef = useRef<Mesh>(null)
   useFrame(() => {
-      if (mercuryRef.current) {
-          mercuryRef.current.rotation.y += 0.0036; // Adjust the speed of rotation as needed
-      }
-  });
-
-  scene.scale.set(0.2, 0.2, 0.2)
-  scene.position.set(4, 0, 0)
-  return (
-      <mesh ref={mercuryRef}>
-          <primitive object={scene} />
-      </mesh>
-  );
-}
-const Venus = () => {
-    const { scene } = useGLTF('/venuscomp.glb');
-    const venusRef = useRef<Mesh>(null)
-    useFrame(() => {
-      if (venusRef.current) {
-          venusRef.current.rotation.y += 0.0025; // Adjust the speed of rotation as needed
-      }
-  });
-    scene.scale.set(0.2, 0.2, 0.2)
-    scene.position.set(10, 0, 0)
-    return (
-        <mesh ref={venusRef}>
-        <primitive object={scene} />
-        </mesh>
-    );
-}
-
-// 0036, 0025 0001
-
-const Earth = () => {
-  const { scene } = useGLTF('/comp.glb');
-  const earthRef = useRef<Mesh>(null)
-  useFrame(() => {
-    if (earthRef.current) {
-        earthRef.current.rotation.y += 0.001; // Adjust the speed of rotation as needed
+    if (planetRef.current) {
+      const distanceFactor = 1 / planet.distanceFromSun; // Inverse distance factor
+  
+      // Adjust rotation speed based on distance from the Sun
+      const adjustedRotationSpeed = rotationSpeed * distanceFactor;
+  
+      planetRef.current.rotation.y += adjustedRotationSpeed;
     }
-});
-
-  scene.scale.set(0.002, 0.002, 0.002)
-  scene.position.set(14, 0, 0)
+  });
+  
+  scene.scale.set(planet.scale || 0.2, planet.scale || 0.2, planet.scale || 0.2)
+  scene.position.set(planet.distanceFromSun, 0, 0)
   return (
-      <mesh ref={earthRef}>
+    <mesh ref={planetRef}>
       <primitive object={scene} />
-      </mesh>
-  );
+    </mesh>
+  )
+}
+
+const Sun = () => {
+  const { scene } = useGLTF('/sun.glb')
+  scene.scale.set(0.1, 0.1, 0.1)
+  return (
+    <mesh>
+      <primitive object={scene} />
+    </mesh>
+  )
 }
 
 const Space = () => {
+  const [rotationSpeed, setRotationSpeed] = useState(0.036)
+  const increaseSpeed = () => {
+    setRotationSpeed(rotationSpeed + 0.001);
+  };
+
+  const decreaseSpeed = () => {
+    setRotationSpeed(rotationSpeed - 0.001);
+  };
+  
   return (
     <Canvas
       className={`w-full h-full bg-transparent absolute`}
@@ -79,11 +114,18 @@ const Space = () => {
     >
       <Suspense fallback={<Loader />}>
         <ambientLight intensity={1} />
-        <Stars radius={350} depth={30} count={200000} factor={7} saturation={1} fade={true}/>
+        <Stars
+          radius={350}
+          depth={30}
+          count={200000}
+          factor={7}
+          saturation={1}
+          fade={true}
+        />
         <Sun />
-        <Mercury />
-        <Venus />
-        <Earth />
+        {planets.map((planet, index) => (
+          <CelestialObject key={index} planet={planet} rotationSpeed={rotationSpeed} />
+        ))}
         <OrbitControls
           enableZoom={true}
           enablePan={true}
@@ -91,7 +133,7 @@ const Space = () => {
           zoomSpeed={0.6}
           panSpeed={0.5}
           rotateSpeed={0.4}
-        /> 
+        />
         <directionalLight position={[1, 1, 2]} intensity={2} />
       </Suspense>
     </Canvas>
