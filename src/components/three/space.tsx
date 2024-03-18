@@ -1,8 +1,9 @@
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Suspense, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import Loader from './Loader'
-import { OrbitControls, Stars, useGLTF } from '@react-three/drei'
-import { Mesh } from 'three'
+import { OrbitControls, Stars, useAnimations, useGLTF } from '@react-three/drei'
+import { LoopRepeat, Mesh } from 'three'
+import { AnimationActionLoopStyles } from 'three'
 
 type Planet = {
   name: string
@@ -64,8 +65,10 @@ interface CelestialObjectProps {
 }
 
 const CelestialObject = ({planet, rotationSpeed}: CelestialObjectProps) => {
-  const { scene } = useGLTF('/' + planet.name.toLowerCase() + '.glb')
+  const { scene, animations } = useGLTF('/' + planet.name.toLowerCase() + '.glb')
+  
   const planetRef = useRef<Mesh>(null)
+  const { actions, names } = useAnimations(animations, planetRef);
   useFrame(() => {
     if (planetRef.current) {
       const distanceFactor = 1 / planet.distanceFromSun; // Inverse distance factor
@@ -76,6 +79,16 @@ const CelestialObject = ({planet, rotationSpeed}: CelestialObjectProps) => {
       planetRef.current.rotation.y += adjustedRotationSpeed;
     }
   });
+  useEffect(() => {
+    names.forEach((name) => {
+      console.log(name)
+      const a = actions[name]
+      if(a){
+        a.setEffectiveTimeScale(0.3)
+      a.setLoop(LoopRepeat, Infinity).play()
+    }
+    });
+  }, [actions, names]);
   
   scene.scale.set(planet.scale || 0.2, planet.scale || 0.2, planet.scale || 0.2)
   scene.position.set(planet.distanceFromSun, 0, 0)
@@ -87,17 +100,29 @@ const CelestialObject = ({planet, rotationSpeed}: CelestialObjectProps) => {
 }
 
 const Sun = () => {
-  const { scene } = useGLTF('/sun.glb')
+  const { scene, animations } = useGLTF('/sun.glb')
+  const planetRef = useRef<Mesh>(null)
+  const { actions, names } = useAnimations(animations, planetRef);
+  useEffect(() => {
+    names.forEach((name) => {
+      console.log(name)
+      const a = actions[name]
+      if(a){
+        a.setEffectiveTimeScale(0.3)
+      a.setLoop(LoopRepeat, Infinity).play()
+    }
+    });
+  }, [actions, names]);
   scene.scale.set(0.1, 0.1, 0.1)
   return (
-    <mesh>
+    <mesh ref={planetRef}>
       <primitive object={scene} />
     </mesh>
   )
 }
 
 const Space = () => {
-  const [rotationSpeed, setRotationSpeed] = useState(0.036)
+  const [rotationSpeed, setRotationSpeed] = useState(0.0036)
   const increaseSpeed = () => {
     setRotationSpeed(rotationSpeed + 0.001);
   };
