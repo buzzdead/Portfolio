@@ -195,11 +195,10 @@ const celestialObjectRefs = useRef<any[]>([]);
           fade={true}
         />
         <Sun />
-        <PlanetShifter celestialObjectRefs={celestialObjectRefs} planetName={planetName}>
         {planets.map((planet, index) => (
           <CelestialObject key={index} planet={planet} rotationSpeed={paused ? 0 : rotationSpeed} ref={(ref) => (celestialObjectRefs.current[index] = ref)} />
         ))}
-        </PlanetShifter>
+
         <OrbitControls
           enableZoom={true}
           enablePan={true}
