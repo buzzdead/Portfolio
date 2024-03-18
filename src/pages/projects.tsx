@@ -1,4 +1,4 @@
-import { Container, Heading, SimpleGrid } from '@chakra-ui/react'
+import { Container, Heading, Image, SimpleGrid } from '@chakra-ui/react'
 import Section from '../components/section'
 import { ProjectGridItem } from '../components/grid-item'
 import Layout from '../components/layout/article';
@@ -6,6 +6,7 @@ import { useThreeScene } from '../components/three/threeprovider';
 import Link from 'next/link';
 const thumbHypertrophy = require('../../public/images/hypertrophy/hypertrophy-main.png');
 const thumbElKomplett = require('../../public/images/elkomplett/homepage.png');
+const thumbSpace = require('../../public/images/solarsystem.png')
 
 const Projects = () => {
     const {state} = useThreeScene()
@@ -32,9 +33,9 @@ const Projects = () => {
             </Heading>
             <SimpleGrid columns={[1, 1, 2]} gap={6}>
                 <Section>
-                    <Link href='./projects/solarsystem'>
-                    Solarsystem
-                    </Link>
+                    <ProjectGridItem hit={false} id="solarsystem" title="Solar System" thumbnail={thumbSpace.default.src}>
+                        -
+                    </ProjectGridItem>
                 </Section>
                 </SimpleGrid>
         </Container>

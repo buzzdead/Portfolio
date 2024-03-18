@@ -1,9 +1,9 @@
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Suspense, useEffect, useRef, useState } from 'react'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { MutableRefObject, Suspense, forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import Loader from './Loader'
 import { OrbitControls, Stars, useAnimations, useGLTF } from '@react-three/drei'
 import { LoopRepeat, Mesh } from 'three'
-import { AnimationActionLoopStyles } from 'three'
+import { useThreeScene } from './threeprovider'
 
 type Planet = {
   name: string
@@ -64,10 +64,12 @@ interface CelestialObjectProps {
   rotationSpeed: number
 }
 
-const CelestialObject = ({planet, rotationSpeed}: CelestialObjectProps) => {
+const CelestialObject = forwardRef(({ planet, rotationSpeed }: CelestialObjectProps, forwardedRef) => {
   const { scene, animations } = useGLTF('/' + planet.name.toLowerCase() + '.glb')
   
   const planetRef = useRef<Mesh>(null)
+  if(planetRef.current !== null) planetRef.current.name = planet.name
+  useImperativeHandle(forwardedRef, () => planetRef.current);
   const { actions, names } = useAnimations(animations, planetRef);
   useFrame(() => {
     if (planetRef.current) {
@@ -97,7 +99,7 @@ const CelestialObject = ({planet, rotationSpeed}: CelestialObjectProps) => {
       <primitive object={scene} />
     </mesh>
   )
-}
+})
 
 const Sun = () => {
   const { scene, animations } = useGLTF('/sun.glb')
@@ -121,23 +123,68 @@ const Sun = () => {
   )
 }
 
-const Space = () => {
-  const [rotationSpeed, setRotationSpeed] = useState(0.0036)
-  const increaseSpeed = () => {
-    setRotationSpeed(rotationSpeed + 0.001);
-  };
+interface PlanetShifterProps {
+  planetName: string
+  celestialObjectRefs: MutableRefObject<any[]>
+  children: React.ReactNode
+}
 
-  const decreaseSpeed = () => {
-    setRotationSpeed(rotationSpeed - 0.001);
+const PlanetShifter = ({planetName, celestialObjectRefs, children}: PlanetShifterProps) => {
+  const {camera} = useThree()
+  const getPositionOfPlanet = (planetName: string) => {
+    // Find the index of the planet with the given name
+    const planetIndex = planets.findIndex((planet) => planet.name === planetName);
+    if (planetIndex === -1) {
+      // Planet not found
+      console.error(`Planet with name ${planetName} not found.`);
+      return null;
+    }
+  
+    // Get the ref of the planet
+    const planetRef = celestialObjectRefs.current[planetIndex];
+  
+    // Check if the ref is valid
+    if (!planetRef) {
+      console.error(`Ref for planet ${planetName} not found.`);
+      return null;
+    }
+  
+    // Get the position of the planet
+    const planetPosition = planetRef.rotation;
+
+    if (planetPosition) {
+      const planetP = planets.find(e => e.name === planetName)
+      // Set camera position to look at the planet
+      camera.position.set(planetPosition.x, planetPosition.y, planetPosition.z);
+    }
+    
+    // Return the position
+    return planetPosition;
   };
   
+  useEffect(() => {
+    console.log(getPositionOfPlanet(planetName))
+  }, [planetName])
+  return children
+}
+
+interface SpaceProps {
+  rotationSpeed: number
+  paused: boolean
+  planetName: string
+}
+
+const Space = ({rotationSpeed, paused, planetName}: SpaceProps) => {
+
+const celestialObjectRefs = useRef<any[]>([]);
+
   return (
     <Canvas
       className={`w-full h-full bg-transparent absolute`}
-      style={{}}
       camera={{ fov: 20, position: [0, 0, 50], near: 0.1, far: 1000 }}
     >
       <Suspense fallback={<Loader />}>
+     
         <ambientLight intensity={1} />
         <Stars
           radius={350}
@@ -148,9 +195,11 @@ const Space = () => {
           fade={true}
         />
         <Sun />
+        <PlanetShifter celestialObjectRefs={celestialObjectRefs} planetName={planetName}>
         {planets.map((planet, index) => (
-          <CelestialObject key={index} planet={planet} rotationSpeed={rotationSpeed} />
+          <CelestialObject key={index} planet={planet} rotationSpeed={paused ? 0 : rotationSpeed} ref={(ref) => (celestialObjectRefs.current[index] = ref)} />
         ))}
+        </PlanetShifter>
         <OrbitControls
           enableZoom={true}
           enablePan={true}
@@ -160,6 +209,7 @@ const Space = () => {
           rotateSpeed={0.4}
         />
         <directionalLight position={[1, 1, 2]} intensity={2} />
+        
       </Suspense>
     </Canvas>
   )
