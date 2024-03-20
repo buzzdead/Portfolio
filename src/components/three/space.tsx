@@ -189,10 +189,9 @@ const Sun = () => {
 interface PlanetShifterProps {
   planetName: string
   celestialObjectRefs: MutableRefObject<any[]>
-  children: React.ReactNode
 }
 
-const PlanetShifter = ({planetName, celestialObjectRefs, children}: PlanetShifterProps) => {
+const PlanetShifter = ({planetName, celestialObjectRefs }: PlanetShifterProps) => {
   const {camera} = useThree()
 
   const getPositionOfPlanet = (planetName: string) => {
@@ -243,7 +242,7 @@ const PlanetShifter = ({planetName, celestialObjectRefs, children}: PlanetShifte
   useEffect(() => {
     getPositionOfPlanet(planetName)
   }, [planetName])
-  return children
+  return null
 }
 
 interface SpaceProps {
@@ -261,7 +260,7 @@ const celestialObjectRefs = useRef<any[]>([]);
       className={`w-full h-full bg-transparent absolute`}
       camera={{ fov: 20, position: [0, 5, 50], near: 0.1, far: 1000 }}
     >
-      <PlanetShifter planetName={planetName} celestialObjectRefs={celestialObjectRefs}>
+      <PlanetShifter planetName={planetName} celestialObjectRefs={celestialObjectRefs} />
       <Suspense fallback={<Loader />}>
         <ambientLight intensity={1} />
         <Stars
@@ -288,7 +287,6 @@ const celestialObjectRefs = useRef<any[]>([]);
         <directionalLight position={[1, 1, 2]} intensity={2} />
         
       </Suspense>
-      </PlanetShifter>
     </Canvas>
   )
 }
