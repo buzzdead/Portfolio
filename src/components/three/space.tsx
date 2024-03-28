@@ -1,63 +1,11 @@
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { MutableRefObject, Suspense, useEffect, useRef, useState } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
+import { MutableRefObject, Suspense, useEffect, useRef } from 'react'
 import Loader from './Loader'
 import { OrbitControls, Stars, useAnimations, useGLTF } from '@react-three/drei'
 import { Group, LoopRepeat, Mesh, Object3DEventMap, Vector3 } from 'three'
-import CelestialObject, { Planet } from './solarsystem/celestialobject'
-
-const planets: Planet[] = [
-  {
-    name: 'Mercury',
-    distanceFromSun: 4,
-    daysAroundSun: 88
-  },
-  {
-    name: 'Venus',
-    distanceFromSun: 7.2,
-    daysAroundSun: 225
-  },
-  {
-    name: 'Earth',
-    distanceFromSun: 10,
-    daysAroundSun: 365,
-    scale: 0.002,
-    hasISS: true,
-    description: {
-      population: '6 billion',
-      populationType: 'Human',
-      technologicalAdvancement: 'Type 1',
-      age: '4.5 billion'
-    }
-  },
-  {
-    name: 'Mars',
-    distanceFromSun: 15,
-    daysAroundSun: 687
-  },
-  {
-    name: 'Jupiter',
-    distanceFromSun: 52,
-    daysAroundSun: 4380,
-    scale: 0.4
-  },
-  {
-    name: 'Saturn',
-    distanceFromSun: 95,
-    daysAroundSun: 10767,
-    scale: 0.0008
-  },
-  {
-    name: 'Uranus',
-    distanceFromSun: 192,
-    daysAroundSun: 30660,
-    scale: 0.4
-  },
-  {
-    name: 'Neptune',
-    distanceFromSun: 301,
-    daysAroundSun: 60152
-  }
-]
+import CelestialObject from './solarsystem/celestialobject'
+import { planets, useSolarSystem } from './solarsystemprovider'
+import Rocket from './solarsystem/rocket'
 
 const Sun = () => {
   const { scene, animations } = useGLTF('/sun.glb')
@@ -80,111 +28,14 @@ const Sun = () => {
   )
 }
 
-type Scene = Group<Object3DEventMap>
-
-interface RocketProps {
-  planetName: string
-  destination: string
-  rotationSpeed: number
-  celestialObjectRefs: MutableRefObject<any[]>
-}
-
-const Rocket = ({
-  planetName,
-  celestialObjectRefs,
-  rotationSpeed,
-  destination
-}: RocketProps) => {
-  const { scene, animations } = useGLTF('/rocket.glb')
-  const [liftOff, setLiftOff] = useState(false)
-  const currentDestination = useRef<Vector3>()
-  const [reachedDestination, setReachedDestination] = useState(false)
-  const rocketRef = useRef<Mesh>(null)
-  scene.scale.set(0.04, 0.04, 0.04)
-  const f = 20 + rotationSpeed * 2000
-
-  const lift = (scene: Scene, oldPos: Vector3, factor: number) => {
-    const destinationPos = currentDestination.current
-    if(!destinationPos) return
-    const angle = scene.position.angleTo(destinationPos)
-    scene.rotation.x = -angle
-    scene.position.y += factor / 25000
-    scene.position.x = oldPos.x
-    scene.position.z = oldPos.z
-    scene.rotation.z -= factor / 3000
-    if (Math.abs(scene.rotation.z) > 1.4) setLiftOff(false)
-  }
-  const land = (scene: Scene, factor: number) => {
-    if(Math.abs(scene.rotation.z) > 0.05){
-    if (scene.rotation.z < 0) scene.rotation.z += factor / 6500
-    else if (scene.rotation.z > 0) scene.rotation.z -= factor / 6500
-    
-    
-  }
-    if (scene.position.y > 0.175) scene.position.y -= factor / 50000
-    const destinationPos = getPositionOfPlanet(destination, celestialObjectRefs)
-    scene.position.x = destinationPos.x
-    scene.position.z = destinationPos.z
-  }
-  const travel = (scene: Scene, factor: number) => {
-    const destinationPos = getPositionOfPlanet(destination, celestialObjectRefs)
-    if (!destinationPos) return
-    const distanceX = Math.abs(scene.position.x - destinationPos.x)
-    const distanceZ = Math.abs(scene.position.z - destinationPos.z)
-    const xLongest = distanceX > distanceZ
-    const factor2 = (distanceX < 1.1 || distanceZ < 1.1) ? 2 : xLongest ? (distanceX / distanceZ) : (distanceZ / distanceX)
-    
-    if (scene.position.x > destinationPos.x) scene.position.x -= factor / (xLongest ? 5000 / factor2 : 5000)
-    else if (scene.position.x < destinationPos.x)
-      scene.position.x += factor / (xLongest ? 5000 / factor2 : 5000)
-    if (scene.position.z > destinationPos.z) scene.position.z -= factor / (!xLongest ? 5000 / factor2 : 5000)
-    else if (scene.position.z < destinationPos.z)
-      scene.position.z += factor / (!xLongest ? 5000 / factor2 : 5000)
-
-    if (
-      Math.abs(scene.position.x - destinationPos.x) +
-        Math.abs(scene.position.z - destinationPos.z) <
-      0.05
-    )
-      setReachedDestination(true)
-  }
-
-  useFrame(({ clock }) => {
-    if (liftOff) {
-      const oldPos = getPositionOfPlanet(planetName, celestialObjectRefs)
-      lift(scene, oldPos, f)
-    } else if (currentDestination.current) {
-      if (reachedDestination) {
-        land(scene, f)
-      } else {
-        travel(scene, f)
-      }
-    } else {
-      const position = getPositionOfPlanet(planetName, celestialObjectRefs)
-      scene?.position.set(position.x + 0.1, position.y + 0.2, position.z)
-    }
-  })
-
-  useEffect(() => {
-    if (destination === '') return
-    scene.position.set(10.1, 0.2, 0)
-    const destinationPos = getPositionOfPlanet(destination, celestialObjectRefs)
-    currentDestination.current = destinationPos
-    setLiftOff(true)
-  }, [destination])
-  return (
-    <mesh ref={rocketRef}>
-      <primitive object={scene} />
-    </mesh>
-  )
-}
+export type Scene = Group<Object3DEventMap>
 
 interface PlanetShifterProps {
   planetName: string
   celestialObjectRefs: MutableRefObject<any[]>
 }
 
-const getPositionOfPlanet = (
+export const getPositionOfPlanet = (
   planetName: string,
   celestialObjectRefs: MutableRefObject<any[]>
 ) => {
@@ -236,24 +87,9 @@ const PlanetShifter = ({
   return null
 }
 
-interface SpaceProps {
-  rotationSpeed: number
-  paused: boolean
-  planetName: string
-  grid: boolean
-  showDescription: boolean
-  lift: boolean
-}
-
-const Space = ({
-  rotationSpeed,
-  paused,
-  planetName,
-  grid,
-  showDescription,
-  lift
-}: SpaceProps) => {
+const Space = () => {
   const celestialObjectRefs = useRef<any[]>([])
+  const { state } = useSolarSystem()
 
   return (
     <Canvas
@@ -261,7 +97,7 @@ const Space = ({
       camera={{ fov: 20, position: [0, 5, 50], near: 0.1, far: 1000 }}
     >
       <PlanetShifter
-        planetName={planetName}
+        planetName={state.planetName}
         celestialObjectRefs={celestialObjectRefs}
       />
       <Suspense fallback={<Loader />}>
@@ -276,19 +112,19 @@ const Space = ({
         />
         <Sun />
         <Rocket
-          destination={lift ? 'Mars' : ''}
+          destination={state.liftOff ? 'Mars' : ''}
           planetName={'Earth'}
-          rotationSpeed={rotationSpeed}
+          rotationSpeed={state.rotationSpeed}
           celestialObjectRefs={celestialObjectRefs}
         />
         {planets.map((planet, index) => (
           <CelestialObject
             key={index}
             planet={planet}
-            showDescription={showDescription}
-            rotationSpeed={paused ? 0 : rotationSpeed}
+            showDescription={state.descriptionEnabled}
+            rotationSpeed={state.paused ? 0 : state.rotationSpeed}
             ref={ref => (celestialObjectRefs.current[index] = ref)}
-            grid={grid}
+            grid={state.gridEnabled}
           />
         ))}
         <OrbitControls
@@ -297,14 +133,14 @@ const Space = ({
           enableRotate={true}
           zoomSpeed={0.6}
           panSpeed={
-            planetName !== '' &&
-            planets.find(p => p.name === planetName)?.distanceFromSun! > 387
+            state.planetName !== '' &&
+            planets.find(p => p.name === state.planetName)?.distanceFromSun! > 387
               ? 0.025
               : 0.5
           }
           rotateSpeed={
-            planetName !== '' &&
-            planets.find(p => p.name === planetName)?.distanceFromSun! > 387
+            state.planetName !== '' &&
+            planets.find(p => p.name === state.planetName)?.distanceFromSun! > 387
               ? 0.025
               : 0.4
           }

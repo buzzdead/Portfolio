@@ -5,6 +5,7 @@ import ThreeScene2 from '../three/three';
 import { useEffect, useState } from 'react';
 import { ThreeSceneProvider } from '../three/threeprovider';
 import { NextRouter } from 'next/router';
+import { SolarSystemProvider } from '../three/solarsystemprovider';
 
 interface MainProps {
   children: React.ReactNode;
@@ -41,8 +42,10 @@ const Main = ({ children, router }: MainProps) => {
       <Navbar path={router.asPath} />
       <Container maxW={{ base: 'container.md', lg: 'container.lg' }} pt={14}>
         <ThreeSceneProvider>
+        <SolarSystemProvider>
           <ThreeScene2 pageRef={pagePath} />
           {children}
+          </SolarSystemProvider>
         </ThreeSceneProvider>
       </Container>
     </Box>

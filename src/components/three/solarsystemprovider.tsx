@@ -24,7 +24,7 @@ const SolarSystemContext = createContext<{
   setState: React.Dispatch<React.SetStateAction<State>>
 }>({
   state: initialState,
-  setState: () => {}
+  setState: () => {},
 })
 interface Props {
   children: React.ReactNode
