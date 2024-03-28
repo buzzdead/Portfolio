@@ -2,9 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { useThreeScene } from '../../components/three/threeprovider'
 import Space from '../../components/three/space'
 import FullPage from '../../components/layout/fullpage'
-import { Box, Button, Flex, Select } from '@chakra-ui/react'
+import { Button, Flex, Select } from '@chakra-ui/react'
+import { Planet } from '../../components/three/solarsystem/celestialobject'
+import { SolarSystemProvider } from '../../components/three/solarsystemprovider'
 
-const planets = [
+const planets: Planet[] = [
   {
     name: 'Mercury',
     distanceFromSun: 4,
@@ -19,7 +21,13 @@ const planets = [
     name: 'Earth',
     distanceFromSun: 10,
     daysAroundSun: 365,
-    scale: 0.002
+    scale: 0.002,
+    description: {
+      population: "6 billion",
+      populationType: "Human",
+      technologicalAdvancement: "Type 1",
+      age: "4.5 billion"
+    }
   },
   {
     name: 'Mars',
@@ -57,6 +65,8 @@ const Solarsystem = () => {
   const [paused, setPaused] = useState(false)
   const [planetName, setPlanetName] = useState('')
   const [enableGrid, setEnableGrid] = useState(false)
+  const [enableDescription, setEnableDescription] = useState(false)
+  const [liftOff, setLiftOff] = useState(false)
   const selectRef = useRef<string>('select')
   const increaseSpeed = () => {
     setRotationSpeed(rotationSpeed + 0.005)
@@ -70,14 +80,17 @@ const Solarsystem = () => {
   }
   const toggleTrackPlanet = () => {
     setPlanetName(selectRef.current)
+    !paused && togglePause()
   }
   const toggleGrid = () => {
     setEnableGrid(!enableGrid)
   }
+  const toggleDescription = () => {
+    setEnableDescription(!enableDescription)
+  }
   useEffect(() => {
     threeState.setState({ ...threeState.state, mode: 'Solar' })
   }, [])
-  console.log(selectRef.current)
   return (
     <FullPage>
       <Flex
@@ -91,17 +104,22 @@ const Solarsystem = () => {
         <Button onClick={togglePause}>{paused ? 'Play' : 'Pause'}</Button>
         <Button onClick={increaseSpeed}>Increase Speed</Button>
         <Select onChange={(value) => selectRef.current = value.target.value} placeholder="Select planet" width={'42'}>
-          {planets.map(planet => <option value={planet.name}>{planet.name}</option>)}
+          {planets.map((planet, id) => <option key={id} value={planet.name}>{planet.name}</option>)}
         </Select>
         <Button onClick={toggleTrackPlanet}>Travel</Button>
         <Button onClick={toggleGrid}>{enableGrid ? "No Grid" : "Grid"}</Button>
+        <Button onClick={() => setLiftOff(true)}>Lift off</Button>
       </Flex>
+      <SolarSystemProvider>
       <Space
         rotationSpeed={rotationSpeed}
         paused={paused}
         planetName={planetName}
         grid={enableGrid}
+        showDescription={enableDescription}
+        lift={liftOff}
       />
+      </SolarSystemProvider>
     </FullPage>
   )
 }
