@@ -1,7 +1,7 @@
 import { Canvas, useThree } from '@react-three/fiber'
 import { MutableRefObject, Suspense, useEffect, useRef } from 'react'
 import Loader from './Loader'
-import { OrbitControls, Stars, useAnimations, useGLTF } from '@react-three/drei'
+import { Center, OrbitControls, Stars, useAnimations, useGLTF } from '@react-three/drei'
 import { Group, LoopRepeat, Mesh, Object3DEventMap, Vector3 } from 'three'
 import CelestialObject from './solarsystem/celestialobject'
 import { planets, useSolarSystem } from './solarsystemprovider'
@@ -70,6 +70,25 @@ export const getPositionOfPlanet = (
   return new Vector3(0, 0, 0)
 }
 
+export const getRefOfPlanet = (
+  planetName: string,
+  celestialObjectRefs: MutableRefObject<any[]>
+) => {
+  const planetIndex = planets.findIndex(planet => planet.name === planetName)
+  const planetRef = celestialObjectRefs?.current[planetIndex]
+  return planetRef
+}
+
+export const getGeometryOfPlanet = (
+  planetRef: any
+) => {
+  const geometry = planetRef?.children[0]?.children[0]?.geometry
+  const geometry2 = planetRef?.children[0]?.children[0]?.children[0]?.geometry
+  const geometry3 = planetRef?.children[0]?.children[0]?.children[0]?.children[0]?.geometry
+  const geo = geometry || geometry2 || geometry3
+  return geo
+}
+
 const PlanetShifter = ({
   planetName,
   celestialObjectRefs
@@ -112,8 +131,8 @@ const Space = () => {
         />
         <Sun />
         <Rocket
-          destination={state.liftOff ? 'Mars' : ''}
-          planetName={'Earth'}
+          destination={state.liftOff ? state.destinationName : ''}
+          planetName={state.planetName === '' ? 'Earth' : state.planetName}
           rotationSpeed={state.rotationSpeed}
           celestialObjectRefs={celestialObjectRefs}
         />

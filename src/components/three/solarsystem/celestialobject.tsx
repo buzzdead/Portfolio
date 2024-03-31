@@ -15,6 +15,8 @@ type Description = {
   technologicalAdvancement: TechnologicalAdvancement
 }
 
+type RocketPositionAdjustment = { xFactor: number; radiusFactor: number; zFactor: number}
+
 export type Planet = {
   name: string
   distanceFromSun: number
@@ -22,6 +24,7 @@ export type Planet = {
   description?: Description
   scale?: number
   hasISS?: boolean
+  rocketAdjustment: RocketPositionAdjustment
 }
 
 interface Props {
@@ -67,7 +70,6 @@ const CelestialObject = forwardRef(
       planet.scale || 0.2
     )
     scene.position.set(planet.distanceFromSun, 0, 0)
-    if(planet.name === "Earth") console.log(showDescription)
     return (
       <>
         <Center disableX>

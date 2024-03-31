@@ -7,7 +7,8 @@ import { planets, useSolarSystem } from '../../components/three/solarsystemprovi
 
 const Solarsystem = () => {
   const threeState = useThreeScene()
-  const selectRef = useRef<string>('select')
+  const travelRef = useRef<string>('select')
+  const destinationRef = useRef<string>('destination')
   const { state, setState } = useSolarSystem()
 
   const increaseSpeed = () => {
@@ -21,13 +22,16 @@ const Solarsystem = () => {
     setState({...state, paused: !state.paused})
   }
   const toggleTrackPlanet = () => {
-    setState({...state, planetName: selectRef.current, paused: true})
+    setState({...state, planetName: travelRef.current, paused: true})
   }
   const toggleGrid = () => {
     setState({...state, gridEnabled: !state.gridEnabled})
   }
   const toggleDescription = () => {
     setState({...state, descriptionEnabled: !state.descriptionEnabled})
+  }
+  const toggleLiftOff = () => {
+    setState({...state, destinationName: destinationRef.current, liftOff: !state.liftOff})
   }
   useEffect(() => {
     threeState.setState({ ...threeState.state, mode: 'Solar' })
@@ -38,22 +42,24 @@ const Solarsystem = () => {
         justify={'center'}
         alignItems={'center'}
         columnGap={5}
+        flexWrap={'wrap'}
         mt={1}
         bgColor={'blackAlpha.50'}
       >
         <Button onClick={decreaseSpeed}>Decrease Speed</Button>
         <Button onClick={togglePause}>{state.paused ? 'Play' : 'Pause'}</Button>
         <Button onClick={increaseSpeed}>Increase Speed</Button>
-        <Select onChange={(value) => selectRef.current = value.target.value} placeholder="Select planet" width={'42'}>
+        <Select onChange={(value) => travelRef.current = value.target.value} placeholder="Select planet" width={'42'}>
           {planets.map((planet, id) => <option key={id} value={planet.name}>{planet.name}</option>)}
         </Select>
         <Button onClick={toggleTrackPlanet}>Travel</Button>
         <Button onClick={toggleGrid}>{state.gridEnabled ? "No Grid" : "Grid"}</Button>
-        <Button onClick={() => setState({...state, liftOff: true})}>Lift off</Button>
+        <Select onChange={(value) => destinationRef.current = value.target.value} placeholder="Select destination" width={'30'}>
+          {planets.map((planet, id) => <option key={id} value={planet.name}>{planet.name}</option>)}
+        </Select>
+        <Button onClick={toggleLiftOff}>Lift off</Button>
       </Flex>
- 
       <Space />
-  
     </FullPage>
   )
 }
