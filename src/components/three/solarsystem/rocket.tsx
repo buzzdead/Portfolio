@@ -1,7 +1,7 @@
 import { useFrame } from '@react-three/fiber'
 import { MutableRefObject, useEffect, useRef, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
-import { Euler, Matrix4, Mesh, Object3D, Quaternion, Vector3 } from 'three'
+import { Mesh, Quaternion, Vector3 } from 'three'
 import {
   getGeometryOfPlanet,
   getPositionOfPlanet,
@@ -9,6 +9,7 @@ import {
   Scene
 } from '../space'
 import { planets, useSolarSystem } from '../solarsystemprovider'
+import { Planet } from './celestialobject'
 
 interface RocketProps {
   planetName: string
@@ -22,7 +23,7 @@ const Rocket = ({
   rotationSpeed,
   destination
 }: RocketProps) => {
-  const { scene, animations } = useGLTF('/rocket.glb')
+  const { scene } = useGLTF('/rocket.glb')
   const [liftOff, setLiftOff] = useState(false)
   const currentDestination = useRef<Vector3>()
   const [reachedDestination, setReachedDestination] = useState(false)
@@ -30,8 +31,33 @@ const Rocket = ({
   const rocketRef = useRef<Mesh>(null)
   scene.scale.set(0.04, 0.04, 0.04)
   const f = 20 + rotationSpeed * 2000
-  const theRef = getRefOfPlanet(planetName, celestialObjectRefs)
-  const geometry = getGeometryOfPlanet(theRef)
+  
+  const currentPlanet = useRef<Planet>()
+  const currentPlanetRef = useRef<any>()
+  const currentPlanetRadius = useRef<number>(1)
+  const currentPlanetBoundingBox = useRef<any>()
+
+  const destinationPlanet = useRef<Planet>()
+  const destinationPlanetRef = useRef<any>()
+  const destinationPlanetRadius = useRef<number>(1)
+  const destinationPlanetBoundingBox = useRef<any>()
+
+  useEffect(() => {
+    if(planetName === '') return
+    currentPlanet.current = planets.find(p => p.name === planetName)
+    currentPlanetRef.current = getRefOfPlanet(planetName, celestialObjectRefs)
+    currentPlanetRadius.current =  getGeometryOfPlanet(currentPlanetRef.current)?.boundingSphere.radius || 0
+    currentPlanetBoundingBox.current = getGeometryOfPlanet(currentPlanetRef.current)?.boundingBox
+  }, [planetName])
+
+  useEffect(() => {
+    if(destination === '') return
+    destinationPlanet.current = planets.find(p => p.name === destination)
+    destinationPlanetRef.current = getRefOfPlanet(destination, celestialObjectRefs)
+    destinationPlanetRadius.current = getGeometryOfPlanet(destinationPlanetRef.current)?.boundingSphere.radius || 0
+    destinationPlanetBoundingBox.current = getGeometryOfPlanet(destinationPlanetRef.current)?.boundingBox
+  }, [destination])
+
 
   const lift = (scene: Scene, oldPos: Vector3, factor: number) => {
     const destinationPos = currentDestination.current
@@ -40,7 +66,10 @@ const Rocket = ({
     scene.position.y += factor / 25000
     scene.position.x = oldPos.x
     scene.position.z = oldPos.z
+    if(destinationPos.x > currentPlanet?.current?.distanceFromSun!)
     scene.rotation.z -= factor / 3000
+    else
+    scene.rotation.z += factor / 3000
     const direction = new Vector3()
       .subVectors(destinationPos, scene.position)
       .normalize()
@@ -62,15 +91,26 @@ const Rocket = ({
     const destinationPos = getPositionOfPlanet(destination, celestialObjectRefs)
     if (scene.position.y > destinationPos.y + 0.2)
       scene.position.y -= factor / 50000
-    else if (state.liftOff) setState({...state, planetName: state.destinationName })
-    scene.position.x = destinationPos.x + 0.1
-    scene.position.z = destinationPos.z
+    else if (state.liftOff) 
+    {
+      setState({...state, planetName: state.destinationName, liftOff: false })
+      setReachedDestination(false)
+    }
+    
+    scene.position.x = destinationPos.x + destinationPlanetBoundingBox?.current?.max?.x / destinationPlanet?.current?.rocketAdjustment.xFactor! || 4
+    scene.position.z = destinationPos.z + (destinationPlanetBoundingBox?.current?.min?.z > 0
+      ? destinationPlanetBoundingBox?.current?.min?.z / destinationPlanet?.current?.rocketAdjustment?.zFactor! || 4
+      : destinationPlanetBoundingBox?.current?.max?.z / destinationPlanet?.current?.rocketAdjustment?.zFactor! || 4)
   }
 
   const travel = (scene: Scene, factor: number) => {
     const destinationPos = getPositionOfPlanet(destination, celestialObjectRefs)
     if (!destinationPos) return
-    destinationPos.y += 0.4
+    destinationPos.y += 0.2 + destinationPlanetRadius?.current / destinationPlanet?.current?.rocketAdjustment?.radiusFactor! || 2.15 - 0.02
+    destinationPos.x += destinationPlanetBoundingBox?.current?.max?.x / destinationPlanet?.current?.rocketAdjustment.xFactor! || 4
+    destinationPos.z += (destinationPlanetBoundingBox?.current?.min?.z > 0
+      ? destinationPlanetBoundingBox?.current?.min?.z / destinationPlanet?.current?.rocketAdjustment?.zFactor! || 4
+      : destinationPlanetBoundingBox?.current?.max?.z / destinationPlanet?.current?.rocketAdjustment?.zFactor! || 4)
 
     // Direction towards the planet
     const direction = new Vector3()
@@ -112,19 +152,13 @@ const Rocket = ({
         planetName,
         celestialObjectRefs
       )
-      const thePlanet = planets.find(p => p.name === planetName)
-
-      const theRef = getRefOfPlanet(planetName, celestialObjectRefs)
-      const radius = getGeometryOfPlanet(theRef).boundingSphere.radius || 0
-      const boundingSphere = getGeometryOfPlanet(theRef).boundingSphere
-      const boundingBox = getGeometryOfPlanet(theRef)?.boundingBox
       scene.position.set(
-        planetPosition.x + boundingBox.max.x / thePlanet?.rocketAdjustment.xFactor! || 4,
-        planetPosition.y + radius / thePlanet?.rocketAdjustment.radiusFactor! || 2.15 - 0.02,
+        planetPosition.x + currentPlanetBoundingBox?.current?.max?.x / currentPlanet?.current?.rocketAdjustment.xFactor! || 4,
+        planetPosition.y + currentPlanetRadius?.current / currentPlanet?.current?.rocketAdjustment?.radiusFactor! || 2.15 - 0.02,
         planetPosition.z +
-          (boundingBox.min.z > 0
-            ? boundingBox.min.z / thePlanet?.rocketAdjustment.zFactor! || 4
-            : boundingBox.max.z / thePlanet?.rocketAdjustment.zFactor! || 4)
+          (currentPlanetBoundingBox?.current?.min?.z > 0
+            ? currentPlanetBoundingBox?.current?.min?.z / currentPlanet?.current?.rocketAdjustment?.zFactor! || 4
+            : currentPlanetBoundingBox?.current?.max?.z / currentPlanet?.current?.rocketAdjustment?.zFactor! || 4)
       )
     }
   })

@@ -10,6 +10,9 @@ const Solarsystem = () => {
   const travelRef = useRef<string>('select')
   const destinationRef = useRef<string>('destination')
   const { state, setState } = useSolarSystem()
+  useEffect(() => {
+    travelRef.current = state.planetName
+  }, [state.planetName])
 
   const increaseSpeed = () => {
     setState({...state, rotationSpeed: state.rotationSpeed += 0.005})
@@ -49,7 +52,7 @@ const Solarsystem = () => {
         <Button onClick={decreaseSpeed}>Decrease Speed</Button>
         <Button onClick={togglePause}>{state.paused ? 'Play' : 'Pause'}</Button>
         <Button onClick={increaseSpeed}>Increase Speed</Button>
-        <Select onChange={(value) => travelRef.current = value.target.value} placeholder="Select planet" width={'42'}>
+        <Select value={state.planetName} onChange={(value) => travelRef.current = value.target.value} placeholder="Select planet" width={'42'}>
           {planets.map((planet, id) => <option key={id} value={planet.name}>{planet.name}</option>)}
         </Select>
         <Button onClick={toggleTrackPlanet}>Travel</Button>
