@@ -6,7 +6,8 @@ import { useThreeScene } from '../components/three/threeprovider';
 import Link from 'next/link';
 const thumbHypertrophy = require('../../public/images/hypertrophy/hypertrophy-main.png');
 const thumbElKomplett = require('../../public/images/elkomplett/homepage.png');
-const thumbSpace = require('../../public/images/solarsystem.png')
+const thumbSolar = require('../../public/images/solarsystem.png')
+const thumbSpace = require('../../public/images/spacegame.png')
 
 const Projects = () => {
     const {state} = useThreeScene()
@@ -33,8 +34,13 @@ const Projects = () => {
             </Heading>
             <SimpleGrid columns={[1, 1, 2]} gap={6}>
                 <Section>
-                    <ProjectGridItem hit={false} id="solarsystem" title="Solar System" thumbnail={thumbSpace.default.src}>
-                        -
+                    <ProjectGridItem hit={false} id="solarsystem" title="Solar System" thumbnail={thumbSolar.default.src}>
+                        Illustrerer solsystemet med planeter som sirkulerer solen og gir muligheten til å fly fra planet til planet med en liten rakett.
+                    </ProjectGridItem>
+                </Section>
+                <Section>
+                    <ProjectGridItem hit={false} id="spacegame" title="Space Game" thumbnail={thumbSpace.default.src}>
+                        3D spill i verdensrommet hvor mange kan høste inn mineraler og i fremtiden bygge skip og gå på kampanje.
                     </ProjectGridItem>
                 </Section>
                 </SimpleGrid>
