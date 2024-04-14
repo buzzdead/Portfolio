@@ -11,7 +11,7 @@ const images = [
 const SpaceGame = () => {
   const project: Project = {
     title: "Space game",
-    year: 2023,
+    year: 2024,
     type: "App",
     link: "https://spacegame3d.netlify.app",
     description:

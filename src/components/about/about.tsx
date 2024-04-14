@@ -35,9 +35,9 @@ export const About = () => {
         på med et produkt kalt
         <NextLink
           style={{ position: 'absolute', marginLeft: 5 }}
-          href={'/projects/hypertrophy'}
+          href={'/projects/spacegame'}
         >
-          <Link as="div">Hypertrophy</Link>
+          <Link as="div">Space Game</Link>
         </NextLink>
       </Paragraph>
     </Section>
