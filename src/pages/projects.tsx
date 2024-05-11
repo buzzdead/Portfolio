@@ -30,7 +30,7 @@ const Projects = () => {
                 </Section>
             </SimpleGrid>
             <Heading mt={2} as="h3" fontSize={20} mb={4}>
-                Mini-prosjekter
+                3D Prosjekter
             </Heading>
             <SimpleGrid columns={[1, 1, 2]} gap={6}>
                 <Section>
