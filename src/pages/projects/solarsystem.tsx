@@ -38,6 +38,9 @@ const Solarsystem = () => {
   }
   useEffect(() => {
     threeState.setState({ ...threeState.state, mode: 'Solar' })
+    return(() => {
+      threeState.setState({...threeState.state, mode: 'std'})
+    })
   }, [])
   return (
     <FullPage>

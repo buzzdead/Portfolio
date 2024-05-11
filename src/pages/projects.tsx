@@ -7,7 +7,7 @@ import Link from 'next/link';
 const thumbHypertrophy = require('../../public/images/hypertrophy/hypertrophy-main.png');
 const thumbElKomplett = require('../../public/images/elkomplett/homepage.png');
 const thumbSolar = require('../../public/images/solarsystem.png')
-const thumbSpace = require('../../public/images/spacegame.png')
+const thumbSpace = require('../../public/images/spacegame/main.png')
 
 const Projects = () => {
     const {state} = useThreeScene()

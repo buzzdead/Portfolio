@@ -175,7 +175,7 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
               src={project.images[blowUpImage.id].image.default.src}
               alt={project.title}
               draggable={false}
-              style={{ userSelect: 'none' }}
+              style={{ userSelect: 'none', cursor: 'grab' }}
             />
           </ModalBody>
           <ModalFooter py={10}>
