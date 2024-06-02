@@ -46,6 +46,8 @@ export const Picture = ({
       src={src}
       alt={alt}
       mb={4}
+      maxHeight={'300px'}
+      objectFit={'cover'}
       onClick={handleOnClick}
     />
   );
