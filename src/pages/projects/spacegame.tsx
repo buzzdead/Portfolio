@@ -21,6 +21,10 @@ const images = [
   {
     image: require("../../../public/images/spacegame/explosion.png"),
     title: "Enemy exploding",
+  },
+  {
+    image: require("../../../public/images/spacegame/portal.png"),
+    title: "Portal",
   }
 ];
 
