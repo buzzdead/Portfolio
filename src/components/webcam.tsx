@@ -1,17 +1,20 @@
-import { Button, Flex, Spinner } from '@chakra-ui/react';
+import { Button, Flex, Spinner, Text } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import Webcam from 'react-webcam';
 import { PiCameraRotateLight } from 'react-icons/pi';
+import { isPictureClear } from '../lib/checkimage';
 
 const image = require('../../public/camerabutton.jpg');
+const VideoImages = 6
 
 interface Props {
-  onCapture: (image: string | null) => void;
+  onCapture: (image: string | string[] | null) => void;
   isLoading: boolean;
   shouldCapture: boolean;
   captureStart: () => void;
   disableCapture: boolean;
   receivedImage: string
+  videoMode: boolean
 }
 
 const WebcamCapture: React.FC<Props> = ({
@@ -20,24 +23,66 @@ const WebcamCapture: React.FC<Props> = ({
   shouldCapture,
   isLoading = false,
   disableCapture = false,
-  receivedImage
+  receivedImage,
+  videoMode = false
 }) => {
   const webcamRef = useRef<Webcam>(null);
+  const pictures = useRef<string[]>([])
   const [pictureUrl, setPictureUrl] = useState('');
   const [useBackCamera, setUseBackCamera] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [disabledByDate, setDisabledByDate] = useState(false)
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
 
+  useEffect(() => {
+    const date = new Date();
+    const targetDate = new Date(2024, 5, 18); // Note: Months are zero-based, so June is month 5
+    const isSameDate = date.getDate() === targetDate.getDate() &&
+                       date.getMonth() === targetDate.getMonth() &&
+                       date.getFullYear() === targetDate.getFullYear();
+
+    if (!isSameDate) {
+      setDisabledByDate(true);
+    }
+  }, []);
+
+  const onCaptureSuccess = async (imageSrc: string) => {
+    const jimpImage = await isPictureClear(imageSrc)
+    if (videoMode) {
+      const currentPictures = pictures.current;
+      currentPictures.push(imageSrc);
+      if (currentPictures.length === VideoImages) {
+        onCapture(currentPictures);
+        setPictureUrl(imageSrc || '');
+        pictures.current = [];
+      }
+    } else {
+      onCapture(imageSrc || null);
+      setPictureUrl(imageSrc || '');
+    }
+  };
+  
+  const captureImages = (count: number, interval: number) => {
+    if (count <= 0) return;
+    const imageSrc = webcamRef.current?.getScreenshot();
+    if (imageSrc) onCaptureSuccess(imageSrc);
+    setTimeout(() => captureImages(count - 1, interval), interval);
+  };
+  
   const capture = useCallback(() => {
     if (shouldCapture) {
-      captureStart();
-      setTimeout(() => {
-        const imageSrc = webcamRef.current?.getScreenshot();
-        onCapture(imageSrc || null);
-        setPictureUrl(imageSrc || '');
-      }, 5000);
+      if (!videoMode) captureStart();
+      if (videoMode) {
+        captureImages(VideoImages, 150);
+      } else {
+        setTimeout(() => {
+          const imageSrc = webcamRef.current?.getScreenshot();
+          imageSrc && onCaptureSuccess(imageSrc);
+        }, 3000);
+      }
     }
   }, [shouldCapture, captureStart, onCapture]);
+  
 
   const handleCameraError = useCallback((error: any) => {
     console.log(error);
@@ -94,16 +139,18 @@ const WebcamCapture: React.FC<Props> = ({
           </Button>
         )}
         <Button
-          isDisabled={disableCapture}
-          disabled={disableCapture}
+          isDisabled={disabledByDate || disableCapture}
+          disabled={disabledByDate || disableCapture}
           pr={2}
           backgroundColor={'transparent'}
-          onClick={capture}
+          onClick={() => !disabledByDate ? capture() : console.log("asdf")}
           _hover={captureHoverStyle}
         >
           {isLoading ? <Spinner /> : <img src={image.default.src} width={65} style={{ paddingTop: 5 }} />}
         </Button>
+        
       </Flex>
+       {disabledByDate && <Text style={{color: 'red', textAlign: 'center'}}>Temporarily down, come back later</Text>}
       {shouldCapture ? (
         <Webcam
           videoConstraints={videoConstraints}

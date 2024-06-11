@@ -1,5 +1,6 @@
 import { Configuration, OpenAIApi } from "openai-edge"
 import { OpenAIStream, StreamingTextResponse } from "ai"
+import { OpenAI } from 'openai';
 
 export const runtime = 'edge';
 
@@ -9,7 +10,7 @@ const configuration = new Configuration({
     apiKey: apiKey
 });
 
-const openai = new OpenAIApi(configuration);
+const openai = new OpenAI({apiKey: apiKey});
 export default async function POST(request: Request) {
     const { image, aiSetup, additional } = await request.json();
 
@@ -20,26 +21,34 @@ export default async function POST(request: Request) {
         `
     };
 
-    const userMessage = {
+    const userMessage = [
+        {
+            role: "system",
+            content: `
+                ${aiSetup}
+            `
+        },
+        {
         role: "user",
         content: [
             { type: "text", text: "What's in this image?" + additional },
             {
                 type: "image_url",
-                image_url: image
+                image_url: {url: image}
             }
         ]
-    };
+    }];
 
-    const response = await openai.createChatCompletion({
-        model: "gpt-4-vision-preview",
+    const response = await openai.chat.completions.create({
+        model: "gpt-4o",
+        max_tokens: 1000,
         stream: true,
-        max_tokens: 4096,
         //@ts-ignore
-        messages: [systemMessage, userMessage]
+        messages: userMessage
             }
         
     );
+    console.log(response)
 
     const stream = OpenAIStream(response);
 

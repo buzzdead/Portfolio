@@ -1,4 +1,4 @@
-import { Flex, Radio, RadioGroup, Stack } from "@chakra-ui/react";
+import { Flex, Radio, RadioGroup, Stack, useColorModeValue } from "@chakra-ui/react";
 import { VoiceTypes } from "../lib/voices";
 import Paragraph from "./paragraph";
 
@@ -15,8 +15,7 @@ function formatString(str: string) {
 }
 
 export const VoiceSelection: React.FC<Props> = ({ voices, currentVoice, onVoiceChange }) => (
-  <Flex flexDir={'column'} alignItems={'center'} gap={2}>
-    <Paragraph style={{fontSize: 20}}>Beskrevet av</Paragraph>
+  <Flex flexDir={'column'} alignItems={'center'} marginTop={2} gap={2}>
     <RadioGroup defaultValue={currentVoice.voiceType} onChange={onVoiceChange}>
       <Stack spacing={5} direction="row">
         {voices.map((v, id) => (

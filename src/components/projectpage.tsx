@@ -151,7 +151,7 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
           </Flex>
         </Section>
       </Container>
-      <Modal isOpen={blowUpImage.blownUp} onClose={handleCloseModal}>
+      <Modal preserveScrollBarGap  isCentered isOpen={blowUpImage.blownUp} onClose={handleCloseModal}>
         <ModalOverlay />
         <ModalContent
           onMouseDown={handleMouseDown}

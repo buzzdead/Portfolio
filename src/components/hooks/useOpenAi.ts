@@ -29,12 +29,14 @@ export const useOpenAI = () => {
                 break
               }
               var currentChunk = new TextDecoder().decode(value)
-              finalString += currentChunk
+              const chunkFormattted = currentChunk.replaceAll("0:", "").replaceAll('"', "")
+              finalString += chunkFormattted
             }
           })
         } catch (error) {
           console.error('Error sending image to OpenAI:', error)
         }
+        console.log(finalString)
         return finalString
       }
 

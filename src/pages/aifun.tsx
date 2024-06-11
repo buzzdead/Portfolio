@@ -1,6 +1,7 @@
   import React, { useEffect, useState } from 'react'
   import WebcamCapture from '../components/webcam'
   import {
+    Button,
     Flex,
     Heading,
     useColorModeValue} from '@chakra-ui/react'
@@ -18,6 +19,7 @@ import { useThreeScene } from '../components/three/threeprovider'
   type Voice = {voiceType: VoiceTypes, voice: string, aiSetup: string}
 
   const AIFun: React.FC = () => {
+
     const [text, setText] = useState('')
     const { handleAudioEnd, handleAudioStart, getTextAndPlayIt, playingSound } = useAudio()
     const [voice, setVoice] = useState<Voice>(voices[0])
@@ -26,6 +28,7 @@ import { useThreeScene } from '../components/three/threeprovider'
     const [values, setValues] = useState({name: '', location: '', occupation: '', lookAt: ''})
     const [image, setImage] = useState('')
     const {state} = useThreeScene()
+    const [videoMode, setVideoMode] = useState(false)
 
     const handleCaptureStart = () => {
       if (playingSound) return
@@ -85,10 +88,38 @@ import { useThreeScene } from '../components/three/threeprovider'
 
     const cd = countdown ? countdown : ''
 
+    const analyzeVideo = async (images: string[]) =>  {
+       const newAiSetup = updateAISetup()
+        const lookCloselyAT = values.lookAt !== '' ? `If present, look closely at ${values.lookAt}` : ''
+      try {
+        handleAudioStart()
+        const response = await fetch('/api/analyzeVideo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            images: images,
+            aiSetup: newAiSetup,
+            additional: lookCloselyAT
+          })
+        });
+        
+        const result = await response.json();
+        setText(result.choices[0].message.content.replaceAll('*', ''))
+      } catch(e) {
+        console.log(e);
+      }
+    }
+
+    const getStyle = (active: boolean) => {
+      return active ? {boxShadow:" 0rem 0 0.31rem 0.11rem rgb(10 130 160)"} : {opacity: 0.4}
+    }
+    
+
     return (
       <Layout skipEnter title="AI">
       <Flex align={'center'} flexDir={'column'} gap={2}>
-      
         <Flex flexDir="column" alignItems={'center'} gap={5}>
           <Flex alignItems={'center'} textAlign={'center'} flexDir={'column'}>
           <Heading className={state.hitAi ? 'burning-effect' : 'none'} color={useColorModeValue('teal.600', 'teal.400')} >
@@ -98,8 +129,13 @@ import { useThreeScene } from '../components/three/threeprovider'
           </Heading>
           <Paragraph style={{fontSize: 14, textDecoration: 'underline'}}>Ingen data blir lagret (så vidt jeg vet)</Paragraph>
           </Flex>
+         
           <Flex gap={2.5} flexDir={'column'} justify={'center'}>
-           
+            <Flex marginY={2} marginBottom={3.5} justify={'center'} gap={2} dir='row'>           
+              <Button style={{...getStyle(!videoMode), transition: 'opacity .25s linear, box-shadow .25s ease'}} onClick={() => setVideoMode(false)}>Image</Button>
+              <Button style={{...getStyle(videoMode), transition: 'opacity .25s linear, box-shadow .25s ease'}} onClick={() => setVideoMode(true)}>Video</Button>
+            </Flex>
+
           <InputManager values={values} setValues={setValues} />
           </Flex>
           <VoiceSelection voices={voices} currentVoice={voice} onVoiceChange={handleSetVoice} />
@@ -108,9 +144,10 @@ import { useThreeScene } from '../components/three/threeprovider'
         <WebcamCapture
         isLoading={isLoading}
         receivedImage={image}
+        videoMode={videoMode}
           shouldCapture={!playingSound}
           disableCapture={countdown !== null || playingSound}
-          onCapture={(image: string | null) => handleImageCapture(image)}
+          onCapture={(image: string | string[] | null) => videoMode ? analyzeVideo(image as string[]) : handleImageCapture(image as string)}
           captureStart={handleCaptureStart}
         />
       </Flex>

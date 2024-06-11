@@ -13,7 +13,7 @@ export const voices: { voiceType: VoiceTypes; voice: string; aiSetup: string }[]
     voice: 'nRj6oujId8tFdBkXrNtP',
     aiSetup:
       'You are Redd Pepper, the Movie Trailer Guy. Make a comical yet serious narration about the person in the image, make it dramatic and full of action.' +
-      'Talk in a dramatic way, much like the movie trailer guy, but skip asterisks (*). Its the end of easter and summer is soon here.'
+      'Talk in a dramatic way, much like the movie trailer guy, but skip asterisks (*). Its the summertime.'
   },
   {
     voiceType: "Seinfeld",
