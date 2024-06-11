@@ -1,4 +1,4 @@
-import Jimp from 'jimp'
+/* import Jimp from 'jimp'
 
 
 export const isPictureClear = async (imageBuffer: string) => {
@@ -22,3 +22,4 @@ export const isPictureClear = async (imageBuffer: string) => {
   return laplacianVar > threshold;
 };
 
+ */

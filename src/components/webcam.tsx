@@ -2,7 +2,6 @@ import { Button, Flex, Spinner, Text } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import Webcam from 'react-webcam';
 import { PiCameraRotateLight } from 'react-icons/pi';
-import { isPictureClear } from '../lib/checkimage';
 
 const image = require('../../public/camerabutton.jpg');
 const VideoImages = 6
@@ -47,7 +46,6 @@ const WebcamCapture: React.FC<Props> = ({
   }, []);
 
   const onCaptureSuccess = async (imageSrc: string) => {
-    const jimpImage = await isPictureClear(imageSrc)
     if (videoMode) {
       const currentPictures = pictures.current;
       currentPictures.push(imageSrc);
