@@ -127,11 +127,10 @@ import { useThreeScene } from '../components/three/threeprovider'
               ? `${voice.voiceType} ser på deg..`
               : 'AI Selfie' + cd }
           </Heading>
-          <Paragraph style={{fontSize: 14, textDecoration: 'underline'}}>Ingen data blir lagret (så vidt jeg vet)</Paragraph>
           </Flex>
          
           <Flex gap={2.5} flexDir={'column'} justify={'center'}>
-            <Flex marginY={2} marginBottom={3.5} justify={'center'} gap={2} dir='row'>           
+            <Flex marginBottom={3.5} justify={'center'} gap={2} dir='row'>           
               <Button style={{...getStyle(!videoMode), transition: 'opacity .25s linear, box-shadow .25s ease'}} onClick={() => setVideoMode(false)}>Image</Button>
               <Button style={{...getStyle(videoMode), transition: 'opacity .25s linear, box-shadow .25s ease'}} onClick={() => setVideoMode(true)}>Video</Button>
             </Flex>
