@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext } from 'react'
 import { Planet } from './solarsystem/celestialobject'
+import {Color} from 'three'
 
 interface State {
   rotationSpeed: number
@@ -47,6 +48,9 @@ export const useSolarSystem = () => useContext(SolarSystemContext)
 export const planets: Planet[] = [
   {
     name: 'Mercury',
+    atmosphere: {
+     x: 0.22, y: 0.175, z: 0.2, color: new Color(0.1, 0.6, 1.0)
+    },
     distanceFromSun: 4,
     daysAroundSun: 88,
     rocketAdjustment: {
@@ -57,6 +61,9 @@ export const planets: Planet[] = [
   },
   {
     name: 'Venus',
+    atmosphere: {
+     x: 0.031, y: 0, z: 0, color: new Color(1.0, 0.2, 0.1)
+    },
     distanceFromSun: 7.2,
     daysAroundSun: 225,
     rocketAdjustment: {
@@ -67,6 +74,9 @@ export const planets: Planet[] = [
   },
   {
     name: 'Earth',
+    atmosphere: {
+     x: -0.3, y: -0.175, z: -0.525, color: new Color(0.1, 0.6, 1.0)
+    },
     distanceFromSun: 10,
     daysAroundSun: 365,
     scale: 0.002,
@@ -84,6 +94,9 @@ export const planets: Planet[] = [
   },
   {
     name: 'Mars',
+    atmosphere: {
+     x: 0.05,  y: 0.25, z: 0, color: new Color(1.0, 0.2, 0.1)
+    },
     distanceFromSun: 15,
     daysAroundSun: 687,
     rocketAdjustment: {
@@ -94,6 +107,9 @@ export const planets: Planet[] = [
   },
   {
     name: 'Jupiter',
+    atmosphere: {
+     x: 0.6, y: 0.35, z: 0.35, color: new Color(1.0, 1.0, 1.0)
+    },
     distanceFromSun: 52,
     daysAroundSun: 4380,
     scale: 0.4,
@@ -105,6 +121,9 @@ export const planets: Planet[] = [
   },
   {
     name: 'Saturn',
+    atmosphere: {
+      y: 0, z: 0, color: new Color(1.0, 1.0, 1.0)
+    },
     distanceFromSun: 95,
     daysAroundSun: 10767,
     scale: 0.0008,
@@ -116,6 +135,9 @@ export const planets: Planet[] = [
   },
   {
     name: 'Uranus',
+    atmosphere: {
+     x: 0.75, y: 0.34, z: 0.35, color: new Color(0.1, 0.6, 1.0)
+    },
     distanceFromSun: 192,
     daysAroundSun: 30660,
     scale: 0.4,
@@ -127,6 +149,9 @@ export const planets: Planet[] = [
   },
   {
     name: 'Neptune',
+    atmosphere: {
+     x: 0.35, y: 0.15, z: 0.2, color: new Color(0.1, 0.6, 1.0)
+    },
     distanceFromSun: 301,
     daysAroundSun: 60152,
     rocketAdjustment: {

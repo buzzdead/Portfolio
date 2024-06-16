@@ -1,7 +1,7 @@
 import { Canvas, useThree } from '@react-three/fiber'
 import { MutableRefObject, Suspense, useEffect, useRef } from 'react'
 import Loader from './Loader'
-import { Center, OrbitControls, Stars, useAnimations, useGLTF } from '@react-three/drei'
+import { CameraControls, Center, OrbitControls, Stars, useAnimations, useGLTF } from '@react-three/drei'
 import { Group, LoopRepeat, Mesh, Object3DEventMap, Vector3 } from 'three'
 import CelestialObject from './solarsystem/celestialobject'
 import { planets, useSolarSystem } from './solarsystemprovider'
@@ -146,24 +146,7 @@ const Space = () => {
             grid={state.gridEnabled}
           />
         ))}
-        <OrbitControls
-          enableZoom={true}
-          enablePan={true}
-          enableRotate={true}
-          zoomSpeed={0.6}
-          panSpeed={
-            state.planetName !== '' &&
-            planets.find(p => p.name === state.planetName)?.distanceFromSun! > 387
-              ? 0.025
-              : 0.5
-          }
-          rotateSpeed={
-            state.planetName !== '' &&
-            planets.find(p => p.name === state.planetName)?.distanceFromSun! > 387
-              ? 0.025
-              : 0.4
-          }
-        />
+        <CameraControls />
         <directionalLight position={[1, 1, 2]} intensity={2} />
       </Suspense>
     </Canvas>
