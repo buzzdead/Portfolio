@@ -41,7 +41,7 @@ const WebcamCapture: React.FC<Props> = ({
                        date.getFullYear() === targetDate.getFullYear();
 
     if (!isSameDate) {
-      setDisabledByDate(true);
+      //setDisabledByDate(true);
     }
   }, []);
 

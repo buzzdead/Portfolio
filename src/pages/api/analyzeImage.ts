@@ -41,14 +41,13 @@ export default async function POST(request: Request) {
 
     const response = await openai.chat.completions.create({
         model: "gpt-4o",
-        max_tokens: 1000,
+        max_tokens: 650,
         stream: true,
         //@ts-ignore
         messages: userMessage
             }
         
     );
-    console.log(response)
 
     const stream = OpenAIStream(response);
 

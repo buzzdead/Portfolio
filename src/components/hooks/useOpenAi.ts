@@ -36,7 +36,6 @@ export const useOpenAI = () => {
         } catch (error) {
           console.error('Error sending image to OpenAI:', error)
         }
-        console.log(finalString)
         return finalString
       }
 

@@ -138,7 +138,6 @@ const CelestialObject = forwardRef(
       0
     ) 
     
-    console.log(planetRef)
     return (
       <>
         <Center disableX>

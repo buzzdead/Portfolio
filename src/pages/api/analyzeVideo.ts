@@ -19,7 +19,7 @@ export default async function handler(request: Request) {
       {
         role: 'user',
         content: [
-          { type: 'text', text: 'These are the sequential images. Describe the  "video" ' + additional },
+          { type: 'text', text: 'These are the sequential images that make up the video. Describe the  what is going on in the clip ' + additional },
           ...images.map((image: string) => ({
             type: 'image_url' as const,
             image_url: {
@@ -34,12 +34,10 @@ export default async function handler(request: Request) {
     try {
       const response = await openai.chat.completions.create({
         model: "gpt-4o",
-        max_tokens: 450,
+        max_tokens: 100,
         //@ts-ignore
         messages: promptMessages,
       });
-
-      console.log(response);
 
       return new Response(JSON.stringify(response), {
         status: 200,
