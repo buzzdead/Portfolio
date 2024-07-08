@@ -17,6 +17,9 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import ThemeToggleButton from "./themeButton";
+import { Weather } from "./weather";
+import StormToggle from "./umbrella";
+import { useState } from "react";
 
 interface Props {
   href: string;
@@ -50,6 +53,7 @@ const LinkItem = ({ href, path, children }: Props) => {
 
 const NavBar = (props: { path: any }) => {
   const { path } = props;
+  const [storm, toggleStorm] = useState(false)
   return (
     <Box
       pos={"fixed"}
@@ -65,6 +69,7 @@ const NavBar = (props: { path: any }) => {
       zIndex={2}
       {...props}
     >
+      <Weather isStormy={storm}/>
       <Container
         display="flex"
         p={2}
@@ -73,6 +78,7 @@ const NavBar = (props: { path: any }) => {
         alignSelf="center"
         justifyContent={"space-between"}
       >
+        
         <Flex flex={{ base: 3, md: 1 }} align="center" mr={5}>
           <Heading as="h1" size="lg" letterSpacing={"tighter"}>
             <Logo />
@@ -128,7 +134,9 @@ const NavBar = (props: { path: any }) => {
           display={{ base: "flex" }}
           justifyContent="right"
           mr={2.5}
+          gap={1.5}
         >
+          <StormToggle storm={storm} toggleStorm={() => toggleStorm(!storm)} />
           <ThemeToggleButton />
           <Box flex={1} ml={2} display={{ base: "inline-block", md: "none" }}>
             <Menu>
