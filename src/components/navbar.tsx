@@ -65,10 +65,10 @@ const NavBar = (props: { path: any }) => {
       w="100%"
       bg={useColorModeValue("whiteAlpha.500", "#20202380")}
       style={{
-        backdropFilter: "blur(10px)",
+        backdropFilter: storm ? 'none' : "blur(10px)",
         borderBottomColor: useColorModeValue("black", "white"),
         borderBottomWidth: 1,
-        transition: "background-color 800ms",
+        transition: "background-color 800ms, backdrop-filter 800ms"
       }}
       zIndex={20}
       {...props}
