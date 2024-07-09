@@ -55,6 +55,10 @@ const NavBar = (props: { path: any }) => {
   const { path } = props;
   const [storm, toggleStorm] = useState(false)
   return (
+    <div>
+      <div style={{position: 'fixed', top: 0, left: 0, zIndex: 0, width: '100%', opacity: 1111,}}>
+      <Weather isStormy={storm}/>
+      </div>
     <Box
       pos={"fixed"}
       as="nav"
@@ -69,7 +73,7 @@ const NavBar = (props: { path: any }) => {
       zIndex={20}
       {...props}
     >
-      <Weather isStormy={storm}/>
+    
       <Container
         display="flex"
         p={2}
@@ -171,6 +175,7 @@ const NavBar = (props: { path: any }) => {
         </Box>
       </Container>
     </Box>
+    </div>
   );
 };
 

@@ -85,7 +85,7 @@ export const TransitionCloud = ({isStormy = false}: CloudProps) => {
   useFrame(() => {
     cloudRef.current.position.x += movementSpeed
     cloudRef2.current.position.x += movementSpeed
-    if(opacitySet < 0.1) setOpacitySet(opacitySet + 0.01)
+    if(opacitySet < 1) setOpacitySet(opacitySet + 0.1)
     if(cloudRef.current.position.x > resetPosition) cloudRef.current.position.x = -resetPosition
     if(cloudRef2.current.position.x > resetPosition) cloudRef2.current.position.x = -resetPosition
   })
@@ -98,8 +98,10 @@ export const TransitionCloud = ({isStormy = false}: CloudProps) => {
     color={colorMode === "dark" ? darkModeColor : lightModeColor}
     position={[-8.95,4.5, 0]}
     segments={75}
-    scale={0.11}
-    volume={10}
+    scale={0.105}
+
+    volume={9}
+    renderOrder={9999}
   >
       {isStormy && <LightningS cloudRef={cloudRef} colorMode={colorMode}/>}
       {isStormy && <Rain darkMode={colorMode === "dark"} cloudRef={cloudRef}/>}
@@ -115,8 +117,9 @@ export const TransitionCloud = ({isStormy = false}: CloudProps) => {
     color={colorMode === "dark" ? darkModeColor : lightModeColor}
     position={[8.95, 4.5, 0]}
     segments={75}
-    scale={0.11}
-    volume={10}
+    scale={0.105}
+    volume={9}
+    renderOrder={9999}
   >
        {isStormy && viewport.width > 18 && <LightningS cloudRef={cloudRef2} colorMode={colorMode}/>}
        {isStormy && viewport.width > 18 && <Rain darkMode={colorMode === "dark"} cloudRef={cloudRef2}/>}
@@ -233,7 +236,7 @@ export const Weather = ({isStormy = false}: StormProps) => {
     gl={{
       powerPreference: "high-performance",
     }}
-      style={{ height: '500px', position: 'absolute', zIndex: -10 }}
+      style={{ height: '500px',  zIndex: 99990 }}
     >
       <OrthographicCamera makeDefault position={[0, 0, 10]} zoom={50} />
       <ambientLight intensity={2} />
