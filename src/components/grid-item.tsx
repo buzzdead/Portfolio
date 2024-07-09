@@ -29,7 +29,7 @@ export const GridItem = ({ children, href, title, thumbnail }: Props) => {
 
 export const ProjectGridItem = ({ children, id, title, thumbnail, hit = false}: Props) => {
     return (
-    <Box w="100%" textAlign="center" >
+    <Box zIndex={100} w="100%" textAlign="center" >
         <NextLink href={`/projects/${id}`}>
             <LinkBox className={hit ? 'burning-effect' : 'none'} cursor={"pointer"}>
                 <Image src={thumbnail} alt={title} className="grid-item-thumbnail" placeholder='blur'/>

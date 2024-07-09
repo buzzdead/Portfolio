@@ -66,7 +66,7 @@ const NavBar = (props: { path: any }) => {
         borderBottomWidth: 1,
         transition: "background-color 800ms",
       }}
-      zIndex={2}
+      zIndex={20}
       {...props}
     >
       <Weather isStormy={storm}/>
@@ -80,7 +80,7 @@ const NavBar = (props: { path: any }) => {
       >
         
         <Flex flex={{ base: 3, md: 1 }} align="center" mr={5}>
-          <Heading as="h1" size="lg" letterSpacing={"tighter"}>
+          <Heading userSelect={'none'} as="h1" size="lg" letterSpacing={"tighter"}>
             <Logo />
           </Heading>
         </Flex>
@@ -100,6 +100,7 @@ const NavBar = (props: { path: any }) => {
               transitionDuration={"800ms"}
               color={useColorModeValue("black", "white")}
               fontFamily={"body"}
+              userSelect={'none'}
             >
               Prosjekter
             </Text>
@@ -112,6 +113,7 @@ const NavBar = (props: { path: any }) => {
               transitionDuration={"800ms"}
               color={useColorModeValue("black", "white")}
               fontFamily={"body"}
+              userSelect={'none'}
             >
               Spill
             </Text>
@@ -124,6 +126,7 @@ const NavBar = (props: { path: any }) => {
               transitionDuration={"800ms"}
               color={useColorModeValue("black", "white")}
               fontFamily={"body"}
+              userSelect={'none'}
             >
               AI
             </Text>

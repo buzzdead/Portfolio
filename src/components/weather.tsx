@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Cloud, OrthographicCamera } from '@react-three/drei'
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useColorMode } from '@chakra-ui/react'
 import * as THREE from 'three'
 import { LightningStorm } from 'three-stdlib'
@@ -67,10 +67,10 @@ interface CloudProps {
   isStormy: boolean
 }
 
-export const TransitionCloud = ({isStormy}: CloudProps) => {
+export const TransitionCloud = ({isStormy = false}: CloudProps) => {
   const lightModeColor = new THREE.Color("#b2cbf2")
   const darkModeColor = new THREE.Color("grey")
-
+  const [opacitySet, setOpacitySet] = useState(0.0)
   const { colorMode } = useColorMode()
   const cloudRef = useRef<any>()
   const cloudRef2 = useRef<any>()
@@ -85,14 +85,14 @@ export const TransitionCloud = ({isStormy}: CloudProps) => {
   useFrame(() => {
     cloudRef.current.position.x += movementSpeed
     cloudRef2.current.position.x += movementSpeed
-    
+    if(opacitySet < 0.1) setOpacitySet(opacitySet + 0.01)
     if(cloudRef.current.position.x > resetPosition) cloudRef.current.position.x = -resetPosition
     if(cloudRef2.current.position.x > resetPosition) cloudRef2.current.position.x = -resetPosition
   })
   const cloud = useMemo(() => {
     return <Cloud
     ref={cloudRef}
-    opacity={0.1}
+    opacity={opacitySet}
     fade={10}
     speed={1.5}
     color={colorMode === "dark" ? darkModeColor : lightModeColor}
@@ -104,12 +104,12 @@ export const TransitionCloud = ({isStormy}: CloudProps) => {
       {isStormy && <LightningS cloudRef={cloudRef} colorMode={colorMode}/>}
       {isStormy && <Rain darkMode={colorMode === "dark"} cloudRef={cloudRef}/>}
   </Cloud>
-  }, [colorMode, isStormy])
+  }, [colorMode, isStormy, opacitySet])
 
   const cloud2 = useMemo(() => {
     return <Cloud
     ref={cloudRef2}
-    opacity={viewport.width > 18 ? 0.1 : 0}
+    opacity={viewport.width > 18 ? opacitySet : 0}
     fade={10}
     speed={1.5}
     color={colorMode === "dark" ? darkModeColor : lightModeColor}
@@ -121,7 +121,7 @@ export const TransitionCloud = ({isStormy}: CloudProps) => {
        {isStormy && viewport.width > 18 && <LightningS cloudRef={cloudRef2} colorMode={colorMode}/>}
        {isStormy && viewport.width > 18 && <Rain darkMode={colorMode === "dark"} cloudRef={cloudRef2}/>}
   </Cloud>
-  }, [colorMode, isStormy])
+  }, [colorMode, isStormy, opacitySet])
 
   return (
     <mesh>
@@ -223,15 +223,17 @@ const lightningMaterial = new THREE.ShaderMaterial({
   isStormy: boolean
  } 
 
-export const Weather = ({isStormy}: StormProps) => {
+export const Weather = ({isStormy = false}: StormProps) => {
     const cloud = useMemo(() => {
         return <TransitionCloud isStormy={isStormy} />
     }, [isStormy])
 
   return (
     <Canvas
+    gl={{
+      powerPreference: "high-performance",
+    }}
       style={{ height: '500px', position: 'absolute', zIndex: -10 }}
-      className={`w-full bg-transparent absolute`}
     >
       <OrthographicCamera makeDefault position={[0, 0, 10]} zoom={50} />
       <ambientLight intensity={2} />

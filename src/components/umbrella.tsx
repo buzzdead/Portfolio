@@ -1,52 +1,115 @@
-import React from 'react';
-import { IconButton, useColorModeValue } from '@chakra-ui/react';
+import React from 'react'
+import { IconButton, useColorModeValue } from '@chakra-ui/react'
 
 interface UmbrellaIconProps {
-  isStorm: boolean;
-  fontSize: string | number;
-  color: string;
+  isStorm: boolean
+  fontSize: string | number
+  color: string
 }
 
-const UmbrellaIcon: React.FC<UmbrellaIconProps> = ({ isStorm, fontSize, color }) => (
-  <svg width={fontSize} height={fontSize} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+const UmbrellaIcon: React.FC<UmbrellaIconProps> = ({
+  isStorm,
+  fontSize,
+  color
+}) => (
+  <svg
+    width={fontSize}
+    height={'40px'}
+    viewBox="0 0 125 125"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     {isStorm ? (
       <g>
-        <path d="M30 20 Q40 10 50 20 Q60 10 70 20 Q80 30 80 40 L80 50 L20 50 L20 40 Q20 30 30 20" fill="orange"/>
-    <path d="M50 50 L50 90" stroke="#2c3e50" stroke-width="6" stroke-linecap="round"/>
-    <path d="M50 80 C55 75, 60 80, 60 85" stroke="#2c3e50" stroke-width="4" stroke-linecap="round" fill="none"/>
-  
-    <path d="M25 25 Q20 20 25 15 Q30 10 35 15 Q40 5 50 10 Q60 5 65 15 Q70 10 75 15 Q80 20 75 25 Z" fill="#95a5a6"/>
-    
-    <path d="M30 55 L25 65 M40 55 L35 65 M50 55 L45 65 M60 55 L55 65 M70 55 L65 65" stroke="#3498db" stroke-width="2" stroke-linecap="round"/>
+        <path
+          fill="#6aa5ad"
+          d="M60.2 96.55l-.31-42.82l5.57.31l.31 44.83z"
+        ></path>
+        <path
+          d="M47.46 104.64c-3.27-.16-4.94 2.31-4.52 6.93c.42 4.62 3.14 11.63 12.6 11.45c10.92-.21 11.75-7.8 11.57-16.21c-.12-5.85 0-10.48-.31-10.69s-7.9-.41-8.32.01c-.42.42-.11 9.56-.21 11.76s.28 6.62-3.78 6.51c-3.15-.09-3.57-2.73-3.57-3.99c.01-1.25.74-5.56-3.46-5.77z"
+          fill="#3f7377"
+        ></path>
+        <path
+          d="M52.12 36.21l10.42-18.75s-20.55-2.54-38.8 11.63C.54 47.11 4.21 66.86 4.21 66.86s8.84-8.42 16.07-7.78s16.29 9.39 16.29 9.39l15.55-32.26z"
+          fill="#937ef3"
+        ></path>
+        <path
+          d="M65.06 23.21l-1.49-5.75s20.87-.23 36.42 9.96c26.73 17.52 23.78 37.08 23.78 37.08s-5.8-8.08-18.54-7.51s-17.4 11.94-17.4 11.94L65.06 23.21z"
+          fill="#5547f4"
+        ></path>
+        <path
+          d="M87.86 68.12S86.7 49 82.26 39.17c-8.1-17.95-19.25-21.42-19.25-21.42s-13.42 6.6-20.48 22.87s-5.85 27.76-5.85 27.76s10.86-12.41 26.67-10.7s24.51 10.44 24.51 10.44z"
+          fill="#6e62ed"
+        ></path>
+        <path
+          d="M59.11 18.23c-.14-.55-.02-7.9-.07-9.48c-.07-2.34 1.92-3.83 3.71-3.78c2.34.07 3.16 2.13 3.23 3.57s.08 9.52.07 9.62c-.09.84-1.32 1.64-3.5 1.65c-1.59 0-3.25-.82-3.44-1.58z"
+          fill="#6ca4ab"
+        ></path>
+        <path
+          d="M87.79 70.59c1.64-.1 8.19-11.36 18.47-11.26c13.95.14 15.75 7.39 17.21 6.64c1.61-.82-.76-3.83-2.87-6.01c-2.98-3.08-7.75-4.94-15.16-4.46c-10.79.7-17.75 10.27-17.75 10.27s-9.2-10.04-25.33-10.04c-15.6 0-25.67 11.1-25.67 11.1s-5.1-9.02-17.51-9.24c-10.96-.18-15.7 8.65-14.93 9.42c.77.77 6.61-6.23 14.8-5.88c11.26.48 15.2 9.89 17.36 9.94c2.15.05 10.56-11.3 26.15-11.03c16.74.29 23.69 10.65 25.23 10.55z"
+          fill="#004dae"
+        ></path>
       </g>
     ) : (
       <g>
-       <path d="M50 10 C20 10 10 50 10 50 L90 50 C90 50 80 10 50 10 Z" fill="#bdc3c7"/>
-    <path d="M50 50 L50 90" stroke="#7f8c8d" stroke-width="6" stroke-linecap="round"/>
-    <path d="M50 80 C55 75, 60 80, 60 85" stroke="#7f8c8d" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path
+          fill="black"
+          d="M60.2 96.55l-.31-42.82l5.57.31l.31 44.83z"
+        ></path>
+        <path
+          d="M47.46 104.64c-3.27-.16-4.94 2.31-4.52 6.93c.42 4.62 3.14 11.63 12.6 11.45c10.92-.21 11.75-7.8 11.57-16.21c-.12-5.85 0-10.48-.31-10.69s-7.9-.41-8.32.01c-.42.42-.11 9.56-.21 11.76s.28 6.62-3.78 6.51c-3.15-.09-3.57-2.73-3.57-3.99c.01-1.25.74-5.56-3.46-5.77z"
+          fill="black"
+        ></path>
+        <path
+          d="M52.12 36.21l10.42-18.75s-20.55-2.54-38.8 11.63C.54 47.11 4.21 66.86 4.21 66.86s8.84-8.42 16.07-7.78s16.29 9.39 16.29 9.39l15.55-32.26z"
+          fill="white"
+        ></path>
+        <path
+          d="M65.06 23.21l-1.49-5.75s20.87-.23 36.42 9.96c26.73 17.52 23.78 37.08 23.78 37.08s-5.8-8.08-18.54-7.51s-17.4 11.94-17.4 11.94L65.06 23.21z"
+          fill="white"
+        ></path>
+        <path
+          d="M87.86 68.12S86.7 49 82.26 39.17c-8.1-17.95-19.25-21.42-19.25-21.42s-13.42 6.6-20.48 22.87s-5.85 27.76-5.85 27.76s10.86-12.41 26.67-10.7s24.51 10.44 24.51 10.44z"
+          fill="white"
+        ></path>
+        <path
+          d="M59.11 18.23c-.14-.55-.02-7.9-.07-9.48c-.07-2.34 1.92-3.83 3.71-3.78c2.34.07 3.16 2.13 3.23 3.57s.08 9.52.07 9.62c-.09.84-1.32 1.64-3.5 1.65c-1.59 0-3.25-.82-3.44-1.58z"
+          fill="black"
+        ></path>
+        <path
+          d="M87.79 70.59c1.64-.1 8.19-11.36 18.47-11.26c13.95.14 15.75 7.39 17.21 6.64c1.61-.82-.76-3.83-2.87-6.01c-2.98-3.08-7.75-4.94-15.16-4.46c-10.79.7-17.75 10.27-17.75 10.27s-9.2-10.04-25.33-10.04c-15.6 0-25.67 11.1-25.67 11.1s-5.1-9.02-17.51-9.24c-10.96-.18-15.7 8.65-14.93 9.42c.77.77 6.61-6.23 14.8-5.88c11.26.48 15.2 9.89 17.36 9.94c2.15.05 10.56-11.3 26.15-11.03c16.74.29 23.69 10.65 25.23 10.55z"
+          fill="black"
+        ></path>
       </g>
     )}
   </svg>
-);
+)
 
 interface StormToggleProps {
-    storm: boolean;
-    toggleStorm: () => void;
-    fontSize?: string | number;
+  storm: boolean
+  toggleStorm: () => void
+  fontSize?: string | number
 }
 
-const StormToggle: React.FC<StormToggleProps> = ({ storm, toggleStorm, fontSize = '2xl' }) => {
-  const iconColor = storm ? 'blue.300' : useColorModeValue('blue.500', 'gray.200');
+const StormToggle: React.FC<StormToggleProps> = ({
+  storm,
+  toggleStorm,
+  fontSize = '30px'
+}) => {
+  const iconColor = storm
+    ? 'blue.300'
+    : useColorModeValue('blue.500', 'gray.200')
 
   return (
     <IconButton
       aria-label="Toggle storm"
       size={'md'}
-      colorScheme={useColorModeValue("blue", "gray")}
-      icon={<UmbrellaIcon isStorm={storm} fontSize={fontSize} color={iconColor} />}
+      colorScheme={useColorModeValue('blue', 'gray')}
+      icon={
+        <UmbrellaIcon isStorm={storm} fontSize={fontSize} color={iconColor} />
+      }
       onClick={toggleStorm}
     />
-  );
-};
+  )
+}
 
-export default StormToggle;
+export default StormToggle

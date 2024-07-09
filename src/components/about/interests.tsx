@@ -10,10 +10,11 @@ export const Interests = () => {
         letterSpacing={0.5}
         as="h3"
         variant="section-title"
+        userSelect={'none'}
       >
         Interesser
       </Heading>
-      <Paragraph>
+      <Paragraph >
         Musikk, Programmering, Trening, Gå tur, Spill, Teknologi
       </Paragraph>
     </Section>

@@ -12,8 +12,9 @@ export const About = () => {
         letterSpacing={0.5}
         as="h3"
         variant="section-title"
+        userSelect={'none'}
       >
-        <Box alignItems={'center'} flexDir={'column'} display="flex" gap={8}>
+        <Box userSelect={'none'} alignItems={'center'} flexDir={'column'} display="flex" gap={8}>
           <Image
             borderColor="whiteAlpha.800"
             borderWidth={2}
@@ -27,7 +28,7 @@ export const About = () => {
         </Box>
         Om
       </Heading>
-      <Paragraph as={'div'}>
+      <Paragraph style={{userSelect: 'none'}} as={'div'}>
         Sigmund er en utvikler bosatt i Bergen som er glad i å utvikle nyttige
         applikasjoner. Med bred erfaring innen alt fra datasikkerhet,
         optimalisering og diverse rammeverk så er han største interesse

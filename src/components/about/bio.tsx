@@ -26,11 +26,13 @@ const bio: BioType[] = [
 const BioSection = styled(Box)`
   padding-left: 3.4em;
   text-indent: -3.4em;
+  user-select: none;
 `
 
 const BioYear = styled.span`
   font-weight: bold;
   margin-right: 1em;
+  user-select: none;
 `
 
 interface Props {
@@ -54,6 +56,7 @@ export const Bio = () => {
         letterSpacing={0.5}
         as="h3"
         variant="section-title"
+        userSelect={'none'}
       >
         Bio
       </Heading>

@@ -31,10 +31,11 @@ const Page = () => {
               className={state.hitName ? 'burning-effect' : 'none'}
               as="h2"
               variant="page-title"
+              userSelect={'none'}
             >
               Sigmund Volden
             </Heading>
-            <p>App utvikler (Frontend, Backend)</p>
+            <p style={{userSelect: 'none'}}>App utvikler (Frontend, Backend)</p>
           </Box>
           <Box
             flexShrink={0}
