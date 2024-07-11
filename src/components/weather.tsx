@@ -4,6 +4,8 @@ import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import { useColorMode } from '@chakra-ui/react'
 import * as THREE from 'three'
 import { LightningStorm } from 'three-stdlib'
+import ThreeScene2 from '../components/three/three'
+import { Dragon } from './three/dragon'
 
 interface RainProps {
     cloudRef: any
@@ -51,8 +53,8 @@ const Rain = ({ cloudRef, darkMode, umbrellaMesh, resetRain }: RainProps) => {
 
           // Calculate umbrella bounding box
           
-          const umbrellaBox = umbrellaMesh ? new THREE.Box3().setFromObject(umbrellaMesh) : null
-
+          const umbrellaBox = umbrellaMesh ? new THREE.Box3().setFromObject(umbrellaMesh) : null;
+          
           for (let i = 0; i < count * 3; i += 3) {
             positions[i + 1] += velocities[i + 1]
 
@@ -60,10 +62,10 @@ const Rain = ({ cloudRef, darkMode, umbrellaMesh, resetRain }: RainProps) => {
               // Check if the raindrop is within the umbrella bounding box
               const localPosition = new THREE.Vector3(positions[i], positions[i + 1], positions[i + 2])
               const worldPosition = rainRef.current.localToWorld(localPosition)
-
-
+            
+              worldPosition.z -= 9
               // Check if the raindrop is within the umbrella bounding box
-              if (umbrellaBox && umbrellaBox.containsPoint(worldPosition)) {
+              if (umbrellaBox && (umbrellaBox.containsPoint(worldPosition))) {
                   positions[i + 1] = umbrellaBox.max.y // Position it at the top of the umbrella
                   if(!timer.current) { timer.current = true; setTimeout(() => {timer.current = false; resetIt(!it)}, 5500 ) }
               }
@@ -255,40 +257,49 @@ const lightningMaterial = new THREE.ShaderMaterial({
 
  interface StormProps {
   isStormy: boolean
+  pageRef: any
  } 
 
-export const Weather = ({isStormy = false}: StormProps) => {
+export const Weather = ({isStormy = false, pageRef}: StormProps) => {
   const umbrellaRef = useRef<THREE.Mesh>(null)
     const cloud = useMemo(() => {
         return <TransitionCloud umbrellaMesh={umbrellaRef.current} isStormy={isStormy} />
     }, [isStormy])
 
   return (
-    <Canvas
+    <div>
+      <div style={{position: 'fixed', top: 0, left: 0, zIndex: 0, width: '100%', opacity: 1111}}>
+      <Canvas
     gl={{
       powerPreference: "high-performance",
     }}
       style={{ height: '500px',}}
     >
-      
       <OrthographicCamera makeDefault position={[0, 0, 10]} zoom={50} />
-      <ambientLight intensity={2} />
-      
+      <directionalLight position={[1, 1, 2]} intensity={2} />
+      <ambientLight intensity={.251} />
+      {//<Umbrella ref={umbrellaRef} isStormy={isStormy} />
+      }
+      <group position={[0, 2.75, 0]} scale={0.5}>
+      <Dragon isStormy={isStormy} umbrellaRef={umbrellaRef} pageRef={pageRef} />
+      </group>
 {cloud}
-    <Umbrella isStormy={isStormy} ref={umbrellaRef} />
+        
+      
     </Canvas>
+    </div>    
+    </div>
   )
 }
 
 interface UmbrellaProps {
   isStormy: boolean
 }
-const Umbrella = forwardRef<THREE.Mesh, UmbrellaProps>(({ isStormy }, ref) => {
+export const Umbrella = forwardRef<THREE.Mesh, UmbrellaProps>(({ isStormy }, ref) => {
   const { scene } = useGLTF('./umbrella.glb')
 
   useEffect(() => {
     if (scene) {
-      scene.scale.set(1.5, 1.5, 1.5)
       scene.traverse((child) => {
         if (child instanceof THREE.Mesh) {
           child.geometry.computeBoundingBox()
@@ -308,8 +319,8 @@ const Umbrella = forwardRef<THREE.Mesh, UmbrellaProps>(({ isStormy }, ref) => {
   }, [isStormy, scene])
 
   return (
-    <mesh ref={ref} position={[0.25, 2.5, 0]}>
-      <primitive object={scene} />
+    <mesh ref={ref} >
+      <primitive object={scene}  scale={5} position={[0.5, 2.5, 2.5]}/>
     </mesh>
   )
 })

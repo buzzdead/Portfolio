@@ -19,7 +19,7 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import ThemeToggleButton from "./themeButton";
 import { Weather } from "./weather";
 import StormToggle from "./umbrella";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface Props {
   href: string;
@@ -53,12 +53,12 @@ const LinkItem = ({ href, path, children }: Props) => {
 
 const NavBar = (props: { path: any }) => {
   const { path } = props;
+  const pagePath = useRef(path)
   const [storm, toggleStorm] = useState(false)
   return (
     <div>
-      <div style={{position: 'fixed', top: 0, left: 0, zIndex: 0, width: '100%', opacity: 1111}}>
-      <Weather isStormy={storm}/>
-      </div>
+      <Weather pageRef={path} isStormy={storm}/>
+      
     <Box
       pos={"fixed"}
       as="nav"
@@ -175,6 +175,7 @@ const NavBar = (props: { path: any }) => {
         </Box>
       </Container>
     </Box>
+    <Box height={175}/>
     </div>
   );
 };

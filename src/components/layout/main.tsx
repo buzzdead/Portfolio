@@ -28,7 +28,6 @@ const Main = ({ children, router }: MainProps) => {
       default: return 'Spill';
     }
   };
-
   return (
     <Box as='main' pb={8}>
       <Head>
@@ -43,7 +42,7 @@ const Main = ({ children, router }: MainProps) => {
       <Container maxW={{ base: 'container.md', lg: 'container.lg' }} pt={14}>
         <ThreeSceneProvider>
         <SolarSystemProvider>
-          <ThreeScene2 pageRef={pagePath} />
+        
           {children}
           </SolarSystemProvider>
         </ThreeSceneProvider>

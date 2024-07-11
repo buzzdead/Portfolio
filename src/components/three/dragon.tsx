@@ -3,27 +3,31 @@ import { useGLTF, useAnimations } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { AnimationActionLoopStyles } from 'three'
 import { initialState, useThreeScene } from './threeprovider'
+import { Umbrella } from '../weather'
 
 type Tuple = [number, number, number]
 
 interface Props {
   pageRef: string
+  isStormy: boolean
+  umbrellaRef: any
 }
 
-export function Dragon({ pageRef }: Props) {
+export function Dragon({ pageRef, isStormy, umbrellaRef }: Props) {
   const { state, setState } = useThreeScene()
 
   const [oldPage, setOldPage] = useState('/')
   const ref = useRef<THREE.Mesh>(null)
   const [modelPosition, setModelPosition] = useState({
     pos: [0, 0, 0],
-    scale: [0, 0, 0]
+    scale: [1,1,1]
   })
   const rotateTimeOut = useRef<NodeJS.Timeout>()
   const lastTouchX = useRef(0)
   const { scene, animations } = useGLTF('./young-red-dragon.glb')
   const flappingTimeout = useRef<NodeJS.Timeout>()
   scene.scale.set(0.4, 0.4, 0.4)
+  scene.position.set(0, -0.75, 0)
 
   const { actions } = useAnimations(animations, ref)
   const onDoubleClick = () => {
@@ -149,6 +153,10 @@ export function Dragon({ pageRef }: Props) {
   }
 
   useFrame(() => {
+    const scrollY = window.scrollY * 0.038 - 2.25 // Adjust the multiplier as needed
+    if(ref.current) {
+      ref.current.position.y = scrollY
+    }
     if (oldPage !== pageRef) {
       actions['wings']?.stop()
       playActionOnce('flying', () => createFlappingTimeout())
@@ -172,7 +180,9 @@ export function Dragon({ pageRef }: Props) {
       rotation={[0, 0, 0]}
       ref={ref}
     >
-      <primitive object={scene} />
+      <primitive object={scene}>
+      <Umbrella isStormy={isStormy} ref={umbrellaRef} />
+      </primitive>
     </mesh>
   )
 }
