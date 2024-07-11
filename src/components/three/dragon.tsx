@@ -23,7 +23,7 @@ export function Dragon({ pageRef }: Props) {
   const lastTouchX = useRef(0)
   const { scene, animations } = useGLTF('./young-red-dragon.glb')
   const flappingTimeout = useRef<NodeJS.Timeout>()
-  scene.scale.set(0.5, 0.5, 0.5)
+  scene.scale.set(0.4, 0.4, 0.4)
 
   const { actions } = useAnimations(animations, ref)
   const onDoubleClick = () => {

@@ -56,7 +56,7 @@ const NavBar = (props: { path: any }) => {
   const [storm, toggleStorm] = useState(false)
   return (
     <div>
-      <div style={{position: 'fixed', top: 0, left: 0, zIndex: 0, width: '100%', opacity: 1111,}}>
+      <div style={{position: 'fixed', top: 0, left: 0, zIndex: 0, width: '100%', opacity: 1111}}>
       <Weather isStormy={storm}/>
       </div>
     <Box

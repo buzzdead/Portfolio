@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Cloud, OrthographicCamera } from '@react-three/drei'
-import { useMemo, useRef, useState } from 'react'
+import { Cloud, OrthographicCamera, useGLTF } from '@react-three/drei'
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import { useColorMode } from '@chakra-ui/react'
 import * as THREE from 'three'
 import { LightningStorm } from 'three-stdlib'
@@ -8,69 +8,100 @@ import { LightningStorm } from 'three-stdlib'
 interface RainProps {
     cloudRef: any
     darkMode: boolean
+    umbrellaMesh: THREE.Mesh | null
+    resetRain: boolean
 }
 
-const Rain = ({ cloudRef, darkMode }: RainProps) => {
-    const rainRef = useRef<any>()
-    const count = 1000
-  
-    const rainGeometry = useMemo(() => {
+const Rain = ({ cloudRef, darkMode, umbrellaMesh, resetRain }: RainProps) => {
+  const rainRef = useRef<any>()
+  const count = 1500
+  const [it, resetIt] = useState(false)
+  const timer = useRef(false)
+
+  const rainGeometry = useMemo(() => {
       const geometry = new THREE.BufferGeometry()
       const positions = []
       const velocities = []
-  
+
       for (let i = 0; i < count; i++) {
-        positions.push(
-          (Math.random() - 0.5) * 2, // x
-          Math.random() * 100,         // y
-          (Math.random() - 0.5) * 2  // z
-        )
-        velocities.push(0,- 0.1, 0) // y-velocity
+          positions.push(
+              (Math.random() - 0.5) * 2, // x
+              Math.random() * 100,       // y
+              (Math.random() - 0.5) * 2  // z
+          )
+          velocities.push(0, -0.1, 0) // y-velocity
       }
-  
+
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
       geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3))
       return geometry
-    }, [count])
-  
-    const rainMaterial = new THREE.PointsMaterial({
-        color: 0xaaaaaa,
-        size: 1.5,
-        transparent: true,
-        opacity: darkMode ? 0.5 : 1
-    })
-  
-    useFrame(() => {
+  }, [count, resetRain, it])
+
+  const rainMaterial = new THREE.PointsMaterial({
+      color: 0xaaaaaa,
+      size: 1.5,
+      transparent: true,
+      opacity: darkMode ? 0.5 : 1
+  })
+
+  useFrame(() => {
       if (rainRef.current) {
-        const positions = rainRef.current.geometry.attributes.position.array
-        const velocities = rainRef.current.geometry.attributes.velocity.array
-  
-        for (let i = 0; i < count * 3; i += 3) {
-          positions[i + 1] += velocities[i + 1]
-          if (positions[i + 1] < 0) {
-            positions[i + 1] = 100
+          const positions = rainRef.current.geometry.attributes.position.array
+          const velocities = rainRef.current.geometry.attributes.velocity.array
+
+          // Calculate umbrella bounding box
+          
+          const umbrellaBox = umbrellaMesh ? new THREE.Box3().setFromObject(umbrellaMesh) : null
+
+          for (let i = 0; i < count * 3; i += 3) {
+            positions[i + 1] += velocities[i + 1]
+
+
+              // Check if the raindrop is within the umbrella bounding box
+              const localPosition = new THREE.Vector3(positions[i], positions[i + 1], positions[i + 2])
+              const worldPosition = rainRef.current.localToWorld(localPosition)
+
+
+              // Check if the raindrop is within the umbrella bounding box
+              if (umbrellaBox && umbrellaBox.containsPoint(worldPosition)) {
+                  positions[i + 1] = umbrellaBox.max.y // Position it at the top of the umbrella
+                  if(!timer.current) { timer.current = true; setTimeout(() => {timer.current = false; resetIt(!it)}, 5500 ) }
+              }
+              
+
+              if (positions[i + 1] < timer.current ? 10 : 0) {
+                  positions[i + 1] = 99.5
+                  positions[i] = (Math.random() - 0.5) * 2
+                  positions[i + 2] = (Math.random() - 0.5) * 2
+              }
           }
-        }
-  
-        rainRef.current.geometry.attributes.position.needsUpdate = true
+
+          rainRef.current.geometry.attributes.position.needsUpdate = true
+          rainRef.current.geometry.attributes.velocity.needsUpdate = true
       }
-    })
-  
-    return (
-      <mesh scale={5}><points ref={rainRef} geometry={rainGeometry} material={rainMaterial} position={new THREE.Vector3(0, -100, 0) ||  cloudRef?.current?.position || new THREE.Vector3(0,0,0)} /></mesh>
-    )
-  }
-  
-  export default Rain
+  })
+
+  return (
+      <mesh scale={5}>
+          <points ref={rainRef} geometry={rainGeometry} material={rainMaterial} position={new THREE.Vector3(0, -100, 0)} />
+      </mesh>
+  )
+}
+
+export default Rain
+
 
 interface CloudProps {
   isStormy: boolean
+  umbrellaMesh: THREE.Mesh | null
 }
 
-export const TransitionCloud = ({isStormy = false}: CloudProps) => {
+export const TransitionCloud = ({isStormy = false, umbrellaMesh}: CloudProps) => {
   const lightModeColor = new THREE.Color("#b2cbf2")
   const darkModeColor = new THREE.Color("grey")
   const [opacitySet, setOpacitySet] = useState(0.0)
+  const [reset, setReset] = useState(false)
+  const [reset2, setReset2] = useState(false)
   const { colorMode } = useColorMode()
   const cloudRef = useRef<any>()
   const cloudRef2 = useRef<any>()
@@ -86,8 +117,8 @@ export const TransitionCloud = ({isStormy = false}: CloudProps) => {
     cloudRef.current.position.x += movementSpeed
     cloudRef2.current.position.x += movementSpeed
     if(opacitySet < 1) setOpacitySet(opacitySet + 0.1)
-    if(cloudRef.current.position.x > resetPosition) cloudRef.current.position.x = -resetPosition
-    if(cloudRef2.current.position.x > resetPosition) cloudRef2.current.position.x = -resetPosition
+    if(cloudRef.current.position.x > resetPosition) {cloudRef.current.position.x = -resetPosition; setReset(!reset)}
+    if(cloudRef2.current.position.x > resetPosition) {cloudRef2.current.position.x = -resetPosition; setReset2(!reset2)}
   })
   const cloud = useMemo(() => {
     return <Cloud
@@ -104,9 +135,9 @@ export const TransitionCloud = ({isStormy = false}: CloudProps) => {
     renderOrder={9999}
   >
       {isStormy && <LightningS cloudRef={cloudRef} colorMode={colorMode}/>}
-      {isStormy && <Rain darkMode={colorMode === "dark"} cloudRef={cloudRef}/>}
+      {isStormy && <Rain resetRain={reset} umbrellaMesh={umbrellaMesh} darkMode={colorMode === "dark"} cloudRef={cloudRef}/>}
   </Cloud>
-  }, [colorMode, isStormy, opacitySet])
+  }, [colorMode, isStormy, opacitySet, reset])
 
   const cloud2 = useMemo(() => {
     return <Cloud
@@ -122,9 +153,9 @@ export const TransitionCloud = ({isStormy = false}: CloudProps) => {
     renderOrder={9999}
   >
        {isStormy && viewport.width > 18 && <LightningS cloudRef={cloudRef2} colorMode={colorMode}/>}
-       {isStormy && viewport.width > 18 && <Rain darkMode={colorMode === "dark"} cloudRef={cloudRef2}/>}
+       {isStormy && viewport.width > 18 && <Rain resetRain={reset2} umbrellaMesh={umbrellaMesh} darkMode={colorMode === "dark"} cloudRef={cloudRef2}/>}
   </Cloud>
-  }, [colorMode, isStormy, opacitySet])
+  }, [colorMode, isStormy, opacitySet, reset2])
 
   return (
     <mesh>
@@ -168,7 +199,7 @@ const lightningMaterial = new THREE.ShaderMaterial({
     uniforms: {
       time: { value: 0 },
       color1: { value: new THREE.Color(colorMode === "dark" ? 'white' : '#f7d5d5') }, // Start color
-      color2: { value: new THREE.Color(colorMode === "dark" ? '#f2eab8' : '#f2d2a2') }  // End color
+      color2: { value: new THREE.Color(colorMode === "dark" ? 'orange' : '#f2d2a2') }  // End color
     }
   });
     const lightningRef = useRef<any>()
@@ -227,8 +258,9 @@ const lightningMaterial = new THREE.ShaderMaterial({
  } 
 
 export const Weather = ({isStormy = false}: StormProps) => {
+  const umbrellaRef = useRef<THREE.Mesh>(null)
     const cloud = useMemo(() => {
-        return <TransitionCloud isStormy={isStormy} />
+        return <TransitionCloud umbrellaMesh={umbrellaRef.current} isStormy={isStormy} />
     }, [isStormy])
 
   return (
@@ -236,11 +268,51 @@ export const Weather = ({isStormy = false}: StormProps) => {
     gl={{
       powerPreference: "high-performance",
     }}
-      style={{ height: '500px',  zIndex: 99990 }}
+      style={{ height: '500px',}}
     >
+      
       <OrthographicCamera makeDefault position={[0, 0, 10]} zoom={50} />
       <ambientLight intensity={2} />
-      {cloud}
+      
+{cloud}
+    <Umbrella isStormy={isStormy} ref={umbrellaRef} />
     </Canvas>
   )
 }
+
+interface UmbrellaProps {
+  isStormy: boolean
+}
+const Umbrella = forwardRef<THREE.Mesh, UmbrellaProps>(({ isStormy }, ref) => {
+  const { scene } = useGLTF('./umbrella.glb')
+
+  useEffect(() => {
+    if (scene) {
+      scene.scale.set(1.5, 1.5, 1.5)
+      scene.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.geometry.computeBoundingBox()
+        }
+      })
+    }
+  }, [scene])
+
+  useEffect(() => {
+    if (scene) {
+      scene.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.visible = isStormy
+        }
+      })
+    }
+  }, [isStormy, scene])
+
+  return (
+    <mesh ref={ref} position={[0.25, 2.5, 0]}>
+      <primitive object={scene} />
+    </mesh>
+  )
+})
+
+
+Umbrella.displayName = 'Umbrella'
