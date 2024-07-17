@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Cloud, OrthographicCamera, useGLTF } from '@react-three/drei'
+import { Cloud, OrthographicCamera, useAnimations, useGLTF } from '@react-three/drei'
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import { useColorMode } from '@chakra-ui/react'
 import * as THREE from 'three'
@@ -54,9 +54,13 @@ const Rain = ({ cloudRef, darkMode, umbrellaMesh, resetRain }: RainProps) => {
           // Calculate umbrella bounding box
           
           const umbrellaBox = umbrellaMesh ? new THREE.Box3().setFromObject(umbrellaMesh) : null;
-          
+          if(umbrellaBox)
+          {
+            umbrellaBox.max.x -= 0.3
+          umbrellaBox.min.x += 0.3
+          }
           for (let i = 0; i < count * 3; i += 3) {
-            positions[i + 1] += velocities[i + 1]
+            
 
 
               // Check if the raindrop is within the umbrella bounding box
@@ -64,11 +68,17 @@ const Rain = ({ cloudRef, darkMode, umbrellaMesh, resetRain }: RainProps) => {
               const worldPosition = rainRef.current.localToWorld(localPosition)
             
               worldPosition.z -= 9
+              
               // Check if the raindrop is within the umbrella bounding box
               if (umbrellaBox && (umbrellaBox.containsPoint(worldPosition))) {
-                  positions[i + 1] = umbrellaBox.max.y // Position it at the top of the umbrella
-                  if(!timer.current) { timer.current = true; setTimeout(() => {timer.current = false; resetIt(!it)}, 5500 ) }
+                if(positions[i + 1] < 98.5) positions[i + 1] = 0
+                  positions[i + 1] += -0.001 // Position it at the top of the umbrella
+                  const left = Math.random() > 0.5
+                  positions[i] += left ? 0.05 : -0.05
+
+                  if(!timer.current) { timer.current = true; setTimeout(() => {timer.current = false; resetIt(!it)}, 7500 ) }
               }
+              else positions[i + 1] += velocities[i + 1]
               
 
               if (positions[i + 1] < timer.current ? 10 : 0) {
@@ -276,7 +286,7 @@ export const Weather = ({isStormy = false, pageRef}: StormProps) => {
       style={{ height: '500px',}}
     >
       <OrthographicCamera makeDefault position={[0, 0, 10]} zoom={50} />
-      <directionalLight position={[1, 1, 2]} intensity={2} />
+      <directionalLight position={[1, 1, 2]} intensity={1.25} />
       <ambientLight intensity={.251} />
       {//<Umbrella ref={umbrellaRef} isStormy={isStormy} />
       }
@@ -296,32 +306,88 @@ interface UmbrellaProps {
   isStormy: boolean
 }
 export const Umbrella = forwardRef<THREE.Mesh, UmbrellaProps>(({ isStormy }, ref) => {
-  const { scene } = useGLTF('./umbrella.glb')
+  const { scene, animations } = useGLTF('./umbrella2.glb')
+  const [done, setDone] = useState(false)
+  const open = useRef(false)
+  const closedRef = useRef(false)
+  const brellaOpened = useRef(false)
+ 
+  const { actions } = useAnimations(animations, ref as any)
 
   useEffect(() => {
     if (scene) {
       scene.traverse((child) => {
         if (child instanceof THREE.Mesh) {
-          child.geometry.computeBoundingBox()
+          if (!done && child.material) {
+     
+            // Increase the material's emissive property to make it brighter
+           
+            // Make sure the material responds to light
+          
+
+            child.material.color.multiplyScalar(11.5)
+
+            child.material.needsUpdate = true;
+            console.log(child.material)
+            setDone(true)
+          }
+
         }
       })
     }
   }, [scene])
 
-  useEffect(() => {
-    if (scene) {
-      scene.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          child.visible = isStormy
-        }
-      })
+  useFrame(() => {
+    if(!brellaOpened.current) {
+      handleStorm()
+      brellaOpened.current = true
     }
-  }, [isStormy, scene])
+    if(isStormy && !open.current) {
+      if(ref && 'current' in ref && ref.current) {  
+        ref.current.scale.multiplyScalar(1.045)
+        if(ref.current.scale.x >= 5) {
+          open.current = true
+          
+          setTimeout(() => handleStorm(), 1)
+          
+        }
+      }
+    }
+    else if (!isStormy && open.current) {
+      if(!closedRef.current) {
+        closedRef.current = true
+        handleStorm()
+      }
+      if(ref && 'current' in ref && ref.current) {
+        ref.current.scale.multiplyScalar(0.97)
+        if(ref.current.scale.x <= 1) {
+          open.current = false
+          closedRef.current = false
+        }
+      }
+    }
+    if(ref && 'current' in ref && ref.current) {
+      const box1 = new THREE.Box3().setFromObject(ref.current)
+    }
+  })
+
+  const handleStorm = () => {
+    const stopAction = isStormy ? actions["Close"] : actions["Open"]
+    stopAction?.stop()
+    const action = isStormy ? actions["Open"] : actions["Close"]
+    if(!action) return
+    action.weight = 1;
+    action.timeScale = 17.5
+    action.setLoop(2200 as THREE.AnimationActionLoopStyles, 1);
+    action.clampWhenFinished = true;
+    action.zeroSlopeAtStart = true
+    action.zeroSlopeAtEnd
+    action.play();
+    
+  }
 
   return (
-    <mesh ref={ref} >
-      <primitive object={scene}  scale={5} position={[0.5, 2.5, 2.5]}/>
-    </mesh>
+      <primitive ref={ref} scale={1} position={[0.5, 2.85, 2.5]}  object={scene} />
   )
 })
 
