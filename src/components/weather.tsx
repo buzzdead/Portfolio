@@ -128,7 +128,8 @@ export const TransitionCloud = ({isStormy = false, umbrellaMesh}: CloudProps) =>
   useFrame(() => {
     cloudRef.current.position.x += movementSpeed
     cloudRef2.current.position.x += movementSpeed
-    if(opacitySet < 1) setOpacitySet(opacitySet + 0.1)
+    if(opacitySet < 1 && isStormy) setOpacitySet(opacitySet + 0.025)
+      else if(!isStormy && opacitySet > 0.01) setOpacitySet(opacitySet - 0.025)
     if(cloudRef.current.position.x > resetPosition) {cloudRef.current.position.x = -resetPosition; setReset(!reset)}
     if(cloudRef2.current.position.x > resetPosition) {cloudRef2.current.position.x = -resetPosition; setReset2(!reset2)}
   })

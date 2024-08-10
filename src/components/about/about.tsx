@@ -29,10 +29,10 @@ export const About = () => {
         Om
       </Heading>
       <Paragraph style={{userSelect: 'none'}} as={'div'}>
-        Sigmund er en utvikler bosatt i Bergen som er glad i å utvikle nyttige
+        Hei, jeg er en utvikler bosatt i Bergen som er glad i å utvikle nyttige
         applikasjoner. Med bred erfaring innen alt fra datasikkerhet,
-        optimalisering og diverse rammeverk så er han største interesse
-        utvikling av React og React Native applikasjoner. For tiden holder han
+        optimalisering og diverse rammeverk så er min største interesse
+        utvikling av React og React Native applikasjoner. For tiden holder jeg
         på med et produkt kalt
         <NextLink
           style={{ position: 'absolute', marginLeft: 5 }}
