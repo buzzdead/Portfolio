@@ -48,6 +48,7 @@ export const Picture = ({
       mb={4}
       maxHeight={'300px'}
       objectFit={'cover'}
+      className={"hover:cursor-zoom-in duration-300"}
       onClick={handleOnClick}
     />
   );

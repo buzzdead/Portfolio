@@ -43,6 +43,10 @@ export const SolarSystemProvider = ({ children }: Props) => {
   )
 }
 
+const daysARoundSund = (days: number) => {
+  return days * 24 * 60 * 60
+}
+
 export const useSolarSystem = () => useContext(SolarSystemContext)
 
 export const planets: Planet[] = [

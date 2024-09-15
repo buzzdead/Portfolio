@@ -14,6 +14,7 @@ import ContactLink from '../components/contactlink'
 import { useThreeScene } from '../components/three/threeprovider'
 import { About } from '../components/about/about'
 import { Interests } from '../components/about/interests'
+import ExpButton from '../components/expbutton'
 
 const Page = () => {
   const { state } = useThreeScene()
@@ -49,13 +50,7 @@ const Page = () => {
           <Bio />
           <Box display="flex" justifyContent={'center'}>
             <NextLink href="/projects">
-              <Button
-                transitionDuration={'800ms'}
-                rightIcon={<ChevronRightIcon />}
-                colorScheme={useColorModeValue('blue', 'gray')}
-              >
-                Min portefølje
-              </Button>
+            <ExpButton />
             </NextLink>
           </Box>
           <Interests />

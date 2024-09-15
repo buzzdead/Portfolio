@@ -55,7 +55,7 @@ const ContactLink = ({ title, href, icon: Icon, size = 20, iconSize=35, color='i
     };
   }, []);
   return (
-    <StyledLink href={href}  isExternal target="_blank"  
+    <StyledLink className="hover:underline-offset-4 hover:underline" href={href}  isExternal target="_blank"  
 > 
       <Box css={{
       "@keyframes pulse": {
@@ -69,7 +69,7 @@ const ContactLink = ({ title, href, icon: Icon, size = 20, iconSize=35, color='i
       animation: shouldAnimate ? "pulse 0.5s ease" : 'none',
       animationIterationCount: 2,
     }}>
-      <Icon color={color} size={iconSize} />
+      <Icon className="hover:scale-125 duration-500 ease-out"  color={color} size={iconSize} />
     </Box>
       
       <Text color={color} fontSize={size}>{title}</Text>
