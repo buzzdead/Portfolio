@@ -30,7 +30,7 @@ const WebcamCapture: React.FC<Props> = ({
   const [pictureUrl, setPictureUrl] = useState('');
   const [useBackCamera, setUseBackCamera] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [disabledByDate, setDisabledByDate] = useState(false)
+  const [disabledByDate, setDisabledByDate] = useState(true)
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
 
   useEffect(() => {

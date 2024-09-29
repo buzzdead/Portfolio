@@ -67,7 +67,7 @@ const Rain = ({ cloudRef, darkMode, umbrellaMesh, resetRain }: RainProps) => {
               const localPosition = new THREE.Vector3(positions[i], positions[i + 1], positions[i + 2])
               const worldPosition = rainRef.current.localToWorld(localPosition)
             
-              worldPosition.z -= 9
+              worldPosition.z -= 9.5
               
               // Check if the raindrop is within the umbrella bounding box
               if (umbrellaBox && (umbrellaBox.containsPoint(worldPosition))) {
@@ -291,7 +291,7 @@ export const Weather = ({isStormy = false, pageRef}: StormProps) => {
       <ambientLight intensity={.251} />
       {//<Umbrella ref={umbrellaRef} isStormy={isStormy} />
       }
-      <group position={[0, 2.75, 0]} scale={0.5}>
+      <group position={[0, 3, 0]} scale={0.5}>
       <Dragon isStormy={isStormy} umbrellaRef={umbrellaRef} pageRef={pageRef} />
       </group>
 {cloud}
@@ -320,19 +320,10 @@ export const Umbrella = forwardRef<THREE.Mesh, UmbrellaProps>(({ isStormy }, ref
       scene.traverse((child) => {
         if (child instanceof THREE.Mesh) {
           if (!done && child.material) {
-     
-            // Increase the material's emissive property to make it brighter
-           
-            // Make sure the material responds to light
-          
-
             child.material.color.multiplyScalar(11.5)
-
             child.material.needsUpdate = true;
-            console.log(child.material)
             setDone(true)
           }
-
         }
       })
     }

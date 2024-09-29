@@ -4,6 +4,7 @@ import { useFrame } from '@react-three/fiber'
 import { AnimationActionLoopStyles } from 'three'
 import { initialState, useThreeScene } from './threeprovider'
 import { Umbrella } from '../weather'
+import { easing } from 'maath'
 
 type Tuple = [number, number, number]
 
@@ -15,7 +16,8 @@ interface Props {
 
 export function Dragon({ pageRef, isStormy, umbrellaRef }: Props) {
   const { state, setState } = useThreeScene()
-
+  const isFlying = useRef(false)
+  let yDivergence = 0
   const [oldPage, setOldPage] = useState('/')
   const ref = useRef<THREE.Mesh>(null)
   const [modelPosition, setModelPosition] = useState({
@@ -122,7 +124,8 @@ export function Dragon({ pageRef, isStormy, umbrellaRef }: Props) {
   else{
     playActionOnce('wings', () => {
       createFlappingTimeout()
-    })}
+    })
+  }
   }
 
   const updateThreeState = () => {
@@ -154,12 +157,24 @@ export function Dragon({ pageRef, isStormy, umbrellaRef }: Props) {
 
   useFrame(() => {
     const scrollY = window.scrollY * 0.038 - 2.25 // Adjust the multiplier as needed
+    if(isFlying.current && yDivergence < 0.66) {
+      yDivergence += 0.025;
+      umbrellaRef.current.position.z += 0.01
+      umbrellaRef.current.position.y -= 0.025;
+    }
+    else if(!isFlying.current && yDivergence > 0) {
+      yDivergence -= 0.025
+      umbrellaRef.current.position.z -= 0.01
+      umbrellaRef.current.position.y += 0.025
+    }
     if(ref.current) {
       ref.current.position.y = scrollY
     }
     if (oldPage !== pageRef) {
       actions['wings']?.stop()
-      playActionOnce('flying', () => createFlappingTimeout())
+      isFlying.current = true
+      //umbrellaRef.current.position.y -= 0.661
+      playActionOnce('flying', () => {createFlappingTimeout(); isFlying.current = false})
       setOldPage(pageRef)
     }
     if (state.hitName || state.hitProject.left || state.hitProject.right) return
@@ -176,7 +191,7 @@ export function Dragon({ pageRef, isStormy, umbrellaRef }: Props) {
     <mesh
       onClick={onDoubleClick}
       position={modelPosition.pos as Tuple}
-      scale={modelPosition.scale as Tuple}
+      scale={1.5}
       rotation={[0, 0, 0]}
       ref={ref}
     >
