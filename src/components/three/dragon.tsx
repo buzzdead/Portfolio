@@ -17,6 +17,7 @@ interface Props {
 export function Dragon({ pageRef, isStormy, umbrellaRef }: Props) {
   const { state, setState } = useThreeScene()
   const isFlying = useRef(false)
+  const umbrellaRef2 = useRef<any>()
   let yDivergence = 0
   const [oldPage, setOldPage] = useState('/')
   const ref = useRef<THREE.Mesh>(null)
@@ -157,16 +158,16 @@ export function Dragon({ pageRef, isStormy, umbrellaRef }: Props) {
 
   useFrame(() => {
     const scrollY = window.scrollY * 0.038 - 2.25 // Adjust the multiplier as needed
-    if(isFlying.current && yDivergence < 0.66) {
+    if (isFlying.current && yDivergence < 0.66) {
       yDivergence += 0.025;
-      umbrellaRef.current.position.z += 0.01
-      umbrellaRef.current.position.y -= 0.025;
-    }
-    else if(!isFlying.current && yDivergence > 0) {
-      yDivergence -= 0.025
-      umbrellaRef.current.position.z -= 0.01
-      umbrellaRef.current.position.y += 0.025
-    }
+  } else if (!isFlying.current && yDivergence > 0) {
+      yDivergence -= 0.025;
+  }
+  
+  // Use yDivergence to set both z and y positions
+  umbrellaRef2.current.position.y = -yDivergence;   // y position is proportional to yDivergence
+  umbrellaRef2.current.position.z = yDivergence / 2.5;  // z position changes with yDivergence but at a smaller rate
+  
     if(ref.current) {
       ref.current.position.y = scrollY
     }
@@ -196,7 +197,9 @@ export function Dragon({ pageRef, isStormy, umbrellaRef }: Props) {
       ref={ref}
     >
       <primitive object={scene}>
+        <mesh ref={umbrellaRef2}>
       <Umbrella isStormy={isStormy} ref={umbrellaRef} />
+      </mesh>
       </primitive>
     </mesh>
   )
