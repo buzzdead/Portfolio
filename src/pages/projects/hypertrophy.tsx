@@ -29,7 +29,7 @@ const Hypertrophy = () => {
     title: "Hypertrophy",
     year: 2023,
     type: "App",
-    link: "https://play.google.com/store/apps/details?id=com.hypertrophy",
+    link: "https://github.com/buzzdead/Hypertrophy",
     description:
       "Treningsapp med muligheten til å konfigurere egne typer øvelser og kategorier. Legg enkelt til øvelser og følg dem i progresjons-taben.",
     stack: "React Native, TypeScript, Realm, Android Studio",
