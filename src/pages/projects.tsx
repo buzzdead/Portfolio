@@ -8,6 +8,7 @@ const thumbHypertrophy = require('../../public/images/hypertrophy/hypertrophy-ma
 const thumbElKomplett = require('../../public/images/elkomplett/homepage.png');
 const thumbSolar = require('../../public/images/solarsystem.png')
 const thumbSpace = require('../../public/images/spacegame/main.png')
+const thumbPoe2 = require('../../public/images/poe2o/poe2o-main.png')
 
 const Projects = () => {
     const {state} = useThreeScene()
@@ -28,8 +29,13 @@ const Projects = () => {
                        Nettbutikk med CRUD support. Legg til kategorier, produkter, produsenter og spesifiser produkttyper. Konfigurer produkter med egendefinerte attributter.
                     </ProjectGridItem>
                 </Section>
+                <Section>
+                    <ProjectGridItem hit={state.hitProject.right} id="poe2o" title={"Path of Exile 2"} thumbnail={thumbPoe2.default.src}>
+                       Nettside med oversikt over dataspillet med detaljer rundt karakterenes klasser, valg av ferdigheter med muligheten til å lage seg en utgave man følge når man spiller.
+                    </ProjectGridItem>
+                </Section>
             </SimpleGrid>
-            <Heading mt={2} as="h3" fontSize={20} mb={4}>
+            <Heading mt={2} as="h3" fontSize={20} mb={4} marginTop={4}>
                 3D Prosjekter
             </Heading>
             <SimpleGrid columns={[1, 1, 2]} gap={6}>

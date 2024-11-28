@@ -32,13 +32,13 @@ export const About = () => {
         Hei, jeg er en utvikler bosatt i Bergen som er glad i å utvikle nyttige
         applikasjoner. Med bred erfaring innen alt fra datasikkerhet,
         optimalisering og diverse rammeverk så er min største interesse
-        utvikling av React og React Native applikasjoner. For tiden holder jeg
-        på med et produkt kalt
+        utvikling av React og React Native applikasjoner. For tiden holder jeg på med et spill i unity
+        og med en side kalt
         <NextLink
           style={{ position: 'absolute', marginLeft: 5 }}
-          href={'/projects/spacegame'}
+          href={'/projects/poe2o'}
         >
-          <Link as="div">Space Game</Link>
+          <Link as="div">PoE2</Link>
         </NextLink>
       </Paragraph>
     </Section>
