@@ -41,7 +41,7 @@ const project = () => {
       "Nettbutikk med CRUD support. Legg til kategorier, produkter, produsenter og spesifiser produkttyper. Konfigurer produkter med egendefinerte attributter. Følg med på transaksjoner på dashboardet (under utvikling).",
     stack: "React, TypeScript, PostgreSQL, C#",
     platform: "Windows/macOS/Linux/Android",
-    link: "https://elkomplett-2f1891422881.herokuapp.com",
+    link: "https://github.com/buzzdead/ElKomplett",
     images: images,
   };
   return <ProjectPage project={project} />

@@ -4,6 +4,8 @@ import Space from '../../components/three/space'
 import FullPage from '../../components/layout/fullpage'
 import { Button, Flex, Select } from '@chakra-ui/react'
 import { planets, useSolarSystem } from '../../components/three/solarsystemprovider'
+import NextLink from 'next/link'
+import { CornerDownLeftIcon } from 'lucide-react'
 
 const Solarsystem = () => {
   const threeState = useThreeScene()
@@ -52,14 +54,15 @@ const Solarsystem = () => {
         mt={1}
         bgColor={'blackAlpha.50'}
       >
+         <NextLink href={`/projects/`} style={{position: 'absolute', left: 15, top: 15}}><CornerDownLeftIcon size={30} color='lightblue'/> </NextLink>
         <Button onClick={decreaseSpeed}>Decrease Speed</Button>
         <Button onClick={togglePause}>{state.paused ? 'Play' : 'Pause'}</Button>
         <Button onClick={increaseSpeed}>Increase Speed</Button>
-        <Select value={state.planetName} onChange={(value) => travelRef.current = value.target.value} placeholder="Select planet" width={'42'}>
+     {/*    <Select value={state.planetName} onChange={(value) => travelRef.current = value.target.value} placeholder="Select planet" width={'42'}>
           {planets.map((planet, id) => <option key={id} value={planet.name}>{planet.name}</option>)}
-        </Select>
-        <Button onClick={toggleTrackPlanet}>Travel</Button>
-        <Button onClick={toggleGrid}>{state.gridEnabled ? "No Grid" : "Grid"}</Button>
+        </Select> */}
+        {/* <Button onClick={toggleTrackPlanet}>Travel</Button>
+        <Button onClick={toggleGrid}>{state.gridEnabled ? "No Grid" : "Grid"}</Button> */}
         <Select onChange={(value) => destinationRef.current = value.target.value} placeholder="Select destination" width={'30'}>
           {planets.map((planet, id) => <option key={id} value={planet.name}>{planet.name}</option>)}
         </Select>

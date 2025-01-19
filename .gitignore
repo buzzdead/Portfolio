@@ -38,3 +38,5 @@ yarn.lock
 
 # Compiled output (if applicable)
 /out/
+
+.codegpt
