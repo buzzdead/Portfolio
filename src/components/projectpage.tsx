@@ -113,13 +113,15 @@ const ProjectPage = ({ project, smallImages = false }: Props) => {
           <List ml={2} my={4}>
             <ListItem>
               <Meta>{project.type}</Meta>
-              <Link href={project.link} target='_blank'>
-                {project.title}{' '}
-                <ExternalLinkIcon
-                  fontSize={'sm'}
-                  mb={1.25}
-                />
-              </Link>
+              {project.link === '' ? project.title :
+               <Link href={project.link} target='_blank'>
+               {project.title}{' '}
+               <ExternalLinkIcon
+                 fontSize={'sm'}
+                 mb={1.25}
+               />
+             </Link>
+              }
             </ListItem>
             <ListItem>
               <Meta>Platform</Meta>
