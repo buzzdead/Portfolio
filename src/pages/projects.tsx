@@ -9,6 +9,7 @@ const thumbElKomplett = require('../../public/images/elkomplett/homepage.png');
 const thumbSolar = require('../../public/images/solarsystem.png')
 const thumbSpace = require('../../public/images/spacegame/main.png')
 const thumbPoe2 = require('../../public/images/poe2o/poe2o-main.png')
+const thumbCF = require('../../public/images/cybercraft/picture1.png')
 
 const Projects = () => {
     const {state} = useThreeScene()
@@ -32,6 +33,11 @@ const Projects = () => {
                 <Section>
                     <ProjectGridItem hit={state.hitProject.right} id="poe2o" title={"Path of Exile 2"} thumbnail={thumbPoe2.default.src}>
                        Nettside med oversikt over dataspillet med detaljer rundt karakterenes klasser, valg av ferdigheter med muligheten til å lage seg en utgave man følge når man spiller.
+                    </ProjectGridItem>
+                </Section>
+                <Section>
+                    <ProjectGridItem hit={state.hitProject.right} id="cybercraft" title={"Cybercraft"} thumbnail={thumbCF.default.src}>
+                    RTS spill utviklet i Unity
                     </ProjectGridItem>
                 </Section>
             </SimpleGrid>
