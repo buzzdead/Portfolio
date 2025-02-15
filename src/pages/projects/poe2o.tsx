@@ -22,7 +22,7 @@ const project = () => {
     year: 2023,
     type: "Website",
     description:
-      "Nettside med oversikt over dataspillet med detaljer rundt karakterenes klasser, valg av ferdigheter med muligheten til å lage seg en utgave man følge når man spiller.",
+      "Nettside med oversikt over dataspillet med detaljer rundt karakterenes klasser, valg av ferdigheter med muligheten til å lage seg en utgave man følge når man spiller. Egentlig mest ment for å kunne utforske mulighetene før spillet kom ut, men kan være at jeg kommer med oppdateringer i fremtiden.",
     stack: "NextJS, TypeScript",
     platform: "Windows/macOS/Linux/Android",
     link: "https://poe2o.vercel.app",
