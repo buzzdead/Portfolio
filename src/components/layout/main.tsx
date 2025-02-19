@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { ThreeSceneProvider } from '../three/threeprovider';
 import { NextRouter } from 'next/router';
 import { SolarSystemProvider } from '../three/solarsystemprovider';
+import Introduction from '../introduction';
+import Intro from '../Introduction/Intro';
 
 interface MainProps {
   children: React.ReactNode;
@@ -14,7 +16,7 @@ interface MainProps {
 
 const Main = ({ children, router }: MainProps) => {
   const [pagePath, setPagePath] = useState<string>(router.pathname);
-
+  const intro = false;
   useEffect(() => {
     setPagePath(router.pathname);
   }, [router.pathname]);
@@ -38,6 +40,8 @@ const Main = ({ children, router }: MainProps) => {
         />
         <title>{getTitle(pagePath)}</title>
       </Head>
+      {intro ? (
+        <>
       <Navbar path={router.asPath} />
       <Container maxW={{ base: 'container.md', lg: 'container.lg' }} pt={14}>
         <ThreeSceneProvider>
@@ -46,7 +50,8 @@ const Main = ({ children, router }: MainProps) => {
           {children}
           </SolarSystemProvider>
         </ThreeSceneProvider>
-      </Container>
+      </Container> </>)
+ : <Introduction />}
     </Box>
   );
 };

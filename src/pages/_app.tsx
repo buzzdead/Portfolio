@@ -16,6 +16,7 @@ interface Props {
 
 const Website = ({ Component, pageProps }: Props) => {
   const router = useRouter();
+  const introduced = false;
   const [queryClient] = React.useState(() => new QueryClient());
   return (
     <QueryClientProvider client={queryClient}>
