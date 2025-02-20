@@ -1,13 +1,71 @@
 import { Canvas, useFrame } from '@react-three/fiber'
-import { ScrollControls, Scroll, useScroll, Environment, useCursor, useGLTF, AdaptiveDpr, AdaptiveEvents } from '@react-three/drei'
+import { ScrollControls, Scroll, useScroll, Environment, useCursor, useGLTF, AdaptiveDpr, AdaptiveEvents, Clouds, Stars, Sparkles } from '@react-three/drei'
 import { motion } from 'framer-motion'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, Suspense } from 'react'
 import { ArrowDown } from 'lucide-react'
 import { EffectComposer, GodRays, Bloom } from "@react-three/postprocessing"
 import * as THREE from 'three'
 import { BlendFunction, KernelSize, Resolution } from 'postprocessing'
 import SkipButton from './Introduction/SkipButon'
 import HolographicMaterial from './Introduction/HolographicMaterial'
+
+const Background = () => {
+  const shaderRef = useRef<THREE.ShaderMaterial>(null);
+  const scroll = useScroll();
+
+  const vertexShader = `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `;
+
+  const fragmentShader = `
+    uniform float uTime;
+    uniform float uScroll;
+    varying vec2 vUv;
+
+    void main() {
+      // Simple vertical gradient from dark to light
+      vec3 colorBottom = vec3(0.09, 0.02, 0.0); // Dark reddish-brown (#170400)
+      vec3 colorTop = vec3(0.2, 0.1, 0.05);     // Lighter warm tone
+      vec3 gradient = mix(colorBottom, colorTop, vUv.y);
+
+      // Optional: Add subtle time-based noise or scroll influence
+      float noise = sin(vUv.x * 10.0 + uTime * 0.5) * cos(vUv.y * 5.0 + uTime * 0.3) * 0.05;
+      gradient += noise;
+
+      // Optional: Shift gradient based on scroll
+      gradient = mix(gradient, vec3(0.3, 0.15, 0.1), uScroll * 0.2);
+
+      gl_FragColor = vec4(gradient, 1.0);
+    }
+  `;
+
+  useFrame(({ clock }) => {
+    if (shaderRef.current) {
+      shaderRef.current.uniforms.uTime.value = clock.getElapsedTime();
+      shaderRef.current.uniforms.uScroll.value = scroll.offset; // Scroll from 0 to 1 over pages
+    }
+  });
+
+  return (
+    <mesh position={[0, 0, -20]}> {/* Position behind other elements */}
+      <planeGeometry args={[100, 100]} /> {/* Large enough to fill viewport */}
+      <shaderMaterial
+        ref={shaderRef}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        uniforms={{
+          uTime: { value: 0 },
+          uScroll: { value: 0 },
+        }}
+      />
+    </mesh>
+  );
+};
+
 
 const Introduction = () => {
   const sunRef = useRef<THREE.Mesh>(null)
@@ -31,26 +89,24 @@ const Introduction = () => {
     logarithmicDepthBuffer: true,
     powerPreference: "high-performance",
   }}
-  onCreated={({ gl, camera }) => {
-    camera.layers.enable(1);
-  }}
->
+> 
+
 
 <AdaptiveDpr pixelated />
 <AdaptiveEvents />
 <SkipButton />
     <color attach="background" args={["#170400"]} />
-
       {/* Ambient Environment */}
-      <Environment preset="studio" />
+      <Environment preset="night" />
       <ambientLight intensity={1.5} />
       <pointLight position={[10, 10, 10]} intensity={1} />
       <hemisphereLight intensity={1}/>
       {/* Soft Lighting */}
 
       {/* Sun */}
+      <Suspense>
       <Sun sunRef={sunRef} setHasSun={() => setHasSun(true)} hasSun={hasSun} />
-
+      </Suspense>
       {/* Scrolling System */}
       <ScrollControls pages={3} damping={0.2}>
         <Scroll >
@@ -274,12 +330,6 @@ const Sun = ({ sunRef, hasSun, setHasSun, baseColor = "#301934", glowColor = "#3
     }
   })
 
-  useEffect(() => {
-    if (sunRef.current) {
-      sunRef.current.layers.set(1)
-    }
-  }, [])
-
   return (
     <mesh ref={sunRef} position={[0, 0, -15]}>
     <sphereGeometry args={[1, 128, 128]} />
@@ -326,7 +376,10 @@ const SceneContent = ({hasBloom, setBloomObject}: P1) => {
     if(sphereRef.current) {console.log("hm"); setBloomObject(sphereRef.current)}
   }, [sphereRef])
 
-  return <Sphere sphereRef={sphereRef} />
+  return <group> <Suspense fallback={null}>
+  <Sparkles count={100} size={1} speed={0.5} color={"teal"} />
+</Suspense>
+<Sphere sphereRef={sphereRef} /></group>
 }
 
 // Update the Sphere component
@@ -375,14 +428,16 @@ const TextOverlay = () => {
       >
        Velkommen
       </motion.h1>
+      <div style={{ position: 'absolute',top: '22.5vh' }}>
       <motion.p 
         initial={{ y: 10 }} 
-        animate={{  y: [0, 10, 0] }}  
+        animate={{  y: [-10, 10, -10] }}  
         transition={{ repeat: Infinity, duration: 1.5 }}
         style={{ fontSize: '1.5rem', marginTop: '10vh', textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}
       >
-       <ArrowDown size={64} style={{ position: 'absolute', top: '30vh', color: 'teal', textAlign: 'center', width: '100vw'}} />
+       <ArrowDown size={64} style={{ position: 'absolute', color: 'teal', textAlign: 'center', width: '100vw'}} />
       </motion.p>
+      </div>
     </div>
   )
 }
