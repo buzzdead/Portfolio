@@ -22,7 +22,10 @@ const DynamicComponentWithNoSSR = dynamic(
 
 const Main = ({ children, router }: MainProps) => {
   const [pagePath, setPagePath] = useState<string>(router.pathname);
-  const intro = false;
+  const [introduced, setIntroduced] = useState(false);
+  const handleIntroduction = () => {
+    setIntroduced(true);
+  }
   useEffect(() => {
     setPagePath(router.pathname);
   }, [router.pathname]);
@@ -46,7 +49,7 @@ const Main = ({ children, router }: MainProps) => {
         />
         <title>{getTitle(pagePath)}</title>
       </Head>
-      {intro ? (
+      {introduced ? (
         <>
       <Navbar path={router.asPath} />
       <Container maxW={{ base: 'container.md', lg: 'container.lg' }} pt={14}>
@@ -57,7 +60,7 @@ const Main = ({ children, router }: MainProps) => {
           </SolarSystemProvider>
         </ThreeSceneProvider>
       </Container> </>)
- :  <DynamicComponentWithNoSSR />}
+ :  <DynamicComponentWithNoSSR setIntroduced={handleIntroduction} />}
     </Box>
   );
 };
