@@ -3,10 +3,10 @@ import { Html, useScroll } from "@react-three/drei"
 const SkipButton = () => {
     const api = useScroll()
     return (
-      <Html position={[0.95, 0.95, 0]} transform>
+      <Html position={[-5, 3, 0]} transform>
         <button
-          onClick={() => api.el.scrollTo(0, api.el.scrollHeight)}
-          style={{ position: 'absolute', right: 20, top: 20 }}
+          onClick={() => console.log("sd")}
+          style={{ position: 'absolute', right: 0, top: 0 }}
         >
           Skip Intro
         </button>

@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { Box, Container } from '@chakra-ui/react';
 import Navbar from '../navbar';
 import ThreeScene2 from '../three/three';
+import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react';
 import { ThreeSceneProvider } from '../three/threeprovider';
 import { NextRouter } from 'next/router';
@@ -13,6 +14,11 @@ interface MainProps {
   children: React.ReactNode;
   router: NextRouter;
 }
+
+const DynamicComponentWithNoSSR = dynamic(
+  () => import('../introduction'),
+  { ssr: false }
+)
 
 const Main = ({ children, router }: MainProps) => {
   const [pagePath, setPagePath] = useState<string>(router.pathname);
@@ -51,7 +57,7 @@ const Main = ({ children, router }: MainProps) => {
           </SolarSystemProvider>
         </ThreeSceneProvider>
       </Container> </>)
- : <Introduction />}
+ :  <DynamicComponentWithNoSSR />}
     </Box>
   );
 };
