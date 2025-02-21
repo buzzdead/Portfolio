@@ -3,31 +3,42 @@ import { useCursor } from '@react-three/drei'
 import { useRef, useState } from 'react'
 import * as THREE from 'three'
 
-interface PP { hasSun: boolean, setHasSun: () => void }
-
-interface SunShaderProps extends PP {
-  sunRef: React.RefObject<THREE.Mesh>;
-  baseColor?: string; // Add color prop
-  glowColor?: string; // Add glow color prop
+interface PP {
+  hasSun: boolean
+  setHasSun: () => void
 }
 
-const Sun = ({ sunRef, hasSun, setHasSun, baseColor = "#301934", glowColor = "#301934" }: SunShaderProps) => {
-  const shaderRef = useRef<THREE.ShaderMaterial>(null);
-  const hovering = useRef(false); // Add hover state
+interface SunShaderProps extends PP {
+  sunRef: React.RefObject<THREE.Mesh>
+  baseColor?: string // Add color prop
+  glowColor?: string // Add glow color prop
+}
 
-   
+const Sun = ({
+  sunRef,
+  hasSun,
+  setHasSun,
+  baseColor = '#301934',
+  glowColor = '#301934'
+}: SunShaderProps) => {
+  const shaderRef = useRef<THREE.ShaderMaterial>(null)
+  const hovering = useRef(false) // Add hover state
 
-  useCursor(hovering.current); // Optional: Changes cursor on hover
+  useCursor(hovering.current) // Optional: Changes cursor on hover
 
-  const baseColorVec = new THREE.Color(baseColor);
-  const glowColorVec = new THREE.Color(glowColor);
+  const baseColorVec = new THREE.Color(baseColor)
+  const glowColorVec = new THREE.Color(glowColor)
 
   const uniforms = useRef({
     uTime: { value: 0 },
-    uBaseColor: { value: new THREE.Vector3(baseColorVec.r, baseColorVec.g, baseColorVec.b) },
-    uGlowColor: { value: new THREE.Vector3(glowColorVec.r, glowColorVec.g, glowColorVec.b) },
-    uFlareIntensity: { value: 0.0 }, // New uniform for flare control
-  }).current;
+    uBaseColor: {
+      value: new THREE.Vector3(baseColorVec.r, baseColorVec.g, baseColorVec.b)
+    },
+    uGlowColor: {
+      value: new THREE.Vector3(glowColorVec.r, glowColorVec.g, glowColorVec.b)
+    },
+    uFlareIntensity: { value: 0.0 } // New uniform for flare control
+  }).current
 
   const vertexShader = `
     varying vec2 vUv;
@@ -40,7 +51,7 @@ const Sun = ({ sunRef, hasSun, setHasSun, baseColor = "#301934", glowColor = "#3
       vNormal = normalize(normalMatrix * normal);
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
-  `;
+  `
 
   const fragmentShader = `
     uniform float uTime;
@@ -140,32 +151,31 @@ const Sun = ({ sunRef, hasSun, setHasSun, baseColor = "#301934", glowColor = "#3
 
       gl_FragColor = vec4(finalColor, alpha);
     }
-  `;
+  `
 
   useFrame(({ clock }) => {
-    if (sunRef.current && shaderRef.current) { // Ensure both refs are valid
-      if (!hasSun) setHasSun();
-      const t = clock.getElapsedTime() / 2;
-      sunRef.current.position.x = Math.sin(t) * -6 + Math.sin(t * 2) * 0.5; // Add wobble
-    sunRef.current.position.y = Math.cos(t) * -6 + Math.cos(t * 1.5) * 0.3;
-  
-      uniforms.uTime.value = clock.getElapsedTime();
+    if (sunRef.current && shaderRef.current) {
+      // Ensure both refs are valid
+      if (!hasSun) setHasSun()
+      const t = clock.getElapsedTime() / 2
+      sunRef.current.position.x = Math.sin(t) * -6 + Math.sin(t * 2) * 0.5 // Add wobble
+      sunRef.current.position.y = Math.cos(t) * -6 + Math.cos(t * 1.5) * 0.3
+
+      uniforms.uTime.value = clock.getElapsedTime()
       uniforms.uFlareIntensity.value = THREE.MathUtils.lerp(
         shaderRef.current.uniforms.uFlareIntensity.value,
         hovering.current ? 1.0 : 0.0,
-        .1
-      );
+        0.1
+      )
     }
-  });
-
-
+  })
 
   return (
     <mesh
       ref={sunRef}
       position={[0, 0, -15]}
-      onPointerOver={() => hovering.current = true} // Detect hover start
-      onPointerOut={() => hovering.current = false} // Detect hover end
+      onPointerOver={() => (hovering.current = true)} // Detect hover start
+      onPointerOut={() => (hovering.current = false)} // Detect hover end
     >
       <sphereGeometry args={[1, 128, 128]} />
       <shaderMaterial
@@ -179,7 +189,7 @@ const Sun = ({ sunRef, hasSun, setHasSun, baseColor = "#301934", glowColor = "#3
         depthWrite={false}
       />
     </mesh>
-  );
-};
+  )
+}
 
 export default Sun

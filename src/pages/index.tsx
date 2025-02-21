@@ -9,7 +9,7 @@ import NextLink from 'next/link'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import Layout from '../components/layout/article'
 import { Bio } from '../components/about/bio'
-import { FaGithub, FaLinkedin } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa'
 import ContactLink from '../components/contactlink'
 import { useThreeScene } from '../components/three/threeprovider'
 import { About } from '../components/about/about'
@@ -36,7 +36,9 @@ const Page = () => {
             >
               Sigmund Volden
             </Heading>
-            <p style={{userSelect: 'none'}}>App utvikler (Frontend, Backend)</p>
+            <p style={{ userSelect: 'none' }}>
+              App utvikler (Frontend, Backend)
+            </p>
           </Box>
           <Box
             flexShrink={0}
@@ -50,7 +52,7 @@ const Page = () => {
           <Bio />
           <Box display="flex" justifyContent={'center'}>
             <NextLink href="/projects">
-            <ExpButton />
+              <ExpButton />
             </NextLink>
           </Box>
           <Interests />
@@ -73,6 +75,13 @@ const Page = () => {
             title="sigmundvolden"
             href="https://www.linkedin.com/in/sigmundvolden/"
             icon={FaLinkedin}
+            iconSize={24}
+            size={16}
+          />
+          <ContactLink
+            title="Kontakt"
+            href="mailto:sigmund@example.com?subject=Hei&body=Jeg tar kontakt med deg for å..."
+            icon={FaEnvelope}
             iconSize={24}
             size={16}
           />
