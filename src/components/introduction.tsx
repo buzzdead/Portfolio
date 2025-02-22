@@ -1,4 +1,4 @@
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import {
   ScrollControls,
   Scroll,
@@ -8,7 +8,8 @@ import {
   AdaptiveEvents,
   Stars,
   Sparkles,
-  useAnimations
+  useAnimations,
+  useScroll
 } from '@react-three/drei'
 import { useRef, useState, Suspense, useEffect } from 'react'
 import { EffectComposer, GodRays, Bloom } from '@react-three/postprocessing'
@@ -21,10 +22,20 @@ import Sphere from './Introduction/Sphere'
 interface Props {
   setIntroduced: () => void
 }
+const ScrollHandler = ({ scrollRef }: { scrollRef: React.MutableRefObject<number> }) => {
+  const scroll = useScroll()
+  
+  useFrame(() => {
+    scrollRef.current = scroll.offset
+  })
+  
+  return null
+}
 const Introduction = ({ setIntroduced }: Props) => {
   const sunRef = useRef<THREE.Mesh>(new THREE.Mesh())
   const [hasSun, setHasSun] = useState(false)
-
+  const scrollRef = useRef<number>(0)
+  
   return (
     <>
     <style>
@@ -88,13 +99,14 @@ const Introduction = ({ setIntroduced }: Props) => {
         <ScrollControls pages={3} damping={0.2}>
           <Scroll>
             <SceneContent />
+            <ScrollHandler scrollRef={scrollRef} /> 
           </Scroll>
           <Scroll html>
             <TextOverlay setIntroduced={setIntroduced} />
           </Scroll>
         </ScrollControls>
         <>
-          <MyLogo />
+        <MyLogo scrollRef={scrollRef} />
           <EffectComposer>
            
             {/*   <ChromaticAberration
@@ -139,17 +151,20 @@ const SceneContent = () => {
   return (
     <Suspense fallback={null}>
       <group>
-        <Sparkles scale={1.6} count={100} size={2} speed={1.5} color={'teal'} opacity={0.25}/>
-        <Sphere sphereRef={sphereRef} />
+        <Sparkles scale={1.6} count={100} size={2} speed={.5} color={'yellow'} opacity={0.15}/>
+        <Sphere />
       </group>
     </Suspense>
   )
 }
 
-const MyLogo = () => {
+const MyLogo = ({ scrollRef }: { scrollRef: React.RefObject<number> }) => {
   const { scene, animations } = useGLTF('./models/snake.glb') // Load model & animations
   const {scene: snake} = useGLTF('./models/snake.glb') // Load model & animations
   const { actions } = useAnimations(animations, scene) // Hook for animations
+  const hasPlayedAnimation = useRef(false)
+  console.log("logo rendering")
+
   const actionRef = useRef<any>(null)
 
   scene.position.set(0.15, 0, 0)
@@ -165,32 +180,32 @@ const MyLogo = () => {
     };
   }, []);
 
-  const handleHover = () => {
-    if (actions["Turn"]) {
-      if(actionRef?.current?.isPlaying) return
-      actionRef.current = actions["Turn"]
-      actionRef.current.setLoop(THREE.LoopOnce, 1) // Play once
-      actionRef.current.time = 0 // Start from beginning
-      actionRef.current.clampWhenFinished = true // Stop when reaching frame 40
-      actionRef.current.play()
+  useFrame(() => {
+    if(!scrollRef.current || !actions["Turn"]) return
+    if (scrollRef.current > 0.8 && !hasPlayedAnimation.current) {
+      if (actions["Turn"]) {
+        actionRef.current = actions["Turn"]
+        actionRef.current.setLoop(THREE.LoopOnce, 1)
+        actionRef.current.time = 0
+        actionRef.current.clampWhenFinished = true
+        actionRef.current.play()
+        hasPlayedAnimation.current = true
+      }
     }
-  }
-
-  const handleHoverExit = () => {
-    if (actionRef.current) {
-      if(actionRef?.current?.isPlaying) return
-      actionRef.current.setLoop(THREE.LoopOnce, 1) // Play until end
-      actionRef.current.clampWhenFinished = true
-      actionRef.current.paused = false // Resume animation
+    
+    if (scrollRef.current < 0.7) {
+      hasPlayedAnimation.current = false
+      if (actionRef.current) {
+        actionRef.current.stop()
+        actionRef.current.reset()
+      }
     }
-  }
+  })
 
 
  return (
     <primitive
       object={scene}
-      onPointerOver={handleHover}
-      onPointerOut={handleHoverExit}
     />
   )
 

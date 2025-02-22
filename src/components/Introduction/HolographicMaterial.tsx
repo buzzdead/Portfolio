@@ -7,9 +7,9 @@ const HolographicMaterial = () => {
 
   const uniforms = useRef({
     time: { value: 0 },
-    color: { value: new Color("purple") },
-    pulseSpeed: { value: 1.0 },
-    noiseScale: { value: 2.0 }
+    color: { value: new Color("#6a246e") },
+    pulseSpeed: { value: 0.5 },
+    noiseScale: { value: 10.0 }
   }).current;
 
   useFrame(({ clock }) => {
@@ -44,12 +44,12 @@ const HolographicMaterial = () => {
         varying vec3 vPosition;
 
         float rand(vec2 n) { 
-          return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+          return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 45558.5453);
         }
         
         void main() {
           // Create pulsing effect
-          float pulse = sin(time * pulseSpeed) * 0.5 + 0.5;
+          float pulse = sin(time * pulseSpeed) * 0.75 + 0.75;
           
           // Create moving waves
           float waves = sin(vPosition.x * noiseScale + time) * 
@@ -57,19 +57,19 @@ const HolographicMaterial = () => {
                        sin(vPosition.z * noiseScale + time);
           
           // Edge glow effect
-          float fresnel = pow(1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.0);
+          float fresnel = pow(1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 1.0);
           
           // Combine effects
-          float pattern = waves * 0.5 + 0.5;
+          float pattern = waves * 0.25 + 0.25;
           pattern = pattern * pulse;
           
           // Final color
           vec3 glowColor = color + fresnel * 0.5;
-          float alpha = (pattern * 0.6 + fresnel * 0.4) * 0.7;
+          float alpha = (pattern * 0.6 + fresnel * 1.4) * 0.7;
           
           // Add some sparkle
-          float sparkle = rand(vUv + time * 0.1) * fresnel;
-          glowColor += sparkle * 0.3;
+          float sparkle = rand(vUv + time * 0.5) * fresnel;
+          glowColor += sparkle * 0.35;
           
           gl_FragColor = vec4(glowColor, alpha);
         }

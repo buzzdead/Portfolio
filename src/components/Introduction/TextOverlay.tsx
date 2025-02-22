@@ -57,10 +57,10 @@ const sections = (setIntroduced: () => void) => {
           >
             Velkommen
           </motion.h1>
-          <div style={{ position: 'absolute', top: '22.5vh' }}>
+          <div style={{ position: 'absolute', top: '20.5vh' }}>
             <motion.p
-              initial={{ y: 10 }}
-              animate={{ y: [-10, 10, -10] }}
+              initial={{ y: 7.5 }}
+              animate={{ y: [-7., 7.5, -7.5] }}
               transition={{ repeat: Infinity, duration: 1.5 }}
               style={animatedTextStyle}
             >
