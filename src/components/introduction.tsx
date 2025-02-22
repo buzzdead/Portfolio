@@ -96,18 +96,14 @@ const Introduction = ({ setIntroduced }: Props) => {
         <>
           <MyLogo />
           <EffectComposer>
-            <Bloom
-              intensity={0.3}
-              luminanceThreshold={0.5}
-              luminanceSmoothing={0.9}
-              mipmapBlur={true}
-            />
+           
             {/*   <ChromaticAberration
       blendFunction={BlendFunction.ADD}
       offset={new THREE.Vector2(0.2, 0)}
       modulationOffset={0.1}
       radialModulation={false}
     /> */}
+    
             <>
               {hasSun && (
                 <GodRays
@@ -143,7 +139,7 @@ const SceneContent = () => {
   return (
     <Suspense fallback={null}>
       <group>
-        <Sparkles count={100} size={1.25} speed={0.5} color={'teal'} />
+        <Sparkles scale={1.6} count={100} size={2} speed={1.5} color={'teal'} opacity={0.25}/>
         <Sphere sphereRef={sphereRef} />
       </group>
     </Suspense>
@@ -152,12 +148,16 @@ const SceneContent = () => {
 
 const MyLogo = () => {
   const { scene, animations } = useGLTF('./models/snake.glb') // Load model & animations
+  const {scene: snake} = useGLTF('./models/snake.glb') // Load model & animations
   const { actions } = useAnimations(animations, scene) // Hook for animations
   const actionRef = useRef<any>(null)
 
-  scene.position.set(0.05, 0, 0)
+  scene.position.set(0.15, 0, 0)
   scene.rotation.set(0, 3, 0)
-  scene.scale.set(0.75, 0.75, 0.75)
+  scene.scale.set(1, 1, 1)
+
+  snake.position.set(0.1, 0, 0)
+  snake.scale.set(1.25, 1.25, 1.25)
 
   useEffect(() => {
     return () => {

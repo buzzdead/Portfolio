@@ -51,7 +51,7 @@ const sections = (setIntroduced: () => void) => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
             style={{
-              color: 'green',
+              color: 'teal',
               ...commonStyle
             }}
           >
@@ -79,7 +79,7 @@ const sections = (setIntroduced: () => void) => {
       content: (
         <motion.h2
           style={{
-            color: 'green',
+            color: 'teal',
             ...commonStyle
           }}
         >
@@ -94,7 +94,7 @@ const sections = (setIntroduced: () => void) => {
         content: (
             <motion.h2
               style={{
-                color: 'green',
+                color: 'teal',
                 ...commonStyle,
                 maxWidth: '80%', // or use specific value like '800px'
                 margin: '0 auto',
@@ -114,7 +114,7 @@ const sections = (setIntroduced: () => void) => {
           onClick={() => setIntroduced()}
           style={{
             ...commonStyle,
-            color: 'white',
+            color: 'purple',
             cursor: 'pointer',
             textDecoration: 'underline'
           }}

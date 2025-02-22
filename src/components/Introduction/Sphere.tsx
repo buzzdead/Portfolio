@@ -21,7 +21,7 @@ const Sphere = ({ sphereRef }: { sphereRef: React.RefObject<THREE.Mesh> }) => {
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
-      <sphereGeometry args={[1, 64, 64]} />
+      <sphereGeometry args={[1.25, 64, 64]} />
       <HolographicMaterial /> {/* Use the shader here */}
     </mesh>
   )
