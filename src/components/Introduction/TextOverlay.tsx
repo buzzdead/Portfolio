@@ -122,7 +122,7 @@ const sections = (setIntroduced: () => void) => {
           Klikk for å gå videre til nettsiden
         </motion.h2>
       ),
-      top: '225vh',
+      top: '240vh',
       opacity: (scrollPosition: number) =>
         Math.max(0, (scrollPosition - 0.75) * 5)
     }

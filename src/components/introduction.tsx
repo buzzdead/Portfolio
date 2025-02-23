@@ -159,56 +159,75 @@ const SceneContent = () => {
 }
 
 const MyLogo = ({ scrollRef }: { scrollRef: React.RefObject<number> }) => {
-  const { scene, animations } = useGLTF('./models/snake.glb') // Load model & animations
-  const {scene: snake} = useGLTF('./models/snake.glb') // Load model & animations
-  const { actions } = useAnimations(animations, scene) // Hook for animations
-  const hasPlayedAnimation = useRef(false)
-  console.log("logo rendering")
+  const { scene, animations } = useGLTF("./models/snakes.glb"); // Load model & animations
+  const { actions, mixer } = useAnimations(animations, scene); // Hook for animations
 
-  const actionRef = useRef<any>(null)
+  const hasPlayedAttach = useRef(false);
+  const isPlayingAnimation = useRef(false);
+  const actionRef = useRef<THREE.AnimationAction | null>(null);
 
-  scene.position.set(0.15, 0, 0)
-  scene.rotation.set(0, 3, 0)
-  scene.scale.set(1, 1, 1)
-
-  snake.position.set(0.1, 0, 0)
-  snake.scale.set(1.25, 1.25, 1.25)
+  scene.position.set(0.15, 0, 0);
+  scene.rotation.set(0, 3, 0);
+  scene.scale.set(1.25, 1.25, 1.25);
 
   useEffect(() => {
     return () => {
       if (actionRef.current) actionRef.current.stop();
+      mixer.stopAllAction(); // Stop animations on unmount
     };
-  }, []);
+  }, [mixer]);
+
+  // Listen for animation completion
+  useEffect(() => {
+    const handleAnimationFinish = (e: { action: THREE.AnimationAction }) => {
+      if (e.action === actions["Attach"]) {
+        hasPlayedAttach.current = true;
+        isPlayingAnimation.current = false;
+      }
+      if (e.action === actions["Detatch"]) {
+        hasPlayedAttach.current = false;
+        isPlayingAnimation.current = false;
+      }
+    };
+
+    mixer.addEventListener("finished", handleAnimationFinish);
+
+    return () => {
+      mixer.removeEventListener("finished", handleAnimationFinish);
+    };
+  }, [actions, mixer]);
 
   useFrame(() => {
-    if(!scrollRef.current || !actions["Turn"]) return
-    if (scrollRef.current > 0.8 && !hasPlayedAnimation.current) {
-      if (actions["Turn"]) {
-        actionRef.current = actions["Turn"]
-        actionRef.current.setLoop(THREE.LoopOnce, 1)
-        actionRef.current.time = 0
-        actionRef.current.clampWhenFinished = true
-        actionRef.current.play()
-        hasPlayedAnimation.current = true
-      }
+    if (!scrollRef.current || !actions["Attach"] || !actions["Detatch"]) return;
+
+    // Play "Attach" animation when scrolling past 0.8
+    if (scrollRef.current > 0.8 && !hasPlayedAttach.current && !isPlayingAnimation.current) {
+      const attachAction = actions["Attach"];
+      if(actionRef.current) actionRef.current.stop();
+      actionRef.current = attachAction;
+      attachAction.reset();
+      attachAction.setLoop(THREE.LoopOnce, 1);
+      attachAction.clampWhenFinished = true;
+      attachAction.play();
+
+      isPlayingAnimation.current = true;
     }
-    
-    if (scrollRef.current < 0.7) {
-      hasPlayedAnimation.current = false
-      if (actionRef.current) {
-        actionRef.current.stop()
-        actionRef.current.reset()
-      }
+
+    // Play "Detatch" animation when scrolling below 0.7 (only if "Attach" has finished)
+    if (scrollRef.current < 0.7 && hasPlayedAttach.current && !isPlayingAnimation.current) {
+      const detachAction = actions["Detatch"];
+      if(actionRef.current) actionRef.current.stop();
+      actionRef.current = detachAction;
+      detachAction.reset();
+      detachAction.setLoop(THREE.LoopOnce, 1);
+      detachAction.clampWhenFinished = true;
+      detachAction.play();
+
+      isPlayingAnimation.current = true;
     }
-  })
+  });
 
-
- return (
-    <primitive
-      object={scene}
-    />
-  )
-
-}
+  return <primitive object={scene} />;
+};
 
 export default Introduction
