@@ -208,6 +208,7 @@ const MyLogo = ({ scrollRef }: { scrollRef: React.RefObject<number> }) => {
       attachAction.reset();
       attachAction.setLoop(THREE.LoopOnce, 1);
       attachAction.clampWhenFinished = true;
+      attachAction.timeScale = 1.75; // Increase speed by 20%
       attachAction.play();
 
       isPlayingAnimation.current = true;
@@ -221,6 +222,7 @@ const MyLogo = ({ scrollRef }: { scrollRef: React.RefObject<number> }) => {
       detachAction.reset();
       detachAction.setLoop(THREE.LoopOnce, 1);
       detachAction.clampWhenFinished = true;
+      detachAction.timeScale = 1.75; // Increase speed by 20%
       detachAction.play();
 
       isPlayingAnimation.current = true;
