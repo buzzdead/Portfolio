@@ -32,12 +32,12 @@ export const About = () => {
         Hei, jeg er en utvikler bosatt i Bergen som er glad i å utvikle nyttige
         applikasjoner. Med bred erfaring innen alt fra datasikkerhet,
         optimalisering og diverse rammeverk så er min største interesse
-        utvikling av React og React Native applikasjoner. For tiden holder jeg på med et spill i unity som heter{' '}
+        utvikling av React og React Native applikasjoner. For tiden holder jeg på med et spill som heter{' '}
         <NextLink
           style={{ position: 'absolute', marginLeft: 5 }}
-          href={'/projects/cybercraft'}
+          href={'/projects/roachranch'}
         >
-          <Link as="div">Cybercraft</Link>
+          <Link as="div">Roach Ranch</Link>
         </NextLink>
       </Paragraph>
     </Section>

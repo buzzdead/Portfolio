@@ -10,6 +10,7 @@ const thumbSolar = require('../../public/images/solarsystem.png')
 const thumbSpace = require('../../public/images/spacegame/main.png')
 const thumbPoe2 = require('../../public/images/poe2o/poe2o-main.png')
 const thumbCF = require('../../public/images/cybercraft/picture1.png')
+const thumbRR = require('../../public/images/roachranch/banner.webp')
 
 const Projects = () => {
     const {state} = useThreeScene()
@@ -53,6 +54,11 @@ const Projects = () => {
                 <Section>
                     <ProjectGridItem hit={false} id="spacegame" title="Space Game" thumbnail={thumbSpace.default.src}>
                         3D spill i verdensrommet hvor mange kan høste inn mineraler og i fremtiden bygge skip og gå på kampanje.
+                    </ProjectGridItem>
+                </Section>
+                <Section>
+                    <ProjectGridItem hit={false} id="roachranch" title="Roach Ranch" thumbnail={thumbRR.default.src}>
+                        Overlevelsesspill på web laget i Three JS Fiber.
                     </ProjectGridItem>
                 </Section>
                 </SimpleGrid>
