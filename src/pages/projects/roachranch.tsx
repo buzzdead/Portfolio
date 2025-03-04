@@ -20,7 +20,7 @@ const RoachRanch = () => {
     title: "Roach Ranch",
     year: 2025,
     type: "Game",
-    link: "",
+    link: "https://roachranch.netlify.app",
     description:
       "Overlevelsesspill på web laget i Three JS Fiber",
     stack: "Three.js, Three Fiber, Javascript, ",
