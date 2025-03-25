@@ -16,9 +16,8 @@ const DynamicComponentWithNoSSR = dynamic(
   () => import('../introduction'),
   { 
     ssr: false,
-    loading: () => 
-      
-        <Flex 
+    loading: () => (
+      <Flex 
         height="100vh" 
         width="100vw" 
         alignItems="center" 
@@ -56,7 +55,7 @@ const DynamicComponentWithNoSSR = dynamic(
           />
         </Box>
       </Flex>
-    
+    )
   }
 )
 
@@ -66,14 +65,21 @@ const Main = ({ children, router }: MainProps) => {
   const [isLoading, setIsLoading] = useState(true);
   
   const handleIntroduction = () => {
+    // Save to localStorage when user completes introduction
+    localStorage.setItem("hasSeenIntroduction", "true");
     setIntroduced(true);
   }
   
   useEffect(() => {
     setPagePath(router.pathname);
     
-    // Add a small timeout to ensure the loading screen is visible
-    // even if the component loads quickly
+    // Check if user has already seen the introduction
+    const hasSeenIntro = localStorage.getItem("hasSeenIntroduction") === "true";
+    if (hasSeenIntro) {
+      setIntroduced(true);
+    }
+    
+    // Timeout for loading animation
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -91,47 +97,47 @@ const Main = ({ children, router }: MainProps) => {
     }
   };
   
-  // Initial loading screen
+  // Show loading screen only if not introduced and still loading
   if (!introduced && isLoading) {
     return (
       <Flex 
-      height="100vh" 
-      width="100vw" 
-      alignItems="center" 
-      justifyContent="center" 
-      flexDirection="column"
-      bg="black"
-      color="white"
-    >
-      <Box 
-        position="relative"
-        width="80px"
-        height="80px"
-        mb={4}
+        height="100vh" 
+        width="100vw" 
+        alignItems="center" 
+        justifyContent="center" 
+        flexDirection="column"
+        bg="black"
+        color="white"
       >
-        <Spinner 
-          size="xl" 
-          thickness="4px"
-          speed="0.8s"
-          color="purple.400"
-          position="absolute"
-          top="4"
-          left="4"
-        />
-        <Box
-          position="absolute"
-          top="50%"
-          left="50%"
-          transform="translate(-50%, -50%)"
-          width="30px"
-          height="30px"
-          borderRadius="full"
-          bg="purple.300"
-          opacity="0.7"
-          boxShadow="0 0 20px 10px #805AD5"
-        />
-      </Box>
-    </Flex>
+        <Box 
+          position="relative"
+          width="80px"
+          height="80px"
+          mb={4}
+        >
+          <Spinner 
+            size="xl" 
+            thickness="4px"
+            speed="0.8s"
+            color="purple.400"
+            position="absolute"
+            top="4"
+            left="4"
+          />
+          <Box
+            position="absolute"
+            top="50%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+            width="30px"
+            height="30px"
+            borderRadius="full"
+            bg="purple.300"
+            opacity="0.7"
+            boxShadow="0 0 20px 10px #805AD5"
+          />
+        </Box>
+      </Flex>
     );
   }
   
@@ -146,7 +152,7 @@ const Main = ({ children, router }: MainProps) => {
         <title>{getTitle(pagePath)}</title>
       </Head>
       {introduced ? (
-        <Suspense>
+        <>
           <Navbar path={router.asPath} />
           <Container maxW={{ base: 'container.md', lg: 'container.lg' }} pt={14}>
             <ThreeSceneProvider>
@@ -155,7 +161,7 @@ const Main = ({ children, router }: MainProps) => {
               </SolarSystemProvider>
             </ThreeSceneProvider>
           </Container> 
-        </Suspense>
+        </>
       ) : (
         <DynamicComponentWithNoSSR setIntroduced={handleIntroduction} />
       )}
