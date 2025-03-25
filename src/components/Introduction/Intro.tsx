@@ -50,10 +50,7 @@ const Intro = () => {
       {
         //@ts-ignore
 
-        <ChromaticAberration
-          modulationOffset={1}
-          offset={new Vector2(0.002, 0.002)}
-        />
+       
       }
       <Sphere />
        <Logo />
