@@ -122,19 +122,7 @@ const NavBar = (props: { path: any }) => {
               Spill
             </Text>
           </LinkItem>
-          <LinkItem href={"/aifun"} path={path}>
-            <Text
-              minWidth={"80px"}
-              textAlign={"center"}
-              fontWeight={"medium"}
-              transitionDuration={"800ms"}
-              color={useColorModeValue("black", "white")}
-              fontFamily={"body"}
-              userSelect={'none'}
-            >
-              AI
-            </Text>
-          </LinkItem>
+          
         </Stack>
         <Box
           flex={1}
@@ -166,9 +154,7 @@ const NavBar = (props: { path: any }) => {
                 <NextLink href="/projects" passHref>
                   <MenuItem as={"div"}>Prosjekter</MenuItem>
                 </NextLink>
-                <NextLink href="/aifun" passHref>
-                  <MenuItem as={"div"}>AI</MenuItem>
-                </NextLink>
+                
               </MenuList>
             </Menu>
           </Box>
